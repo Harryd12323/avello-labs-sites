@@ -34,4 +34,4 @@ Then open http://localhost:8000. Pages use root paths like `/assets/site.css`, s
 ## Contact form
 
 The form on the home page sends through [Web3Forms](https://web3forms.com). Messages go to the email the access key was
-created with. Paste the key into the `access_key` field in `index.html` (search for `PASTE YOUR WEB3FORMS ACCESS KEY`).
+created with (harris@avellolabs.com). The key is in the `access_key` field in `index.html`; it's public by design.

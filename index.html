@@ -286,13 +286,11 @@
 
       <!--
         CONTACT FORM: sends through Web3Forms (https://web3forms.com), which emails each message to the
-        address the access key was created with. Create the key with harris@avellolabs.com, then paste it
-        into the access_key value below. Until then, the form shows a "not switched on yet" message
-        and sends nothing.
+        address the access key was created with (harris@avellolabs.com).
       -->
       <form class="contact-form" id="contact-form" action="https://api.web3forms.com/submit" method="POST" novalidate>
-        <!-- ===== PASTE YOUR WEB3FORMS ACCESS KEY HERE (replace YOUR_WEB3FORMS_ACCESS_KEY) ===== -->
-        <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY">
+        <!-- Web3Forms access key (public by design). Replace it here if the key ever changes. -->
+        <input type="hidden" name="access_key" value="a6955225-5ff5-4562-ae2d-dfda9193580a">
         <input type="hidden" name="subject" value="New message from the Avello Labs website">
         <input type="hidden" name="from_name" value="Avello Labs website">
         <!-- Honeypot for spam bots: hidden from people, so a ticked box means a bot. -->
