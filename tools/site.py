@@ -31,7 +31,7 @@ SITE = "https://avellolabs.com"
 EMAIL = "harris@avellolabs.com"
 
 # Preview mode: every page carries noindex. Set to False and run `sync` to go live.
-NOINDEX = True
+NOINDEX = False
 
 # Folders that aren't part of the site's pages.
 SKIP = {"concepts", "brand", "work", "assets", "tools", ".git"}

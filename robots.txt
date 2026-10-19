@@ -1,4 +1,3 @@
-# Pages also carry a noindex tag while the site is in preview.
 User-agent: *
 Allow: /
 
