@@ -89,6 +89,53 @@
              background-clip: text; color: transparent; }
   .sub { margin: 1.25rem auto 0; max-width: 36rem; color: var(--muted); font-size: clamp(1.05rem, 2.6vw, 1.2rem); }
   .hero-ctas { margin-top: 2.25rem; display: flex; flex-direction: column; gap: .75rem; align-items: stretch; max-width: 22rem; margin-left: auto; margin-right: auto; }
+  .hero-logo { display: block; width: min(26rem, 88%); height: auto; margin: 0 auto 2rem; }
+  /* Only the ring turns, around the ring's center; the wordmark stays still. */
+  .ring-spin { transform-box: view-box; transform-origin: 240.26px 164.5px; animation: ring-spin 20s linear infinite; }
+  @keyframes ring-spin { to { transform: rotate(360deg); } }
+
+  /* Concept work carousel */
+  .work-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 1.5rem; }
+  .work-note { display: inline-block; margin-top: 1.25rem; max-width: 40rem; padding: .45rem .8rem; border: 1px solid var(--line-bright);
+               border-radius: 8px; background: var(--panel); color: var(--muted); font-size: .88rem; }
+  .work-note b { color: var(--text); font-weight: 600; }
+  .car-nav { display: flex; gap: .5rem; }
+  .car-btn { width: 48px; height: 48px; display: grid; place-items: center; border: 1px solid var(--line-bright); border-radius: 50%;
+             background: var(--panel); color: var(--text); cursor: pointer; transition: border-color .15s, opacity .15s; }
+  .car-btn:hover:not(:disabled) { border-color: var(--accent); }
+  .car-btn:disabled { opacity: .35; cursor: default; }
+  .car-btn:focus-visible, .shot:focus-visible, .track:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .car-btn svg { width: 20px; height: 20px; }
+  .track { list-style: none; margin-top: 2rem; display: grid; grid-auto-flow: column; grid-auto-columns: 78%; gap: 1rem; overflow-x: auto;
+           scroll-snap-type: x mandatory; scroll-behavior: smooth; overscroll-behavior-x: contain; scrollbar-width: none;
+           padding: 0 1.25rem .5rem; margin-inline: -1.25rem; scroll-padding-inline: 1.25rem; }
+  .track::-webkit-scrollbar { display: none; }
+  .slide { scroll-snap-align: start; min-width: 0; }
+  .shot { display: block; width: 100%; padding: 0; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;
+          background: var(--bg-2); cursor: zoom-in; position: relative; transition: border-color .2s; }
+  .shot:hover { border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); }
+  .shot img { display: block; width: 100%; height: auto; }
+  .shot .zoom { position: absolute; right: .6rem; bottom: .6rem; padding: .3rem .6rem; border-radius: 6px; font-size: .78rem; font-weight: 600;
+                background: color-mix(in srgb, var(--bg) 85%, transparent); color: var(--text); border: 1px solid var(--line-bright); }
+  .slide h3 { margin-top: 1rem; font-size: 1.1rem; font-weight: 600; letter-spacing: -.01em; }
+  .slide h3 span { color: var(--muted); font-weight: 400; font-size: .9rem; }
+  .slide p { margin-top: .3rem; color: var(--muted); font-size: .95rem; }
+  .car-count { margin-top: 1rem; color: var(--muted); font-size: .85rem; }
+
+  /* Lightbox */
+  .lightbox { width: min(100vw - 1.5rem, 76rem); max-height: calc(100dvh - 1.5rem); margin: auto; padding: 0; border: 1px solid var(--line-bright);
+              border-radius: var(--radius); background: var(--bg-2); color: var(--text); overflow: hidden; }
+  .lightbox::backdrop { background: rgb(3 6 14 / .82); }
+  .lb-bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .6rem .6rem .6rem 1rem; border-bottom: 1px solid var(--line); }
+  .lb-bar p { font-size: .9rem; color: var(--muted); }
+  .lb-bar b { color: var(--text); font-weight: 600; }
+  .lb-close { width: 44px; height: 44px; flex: none; display: grid; place-items: center; border: 1px solid var(--line-bright); border-radius: 10px;
+              background: var(--panel); color: var(--text); cursor: pointer; }
+  .lb-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .lb-close svg { width: 20px; height: 20px; }
+  .lb-scroll { max-height: calc(100dvh - 1.5rem - 62px); overflow-y: auto; overscroll-behavior: contain; }
+  .lb-scroll img { display: block; width: 100%; height: auto; margin: 0 auto; }
+  .lightbox.phone { width: min(100vw - 1.5rem, 26rem); }
 
   /* Sections */
   section.block { padding: 5rem 0; border-top: 1px solid var(--line); }
@@ -162,6 +209,7 @@
     .nav-link { display: inline-block; }
     .brand img { height: 34px; }
     .grid2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .track { grid-auto-columns: calc((100% - 2.5rem - 1rem) / 2); }
     form { padding: 2rem; }
     .form-foot .btn { width: auto; min-width: 10rem; }
     footer .wrap { flex-direction: row; justify-content: space-between; align-items: center; }
@@ -171,11 +219,14 @@
     .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; }
     .why { grid-template-columns: 1.1fr 1fr; gap: 4rem; }
     .contact { grid-template-columns: 1fr 1.3fr; gap: 4rem; align-items: start; }
+    .track { grid-auto-columns: calc((100% - 2.5rem - 2.5rem) / 2); gap: 1.25rem; }
   }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     .btn, .card, .btn svg { transition: none; }
     .btn:hover, .card:hover { transform: none; }
+    .ring-spin { animation: none; }
+    .track { scroll-behavior: auto; }
   }
 </style>
 </head>
@@ -188,6 +239,7 @@
     <nav>
       <a class="nav-link" href="#services">What we do</a>
       <a class="nav-link" href="#why">Why it matters</a>
+      <a class="nav-link" href="#work">Concept work</a>
       <a class="btn btn-small" href="#contact">Get in touch</a>
     </nav>
   </div>
@@ -197,6 +249,21 @@
   <!-- 1. Hero -->
   <section class="hero">
     <div class="wrap">
+      <svg class="hero-logo" viewBox="0 0 481 329" role="img" aria-labelledby="hero-logo-t">
+        <title id="hero-logo-t">Avello Labs</title>
+        <defs>
+          <linearGradient id="hero-ring-grad" gradientUnits="userSpaceOnUse" x1="90.26" y1="104.50" x2="390.26" y2="224.50"><stop offset="0" stop-color="#56A2F1"/><stop offset="0.5" stop-color="#3C63EE"/><stop offset="1" stop-color="#4A2ADC"/></linearGradient>
+          <!-- Hides the ring where it would cross the wordmark, so the arcs can turn freely behind it. -->
+          <mask id="hero-ring-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="481" height="329">
+            <rect width="481" height="329" fill="#fff"/><rect y="121" width="481" height="84" fill="#000"/>
+          </mask>
+        </defs>
+        <g mask="url(#hero-ring-mask)">
+          <path class="ring-spin" fill="none" stroke="url(#hero-ring-grad)" stroke-width="5" stroke-linecap="round" d="M101.18 108.31 A150 150 0 0 1 379.33 108.31 M351.73 264.87 A150 150 0 0 1 103.22 225.51"/>
+        </g>
+        <path fill="#FFFFFF" d="M46.24 136.5 70.72 192.5H59.44L37.6 141.86H44.08L21.92 192.5H11.6L36 136.5ZM88.24 192.5 69.92 149.78H80.32L96.08 187.46H90.96L107.28 149.78H116.88L98.56 192.5ZM142 193.06Q134.88 193.06 129.56 190.22Q124.24 187.38 121.32 182.42Q118.4 177.46 118.4 171.14Q118.4 164.74 121.24 159.82Q124.08 154.9 129.08 152.1Q134.08 149.3 140.48 149.3Q146.72 149.3 151.6 152.02Q156.48 154.74 159.28 159.7Q162.08 164.66 162.08 171.38Q162.08 172.02 162.04 172.82Q162 173.62 161.92 174.34H126.32V167.7H156.64L152.72 169.78Q152.8 166.1 151.2 163.3Q149.6 160.5 146.84 158.9Q144.08 157.3 140.48 157.3Q136.8 157.3 134.04 158.9Q131.28 160.5 129.72 163.34Q128.16 166.18 128.16 170.02V171.62Q128.16 175.46 129.92 178.42Q131.68 181.38 134.88 182.98Q138.08 184.58 142.24 184.58Q145.84 184.58 148.72 183.46Q151.6 182.34 153.84 179.94L159.2 186.1Q156.32 189.46 151.96 191.26Q147.6 193.06 142 193.06ZM171.68 192.5V133.14H181.68V192.5ZM194.8 192.5V133.14H204.8V192.5ZM237.12 193.06Q230.56 193.06 225.44 190.22Q220.32 187.38 217.36 182.42Q214.4 177.46 214.4 171.14Q214.4 164.74 217.36 159.82Q220.32 154.9 225.44 152.1Q230.56 149.3 237.12 149.3Q243.76 149.3 248.92 152.1Q254.08 154.9 257 159.78Q259.92 164.66 259.92 171.14Q259.92 177.46 257 182.42Q254.08 187.38 248.92 190.22Q243.76 193.06 237.12 193.06ZM237.12 184.5Q240.8 184.5 243.68 182.9Q246.56 181.3 248.2 178.26Q249.84 175.22 249.84 171.14Q249.84 166.98 248.2 163.98Q246.56 160.98 243.68 159.38Q240.8 157.78 237.2 157.78Q233.52 157.78 230.68 159.38Q227.84 160.98 226.16 163.98Q224.48 166.98 224.48 171.14Q224.48 175.22 226.16 178.26Q227.84 181.3 230.68 182.9Q233.52 184.5 237.12 184.5Z"/>
+        <path fill="#FFFFFF" d="M292.59 192.5V136.5H296.67V188.82H328.91V192.5ZM364.43 192.5V182.98L364.27 181.54V165.86Q364.27 160.02 361.11 156.98Q357.95 153.94 351.87 153.94Q347.55 153.94 343.83 155.42Q340.11 156.9 337.47 159.22L335.47 156.34Q338.59 153.54 342.99 151.98Q347.39 150.42 352.19 150.42Q359.95 150.42 364.11 154.34Q368.27 158.26 368.27 166.02V192.5ZM349.39 192.82Q344.75 192.82 341.35 191.34Q337.95 189.86 336.15 187.14Q334.35 184.42 334.35 180.9Q334.35 177.7 335.83 175.1Q337.31 172.5 340.75 170.86Q344.19 169.22 349.95 169.22H365.31V172.34H350.03Q343.55 172.34 340.95 174.74Q338.35 177.14 338.35 180.74Q338.35 184.74 341.39 187.14Q344.43 189.54 349.95 189.54Q355.23 189.54 358.87 187.14Q362.51 184.74 364.27 180.18L365.39 182.9Q363.71 187.46 359.67 190.14Q355.63 192.82 349.39 192.82ZM405.71 192.82Q400.19 192.82 395.75 190.26Q391.31 187.7 388.71 182.9Q386.11 178.1 386.11 171.62Q386.11 164.98 388.71 160.26Q391.31 155.54 395.75 152.98Q400.19 150.42 405.71 150.42Q411.63 150.42 416.31 153.1Q420.99 155.78 423.67 160.54Q426.35 165.3 426.35 171.62Q426.35 177.86 423.67 182.66Q420.99 187.46 416.31 190.14Q411.63 192.82 405.71 192.82ZM384.75 192.5V133.14H388.75V164.26L387.95 171.54L388.59 178.82V192.5ZM405.47 189.22Q410.27 189.22 414.11 187.02Q417.95 184.82 420.15 180.82Q422.35 176.82 422.35 171.62Q422.35 166.34 420.15 162.38Q417.95 158.42 414.11 156.22Q410.27 154.02 405.47 154.02Q400.67 154.02 396.87 156.22Q393.07 158.42 390.87 162.38Q388.67 166.34 388.67 171.62Q388.67 176.82 390.87 180.82Q393.07 184.82 396.87 187.02Q400.67 189.22 405.47 189.22ZM449.31 192.82Q444.11 192.82 439.59 191.3Q435.07 189.78 432.59 187.46L434.43 184.26Q436.83 186.34 440.83 187.82Q444.83 189.3 449.47 189.3Q456.03 189.3 458.91 187.14Q461.79 184.98 461.79 181.46Q461.79 178.9 460.31 177.42Q458.83 175.94 456.35 175.14Q453.87 174.34 450.91 173.82Q447.95 173.3 444.99 172.66Q442.03 172.02 439.55 170.82Q437.07 169.62 435.59 167.5Q434.11 165.38 434.11 161.86Q434.11 158.66 435.87 156.1Q437.63 153.54 441.15 151.98Q444.67 150.42 449.95 150.42Q453.87 150.42 457.83 151.54Q461.79 152.66 464.27 154.5L462.43 157.7Q459.79 155.7 456.51 154.82Q453.23 153.94 449.87 153.94Q443.79 153.94 440.95 156.18Q438.11 158.42 438.11 161.78Q438.11 164.42 439.59 165.98Q441.07 167.54 443.55 168.38Q446.03 169.22 448.99 169.74Q451.95 170.26 454.91 170.9Q457.87 171.54 460.35 172.7Q462.83 173.86 464.31 175.9Q465.79 177.94 465.79 181.38Q465.79 184.82 463.91 187.38Q462.03 189.94 458.35 191.38Q454.67 192.82 449.31 192.82Z"/>
+      </svg>
       <span class="pill"><i></i>SEO · AEO · Ongoing site care</span>
       <h1>Keep your website healthy. <span class="grad">Outrank your competitors.</span></h1>
       <p class="sub">Avello Labs keeps your site fast, fresh and climbing, on Google and in the AI answers your customers now trust.</p>
@@ -260,7 +327,121 @@
     </div>
   </section>
 
-  <!-- 4. Contact -->
+  <!-- 4. Concept work -->
+  <section class="block" id="work" aria-labelledby="work-h">
+    <div class="wrap">
+      <div class="work-head">
+        <div>
+          <p class="eyebrow">Concept work</p>
+          <h2 id="work-h">Seven businesses. Seven different looks.</h2>
+          <p class="lede">Hand-designed sites, each built from scratch with its own layout, type and colors, to show the range we design in.</p>
+          <p class="work-note"><b>Concept designs.</b> Every business here is fictional, with invented names, people and contact details. None of these are client sites.</p>
+        </div>
+        <div class="car-nav">
+          <button class="car-btn" type="button" id="car-prev" aria-label="Previous concept" aria-controls="car-track">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          </button>
+          <button class="car-btn" type="button" id="car-next" aria-label="Next concept" aria-controls="car-track">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
+      <div role="region" aria-roledescription="carousel" aria-labelledby="work-h">
+      <ul class="track" id="car-track" aria-label="Concept designs. Use the left and right arrow keys to move between them." tabindex="0">
+        <li class="slide" role="group" aria-roledescription="slide" aria-label="1 of 7: HVAC company">
+          <button class="shot" type="button" data-key="hvac" data-kind="HVAC company" aria-label="View the full-length hvac company concept">
+            <picture>
+              <source media="(max-width: 39.99rem)" srcset="work/hvac-phone-card.webp" width="390" height="600">
+              <img src="work/hvac-desktop-card.webp" width="1120" height="700" loading="lazy" decoding="async" alt="Top of the hvac company concept design">
+            </picture>
+            <span class="zoom" aria-hidden="true">View full page</span>
+          </button>
+          <h3>HVAC company <span>· fictional business</span></h3>
+          <p>Utility-truck energy: big condensed type, an always-on emergency call button, and a service-area map.</p>
+        </li>
+        <li class="slide" role="group" aria-roledescription="slide" aria-label="2 of 7: Dental practice">
+          <button class="shot" type="button" data-key="dental" data-kind="Dental practice" aria-label="View the full-length dental practice concept">
+            <picture>
+              <source media="(max-width: 39.99rem)" srcset="work/dental-phone-card.webp" width="390" height="600">
+              <img src="work/dental-desktop-card.webp" width="1120" height="700" loading="lazy" decoding="async" alt="Top of the dental practice concept design">
+            </picture>
+            <span class="zoom" aria-hidden="true">View full page</span>
+          </button>
+          <h3>Dental practice <span>· fictional business</span></h3>
+          <p>Calm and airy: soft mint and sky, lots of whitespace, and gentle motion for nervous patients.</p>
+        </li>
+        <li class="slide" role="group" aria-roledescription="slide" aria-label="3 of 7: Restaurant">
+          <button class="shot" type="button" data-key="restaurant" data-kind="Restaurant" aria-label="View the full-length restaurant concept">
+            <picture>
+              <source media="(max-width: 39.99rem)" srcset="work/restaurant-phone-card.webp" width="390" height="600">
+              <img src="work/restaurant-desktop-card.webp" width="1120" height="700" loading="lazy" decoding="async" alt="Top of the restaurant concept design">
+            </picture>
+            <span class="zoom" aria-hidden="true">View full page</span>
+          </button>
+          <h3>Restaurant <span>· fictional business</span></h3>
+          <p>Moody and warm: an ember-lit hero and a menu set like a printed card.</p>
+        </li>
+        <li class="slide" role="group" aria-roledescription="slide" aria-label="4 of 7: Hair salon">
+          <button class="shot" type="button" data-key="salon" data-kind="Hair salon" aria-label="View the full-length hair salon concept">
+            <picture>
+              <source media="(max-width: 39.99rem)" srcset="work/salon-phone-card.webp" width="390" height="600">
+              <img src="work/salon-desktop-card.webp" width="1120" height="700" loading="lazy" decoding="async" alt="Top of the hair salon concept design">
+            </picture>
+            <span class="zoom" aria-hidden="true">View full page</span>
+          </button>
+          <h3>Hair salon <span>· fictional business</span></h3>
+          <p>A fashion-magazine cover: oversized Bodoni type, cover lines, and an asymmetrical layout.</p>
+        </li>
+        <li class="slide" role="group" aria-roledescription="slide" aria-label="5 of 7: General contractor">
+          <button class="shot" type="button" data-key="contractor" data-kind="General contractor" aria-label="View the full-length general contractor concept">
+            <picture>
+              <source media="(max-width: 39.99rem)" srcset="work/contractor-phone-card.webp" width="390" height="600">
+              <img src="work/contractor-desktop-card.webp" width="1120" height="700" loading="lazy" decoding="async" alt="Top of the general contractor concept design">
+            </picture>
+            <span class="zoom" aria-hidden="true">View full page</span>
+          </button>
+          <h3>General contractor <span>· fictional business</span></h3>
+          <p>Blueprint grid lines, a drawing title block, a before/after slider, and a week-by-week schedule.</p>
+        </li>
+        <li class="slide" role="group" aria-roledescription="slide" aria-label="6 of 7: Law firm">
+          <button class="shot" type="button" data-key="law" data-kind="Law firm" aria-label="View the full-length law firm concept">
+            <picture>
+              <source media="(max-width: 39.99rem)" srcset="work/law-phone-card.webp" width="390" height="600">
+              <img src="work/law-desktop-card.webp" width="1120" height="700" loading="lazy" decoding="async" alt="Top of the law firm concept design">
+            </picture>
+            <span class="zoom" aria-hidden="true">View full page</span>
+          </button>
+          <h3>Law firm <span>· fictional business</span></h3>
+          <p>Old-money restraint: Garamond small caps, navy and cream, and margin notes like a legal document.</p>
+        </li>
+        <li class="slide" role="group" aria-roledescription="slide" aria-label="7 of 7: Artist's studio">
+          <button class="shot" type="button" data-key="artist" data-kind="Artist's studio" aria-label="View the full-length artist's studio concept">
+            <picture>
+              <source media="(max-width: 39.99rem)" srcset="work/artist-phone-card.webp" width="390" height="600">
+              <img src="work/artist-desktop-card.webp" width="1120" height="700" loading="lazy" decoding="async" alt="Top of the artist's studio concept design">
+            </picture>
+            <span class="zoom" aria-hidden="true">View full page</span>
+          </button>
+          <h3>Artist's studio <span>· fictional business</span></h3>
+          <p>Gallery first: original artworks on a broken grid, with a cursor that grows over each piece.</p>
+        </li>
+      </ul>
+      </div>
+      <p class="car-count" id="car-count" aria-live="polite">1 of 7</p>
+    </div>
+  </section>
+
+  <dialog class="lightbox" id="lightbox" aria-labelledby="lb-title">
+    <div class="lb-bar">
+      <p id="lb-title"><b></b> · concept design for a fictional business</p>
+      <button class="lb-close" type="button" id="lb-close" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="lb-scroll" id="lb-scroll"><img id="lb-img" alt=""></div>
+  </dialog>
+
+  <!-- 5. Contact -->
   <section class="block" id="contact">
     <div class="wrap contact">
       <div class="contact-aside">
@@ -343,6 +524,50 @@
     btn.classList.add("sent");
     document.getElementById("sent-status").textContent = "Thanks, we'll be in touch.";
   });
+
+  // Concept carousel: native scroll-snap handles touch swipe; arrows and keys step one card at a time.
+  var track = document.getElementById("car-track"), prev = document.getElementById("car-prev"),
+      next = document.getElementById("car-next"), count = document.getElementById("car-count"),
+      slides = track.querySelectorAll(".slide");
+  function step() { return slides[0].getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || 0); }
+  function current() { return Math.round(track.scrollLeft / step()); }
+  function update() {
+    var max = track.scrollWidth - track.clientWidth - 2;
+    prev.disabled = track.scrollLeft <= 2;
+    next.disabled = track.scrollLeft >= max;
+    count.textContent = Math.min(current() + 1, slides.length) + " of " + slides.length;
+  }
+  function go(dir) { track.scrollBy({ left: dir * step() }); }
+  prev.addEventListener("click", function () { go(-1); });
+  next.addEventListener("click", function () { go(1); });
+  track.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowRight") { e.preventDefault(); go(1); }
+    else if (e.key === "ArrowLeft") { e.preventDefault(); go(-1); }
+    else if (e.key === "Home") { e.preventDefault(); track.scrollTo({ left: 0 }); }
+    else if (e.key === "End") { e.preventDefault(); track.scrollTo({ left: track.scrollWidth }); }
+  });
+  track.addEventListener("scroll", function () { requestAnimationFrame(update); }, { passive: true });
+  window.addEventListener("resize", update);
+  update();
+
+  // Lightbox: loads the full-length shot only when opened, phone or desktop to match the screen.
+  var lb = document.getElementById("lightbox"), lbImg = document.getElementById("lb-img"),
+      lbTitle = document.querySelector("#lb-title b"), lbScroll = document.getElementById("lb-scroll"),
+      phone = window.matchMedia("(max-width: 39.99rem)");
+  track.addEventListener("click", function (e) {
+    var shot = e.target.closest(".shot");
+    if (!shot) return;
+    var kind = phone.matches ? "phone" : "desktop";
+    lbImg.src = "work/" + shot.dataset.key + "-" + kind + "-full.webp";
+    lbImg.alt = "Full-length " + kind + " screenshot of the " + shot.dataset.kind.toLowerCase() + " concept design";
+    lbTitle.textContent = shot.dataset.kind;
+    lb.classList.toggle("phone", phone.matches);
+    lbScroll.scrollTop = 0;
+    lb.showModal();
+  });
+  document.getElementById("lb-close").addEventListener("click", function () { lb.close(); });
+  lb.addEventListener("click", function (e) { if (e.target === lb) lb.close(); });
+  lb.addEventListener("close", function () { lbImg.removeAttribute("src"); });
 })();
 </script>
 </body>
