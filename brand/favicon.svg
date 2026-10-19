@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Avello Labs">
 <title>Avello Labs</title>
-<defs><linearGradient id="av-fav" gradientUnits="userSpaceOnUse" x1="11.00" y1="18.00" x2="53.00" y2="52.50"><stop offset="0" stop-color="#62AFF9"/><stop offset="0.5" stop-color="#4D74F2"/><stop offset="1" stop-color="#2F24BC"/></linearGradient></defs>
+<defs><linearGradient id="av-fav" gradientUnits="userSpaceOnUse" x1="11.00" y1="18.00" x2="53.00" y2="52.50"><stop offset="0" stop-color="#4D74F2"/><stop offset="0.5" stop-color="#62AFF9"/><stop offset="1" stop-color="#22D3EE"/></linearGradient></defs>
 <rect width="64" height="64" rx="14" fill="#0A1022"/>
 <g fill="url(#av-fav)" stroke="url(#av-fav)" stroke-width="2.40" stroke-linejoin="round"><path d="M11.75 51.00 L24.50 51.00 L29.75 36.42 L23.38 18.71 Z"/><path d="M25.46 12.00 L38.21 12.00 L52.25 51.00 L39.50 51.00 Z"/></g>
 </svg>

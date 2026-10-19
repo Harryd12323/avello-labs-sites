@@ -16,8 +16,8 @@ OUT = Path(sys.argv[2])
 OUT.mkdir(parents=True, exist_ok=True)
 
 # Colors (sampled from the reference images, then rounded to a tidy palette)
-ICON_STOPS = [(0, "#62AFF9"), (0.5, "#4D74F2"), (1, "#2F24BC")]
-RING_STOPS = [(0, "#56A2F1"), (0.5, "#3C63EE"), (1, "#4A2ADC")]
+ICON_STOPS = [(0, "#4D74F2"), (0.5, "#62AFF9"), (1, "#22D3EE")]
+RING_STOPS = [(0, "#4D74F2"), (0.5, "#62AFF9"), (1, "#22D3EE")]
 WHITE = "#FFFFFF"
 INK = "#0A1022"  # dark navy: favicon tile and wordmark on light backgrounds
 
