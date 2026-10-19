@@ -12,7 +12,7 @@
 <meta property="og:title" content="Avello Labs | SEO, AEO and Ongoing Website Care">
 <meta property="og:description" content="Fast websites for small local businesses, plus monthly website care, SEO and AEO to keep you ranking on Google and in AI answers.">
 <meta property="og:url" content="https://avellolabs.com">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230a1022'/%3E%3Cpath d='M9 23 16 8l7 15M11.5 18h9' stroke='%2322d3ee' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
@@ -46,10 +46,8 @@
   header { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--bg) 82%, transparent);
            -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
   header .wrap { display: flex; align-items: center; justify-content: space-between; height: 4rem; }
-  .brand { display: inline-flex; align-items: center; gap: .6rem; text-decoration: none; font-weight: 700;
-           letter-spacing: -.01em; font-size: 1.1rem; }
-  .brand svg { width: 28px; height: 28px; }
-  .brand span b { color: var(--accent); font-weight: 700; }
+  .brand { display: inline-flex; align-items: center; text-decoration: none; }
+  .brand img { display: block; height: 28px; width: auto; }
   .nav-link { display: none; color: var(--muted); text-decoration: none; font-size: .95rem; padding: .5rem .75rem;
               border-radius: 8px; transition: color .15s; }
   .nav-link:hover { color: var(--text); }
@@ -162,6 +160,7 @@
     .hero { padding: 7rem 0 6rem; }
     .hero-ctas { flex-direction: row; justify-content: center; max-width: none; }
     .nav-link { display: inline-block; }
+    .brand img { height: 34px; }
     .grid2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     form { padding: 2rem; }
     .form-foot .btn { width: auto; min-width: 10rem; }
@@ -184,8 +183,7 @@
 <header>
   <div class="wrap">
     <a class="brand" href="#top" aria-label="Avello Labs, back to top">
-      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0f172e" stroke="#2b3b66"/><path d="M9 23 16 8l7 15M11.5 18h9" stroke="#22d3ee" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <span>Avello <b>Labs</b></span>
+      <img src="brand/logo-horizontal-dark.svg" width="337" height="64" alt="Avello Labs">
     </a>
     <nav>
       <a class="nav-link" href="#services">What we do</a>

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Avello Labs">
+<title>Avello Labs</title>
+<defs><linearGradient id="av-icon" gradientUnits="userSpaceOnUse" x1="4.00" y1="14.00" x2="60.00" y2="60.00"><stop offset="0" stop-color="#62AFF9"/><stop offset="0.5" stop-color="#4D74F2"/><stop offset="1" stop-color="#2F24BC"/></linearGradient></defs>
+<g fill="url(#av-icon)" stroke="url(#av-icon)" stroke-width="3.20" stroke-linejoin="round"><path d="M5.00 58.00 L22.00 58.00 L29.00 38.56 L20.50 14.94 Z"/><path d="M23.28 6.00 L40.28 6.00 L59.00 58.00 L42.00 58.00 Z"/></g>
+</svg>

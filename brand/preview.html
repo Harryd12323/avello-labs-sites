@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Avello Labs brand preview</title>
+<link rel="icon" href="favicon.svg">
+<style>
+  :root { --dark: #0b0e16; --light: #ffffff; --line: #d6d9e0; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 32px 16px 64px; background: #eef0f4; color: #1b2030;
+         font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 1100px; margin: 0 auto; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  h2 { font-size: 16px; margin: 40px 0 10px; }
+  p.note { margin: 0 0 8px; color: #5a6275; }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 720px) { .pair { grid-template-columns: 1fr; } }
+  .panel { border: 1px solid var(--line); border-radius: 12px; padding: 28px 20px;
+           display: flex; flex-wrap: wrap; align-items: center; gap: 28px; min-height: 120px; }
+  .panel.dark { background: var(--dark); border-color: #1d2333; color: #aab1c2; }
+  .panel.light { background: var(--light); color: #5a6275; }
+  .panel img { display: block; max-width: 100%; height: auto; }
+  .tiny { display: flex; align-items: flex-end; gap: 18px; }
+  figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  figcaption { font-size: 11px; }
+  .tab { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 8px 8px 0 0;
+         background: #dee1e6; color: #1b2030; font-size: 12px; }
+  .panel.dark .tab { background: #202431; color: #e6e8ee; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Avello Labs brand preview</h1>
+  <p class="note">Every asset on dark and light, at large and tiny sizes. The images are the SVGs in this folder.</p>
+
+  <h2>icon.svg</h2>
+  <div class="pair">
+    <div class="panel dark">
+      <img src="icon.svg" width="160" alt="Avello Labs mark">
+      <div class="tiny">
+        <figure><img src="icon.svg" width="48" alt=""><figcaption>48</figcaption></figure>
+        <figure><img src="icon.svg" width="32" alt=""><figcaption>32</figcaption></figure>
+        <figure><img src="icon.svg" width="24" alt=""><figcaption>24</figcaption></figure>
+        <figure><img src="icon.svg" width="16" alt=""><figcaption>16</figcaption></figure>
+      </div>
+    </div>
+    <div class="panel light">
+      <img src="icon.svg" width="160" alt="Avello Labs mark">
+      <div class="tiny">
+        <figure><img src="icon.svg" width="48" alt=""><figcaption>48</figcaption></figure>
+        <figure><img src="icon.svg" width="32" alt=""><figcaption>32</figcaption></figure>
+        <figure><img src="icon.svg" width="24" alt=""><figcaption>24</figcaption></figure>
+        <figure><img src="icon.svg" width="16" alt=""><figcaption>16</figcaption></figure>
+      </div>
+    </div>
+  </div>
+
+  <h2>logo-ring.svg</h2>
+  <p class="note">This version has white text, so it's meant for dark backgrounds only. On the light panel it shows what happens if it's misused.</p>
+  <div class="pair">
+    <div class="panel dark">
+      <img src="logo-ring.svg" width="420" alt="Avello Labs logo with ring">
+      <figure><img src="logo-ring.svg" width="120" alt=""><figcaption>120 wide</figcaption></figure>
+    </div>
+    <div class="panel light">
+      <img src="logo-ring.svg" width="420" alt="Avello Labs logo with ring">
+      <figure><img src="logo-ring.svg" width="120" alt=""><figcaption>120 wide</figcaption></figure>
+    </div>
+  </div>
+
+  <h2>logo-horizontal-dark.svg / logo-horizontal-light.svg</h2>
+  <div class="pair">
+    <div class="panel dark">
+      <img src="logo-horizontal-dark.svg" width="420" alt="Avello Labs">
+      <figure><img src="logo-horizontal-dark.svg" height="32" style="width:auto" alt=""><figcaption>32 tall (header)</figcaption></figure>
+      <figure><img src="logo-horizontal-dark.svg" height="20" style="width:auto" alt=""><figcaption>20 tall</figcaption></figure>
+    </div>
+    <div class="panel light">
+      <img src="logo-horizontal-light.svg" width="420" alt="Avello Labs">
+      <figure><img src="logo-horizontal-light.svg" height="32" style="width:auto" alt=""><figcaption>32 tall (header)</figcaption></figure>
+      <figure><img src="logo-horizontal-light.svg" height="20" style="width:auto" alt=""><figcaption>20 tall</figcaption></figure>
+    </div>
+  </div>
+
+  <h2>favicon.svg</h2>
+  <div class="pair">
+    <div class="panel dark">
+      <img src="favicon.svg" width="160" alt="Avello Labs favicon">
+      <div class="tiny">
+        <figure><img src="favicon.svg" width="48" alt=""><figcaption>48</figcaption></figure>
+        <figure><img src="favicon.svg" width="32" alt=""><figcaption>32</figcaption></figure>
+        <figure><img src="favicon.svg" width="16" alt=""><figcaption>16</figcaption></figure>
+      </div>
+      <span class="tab"><img src="favicon.svg" width="16" alt="">Avello Labs</span>
+    </div>
+    <div class="panel light">
+      <img src="favicon.svg" width="160" alt="Avello Labs favicon">
+      <div class="tiny">
+        <figure><img src="favicon.svg" width="48" alt=""><figcaption>48</figcaption></figure>
+        <figure><img src="favicon.svg" width="32" alt=""><figcaption>32</figcaption></figure>
+        <figure><img src="favicon.svg" width="16" alt=""><figcaption>16</figcaption></figure>
+      </div>
+      <span class="tab"><img src="favicon.svg" width="16" alt="">Avello Labs</span>
+    </div>
+  </div>
+</main>
+</body>
+</html>
