@@ -10,10 +10,14 @@
 
 export type ChatTicket = { v: 1; tool: "chat"; exp: number; n: string; h: string };
 export type CheckTicket = { v: 1; tool: "site-check"; exp: number; n: string; site: string; score: number };
-export type Ticket = ChatTicket | CheckTicket;
+// Newsletter tickets can't prove a real visit the way chat and check tickets do; they limit volume, stop
+// replays, and let the alerts Worker reject forms submitted within seconds of the page asking for one.
+export type NewsletterTicket = { v: 1; tool: "newsletter"; exp: number; n: string; iat: number };
+export type Ticket = ChatTicket | CheckTicket | NewsletterTicket;
 
 export const CHAT_TICKET_SECONDS = 60 * 60;
 export const CHECK_TICKET_SECONDS = 30 * 60;
+export const NEWSLETTER_TICKET_SECONDS = 2 * 60 * 60;
 
 const enc = new TextEncoder();
 
@@ -46,6 +50,7 @@ export async function leadHash(f: { name: string; email: string; business: strin
 
 export async function signTicket(secret: string, payload: Omit<ChatTicket, "v" | "n" | "exp">, seconds: number, now?: number): Promise<string>;
 export async function signTicket(secret: string, payload: Omit<CheckTicket, "v" | "n" | "exp">, seconds: number, now?: number): Promise<string>;
+export async function signTicket(secret: string, payload: Omit<NewsletterTicket, "v" | "n" | "exp">, seconds: number, now?: number): Promise<string>;
 export async function signTicket(secret: string, payload: Record<string, unknown>, seconds: number, now = Date.now()): Promise<string> {
   const body = b64url(enc.encode(JSON.stringify({ v: 1, ...payload, exp: Math.floor(now / 1000) + seconds, n: nonce() })));
   const sig = await crypto.subtle.sign("HMAC", await hmacKey(secret), enc.encode(body));
@@ -73,5 +78,6 @@ export async function verifyTicket(secret: string, ticket: string, now = Date.no
   if (p?.v !== 1 || typeof p.exp !== "number" || typeof p.n !== "string" || p.exp * 1000 < now) return null;
   if (p.tool === "chat" && typeof p.h === "string") return p;
   if (p.tool === "site-check" && typeof p.site === "string" && typeof p.score === "number") return p;
+  if (p.tool === "newsletter" && typeof p.iat === "number") return p;
   return null;
 }

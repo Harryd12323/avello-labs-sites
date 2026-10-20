@@ -40,3 +40,12 @@ test("the lead hash changes when any alert field changes, but not with email cas
     assert.notEqual(await leadHash({ ...lead, [k]: lead[k] + "x" }), h, k);
   }
 });
+
+test("a newsletter ticket carries its issue time", async () => {
+  const now = Date.now();
+  const t = await signTicket(KEY, { tool: "newsletter", iat: Math.floor(now / 1000) }, 7200, now);
+  const p = await verifyTicket(KEY, t);
+  assert.ok(p && p.tool === "newsletter");
+  assert.equal(p.iat, Math.floor(now / 1000));
+  assert.equal(await verifyTicket(KEY, await signTicket(KEY, { tool: "newsletter" } as never, 7200)), null, "iat is required");
+});

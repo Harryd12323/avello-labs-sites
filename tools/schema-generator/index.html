@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- shared:head -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://api.web3forms.com https://avello-chat.avellolabs.workers.dev https://avello-check.avellolabs.workers.dev https://avello-alerts.avellolabs.workers.dev; form-action https://api.web3forms.com; base-uri 'self'; object-src 'none'">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<link rel="stylesheet" href="/assets/site.css">
+<!-- /shared:head -->
+<title>Free Local Business Schema Generator (JSON-LD) | Avello Labs</title>
+<meta name="description" content="Fill in a short form and get copy-paste LocalBusiness JSON-LD for your website, so Google and AI tools get your business details right.">
+<link rel="canonical" href="https://avellolabs.com/tools/schema-generator/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Avello Labs">
+<meta property="og:title" content="Free Local Business Schema Generator (JSON-LD) | Avello Labs">
+<meta property="og:description" content="Fill in a short form and get copy-paste LocalBusiness JSON-LD for your website, so Google and AI tools get your business details right.">
+<meta property="og:url" content="https://avellolabs.com/tools/schema-generator/">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is LocalBusiness schema?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A small block of code, in a format called JSON-LD, that describes your business to search engines: your name, type of business, location, hours and contact details. Visitors don't see it."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where do I put the code?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "On your home page, inside the head section or anywhere in the page. One copy is enough. If your site builder already adds business schema, update that instead of adding a second one."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "I visit customers and don't have a storefront. Should I include my address?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Tick the box to hide your street address. Your town, region and ZIP code still tell search engines where you're based, and the areas you serve show where you work."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Will schema help me rank higher?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not on its own. It helps search engines and AI tools read your details correctly and can make you eligible for richer results, but it doesn't replace good pages and reviews."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why can't I add reviews or star ratings?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Google doesn't show star ratings from reviews a business publishes about itself, and marking them up can count against you. Ask happy customers to leave reviews on your Google Business Profile instead."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<!-- shared:header -->
+<a class="skip" href="#main">Skip to content</a>
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="Avello Labs, home">
+      <img src="/brand/logo-horizontal-dark.svg" width="337" height="64" alt="Avello Labs">
+    </a>
+    <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+      <svg class="bars" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      <svg class="x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <a class="nav-link" href="/seo/">SEO</a>
+      <a class="nav-link" href="/aeo/">AEO</a>
+      <a class="nav-link" href="/website-care/">Website care</a>
+      <a class="nav-link" href="/web-apps/">Web apps</a>
+      <a class="nav-link" href="/#work">Concept work</a>
+      <a class="nav-link" href="/tools/" aria-current="page">Free tools</a>
+      <a class="btn btn-small" href="/#contact">Get in touch</a>
+    </nav>
+  </div>
+</header>
+<!-- /shared:header -->
+
+<main id="main">
+  <section class="page-hero">
+    <div class="wrap">
+      <p class="crumbs"><a href="/">Home</a> / <a href="/tools/">Free tools</a> / Schema generator</p>
+      <h1>Local business <span class="grad-text">schema generator</span></h1>
+      <p class="lede">Fill in your details and copy the code. Everything runs in your browser, and nothing you type is sent to us.</p>
+    </div>
+  </section>
+
+  <div class="page-body">
+    <div class="wrap">
+      <div class="tool-panel sg" id="schema-tool">
+        <form class="sg-form" id="sg-form" novalidate>
+          <fieldset>
+            <legend>Your business</legend>
+            <div class="field"><label for="sg-type">Type of business</label>
+              <select id="sg-type" name="type">
+                <option value="LocalBusiness">Local business (general)</option>
+                <option value="ProfessionalService">Professional service</option>
+                <option value="HomeAndConstructionBusiness">Home services (general)</option>
+                <option value="Plumber">Plumber</option>
+                <option value="Electrician">Electrician</option>
+                <option value="HVACBusiness">Heating and air (HVAC)</option>
+                <option value="GeneralContractor">General contractor</option>
+                <option value="RoofingContractor">Roofer</option>
+                <option value="HousePainter">House painter</option>
+                <option value="Locksmith">Locksmith</option>
+                <option value="MovingCompany">Moving company</option>
+                <option value="Dentist">Dentist</option>
+                <option value="Physician">Doctor</option>
+                <option value="MedicalClinic">Medical clinic</option>
+                <option value="Restaurant">Restaurant</option>
+                <option value="CafeOrCoffeeShop">Cafe or coffee shop</option>
+                <option value="Bakery">Bakery</option>
+                <option value="BarOrPub">Bar or pub</option>
+                <option value="HairSalon">Hair salon</option>
+                <option value="BeautySalon">Beauty salon</option>
+                <option value="NailSalon">Nail salon</option>
+                <option value="DaySpa">Day spa</option>
+                <option value="AutoRepair">Auto repair</option>
+                <option value="Attorney">Lawyer</option>
+                <option value="AccountingService">Accountant</option>
+                <option value="InsuranceAgency">Insurance agency</option>
+                <option value="RealEstateAgent">Real estate agent</option>
+                <option value="ExerciseGym">Gym</option>
+                <option value="ChildCare">Child care</option>
+                <option value="Store">Shop or store</option>
+              </select></div>
+            <div class="field"><label for="sg-name">Business name</label><input id="sg-name" name="name" maxlength="120" autocomplete="organization"></div>
+            <div class="field"><label for="sg-url">Website</label><input id="sg-url" name="url" type="url" inputmode="url" placeholder="https://yourbusiness.com/" maxlength="300"></div>
+            <div class="field"><label for="sg-desc">Short description <small>(optional)</small></label><textarea id="sg-desc" name="description" maxlength="300"></textarea></div>
+            <div class="grid2">
+              <div class="field"><label for="sg-phone">Phone <small>(optional)</small></label><input id="sg-phone" name="telephone" type="tel" autocomplete="tel" maxlength="40"></div>
+              <div class="field"><label for="sg-email">Email <small>(optional)</small></label><input id="sg-email" name="email" type="email" maxlength="120"></div>
+            </div>
+            <div class="field"><label for="sg-logo">Logo image address <small>(optional)</small></label><input id="sg-logo" name="logo" type="url" placeholder="https://yourbusiness.com/logo.png" maxlength="300"></div>
+          </fieldset>
+          <fieldset>
+            <legend>Location</legend>
+            <label class="sg-check"><input type="checkbox" id="sg-hide-street" name="hideStreet"> I visit customers and don't want my street address shown</label>
+            <div class="field" id="sg-street-field"><label for="sg-street">Street address</label><input id="sg-street" name="street" autocomplete="street-address" maxlength="200"></div>
+            <div class="grid2">
+              <div class="field"><label for="sg-city">Town or city</label><input id="sg-city" name="city" autocomplete="address-level2" maxlength="100"></div>
+              <div class="field"><label for="sg-region">State or region</label><input id="sg-region" name="region" autocomplete="address-level1" maxlength="100" placeholder="NJ"></div>
+              <div class="field"><label for="sg-postal">ZIP or postal code</label><input id="sg-postal" name="postal" autocomplete="postal-code" maxlength="20"></div>
+              <div class="field"><label for="sg-country">Country code</label><input id="sg-country" name="country" autocomplete="country" maxlength="2" value="US"></div>
+            </div>
+            <div class="field"><label for="sg-areas">Areas you serve <small>(optional, separated by commas)</small></label><input id="sg-areas" name="areas" maxlength="400" placeholder="Collingswood, Haddonfield, Cherry Hill"></div>
+          </fieldset>
+          <fieldset>
+            <legend>Opening hours <small>(optional)</small></legend>
+            <label class="sg-check"><input type="checkbox" id="sg-hours-on" name="hoursOn"> Include opening hours</label>
+            <div class="sg-hours" id="sg-hours" hidden>
+                <div class="sg-day" data-day="Monday">
+                  <label class="sg-open"><input type="checkbox" name="open-Mo" checked> Monday</label>
+                  <label class="sr-only" for="sg-from-Mo">Monday opening time</label><input type="time" id="sg-from-Mo" name="from-Mo" value="09:00">
+                  <span aria-hidden="true">to</span>
+                  <label class="sr-only" for="sg-to-Mo">Monday closing time</label><input type="time" id="sg-to-Mo" name="to-Mo" value="17:00">
+                </div>
+                <div class="sg-day" data-day="Tuesday">
+                  <label class="sg-open"><input type="checkbox" name="open-Tu" checked> Tuesday</label>
+                  <label class="sr-only" for="sg-from-Tu">Tuesday opening time</label><input type="time" id="sg-from-Tu" name="from-Tu" value="09:00">
+                  <span aria-hidden="true">to</span>
+                  <label class="sr-only" for="sg-to-Tu">Tuesday closing time</label><input type="time" id="sg-to-Tu" name="to-Tu" value="17:00">
+                </div>
+                <div class="sg-day" data-day="Wednesday">
+                  <label class="sg-open"><input type="checkbox" name="open-We" checked> Wednesday</label>
+                  <label class="sr-only" for="sg-from-We">Wednesday opening time</label><input type="time" id="sg-from-We" name="from-We" value="09:00">
+                  <span aria-hidden="true">to</span>
+                  <label class="sr-only" for="sg-to-We">Wednesday closing time</label><input type="time" id="sg-to-We" name="to-We" value="17:00">
+                </div>
+                <div class="sg-day" data-day="Thursday">
+                  <label class="sg-open"><input type="checkbox" name="open-Th" checked> Thursday</label>
+                  <label class="sr-only" for="sg-from-Th">Thursday opening time</label><input type="time" id="sg-from-Th" name="from-Th" value="09:00">
+                  <span aria-hidden="true">to</span>
+                  <label class="sr-only" for="sg-to-Th">Thursday closing time</label><input type="time" id="sg-to-Th" name="to-Th" value="17:00">
+                </div>
+                <div class="sg-day" data-day="Friday">
+                  <label class="sg-open"><input type="checkbox" name="open-Fr" checked> Friday</label>
+                  <label class="sr-only" for="sg-from-Fr">Friday opening time</label><input type="time" id="sg-from-Fr" name="from-Fr" value="09:00">
+                  <span aria-hidden="true">to</span>
+                  <label class="sr-only" for="sg-to-Fr">Friday closing time</label><input type="time" id="sg-to-Fr" name="to-Fr" value="17:00">
+                </div>
+                <div class="sg-day" data-day="Saturday">
+                  <label class="sg-open"><input type="checkbox" name="open-Sa"> Saturday</label>
+                  <label class="sr-only" for="sg-from-Sa">Saturday opening time</label><input type="time" id="sg-from-Sa" name="from-Sa" value="09:00">
+                  <span aria-hidden="true">to</span>
+                  <label class="sr-only" for="sg-to-Sa">Saturday closing time</label><input type="time" id="sg-to-Sa" name="to-Sa" value="17:00">
+                </div>
+                <div class="sg-day" data-day="Sunday">
+                  <label class="sg-open"><input type="checkbox" name="open-Su"> Sunday</label>
+                  <label class="sr-only" for="sg-from-Su">Sunday opening time</label><input type="time" id="sg-from-Su" name="from-Su" value="09:00">
+                  <span aria-hidden="true">to</span>
+                  <label class="sr-only" for="sg-to-Su">Sunday closing time</label><input type="time" id="sg-to-Su" name="to-Su" value="17:00">
+                </div>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Extras <small>(optional)</small></legend>
+            <div class="field"><label for="sg-price">Price range</label>
+              <select id="sg-price" name="price"><option value="">Leave out</option><option>$</option><option>$$</option><option>$$$</option><option>$$$$</option></select></div>
+            <div class="field"><label for="sg-same">Social and directory profiles <small>(one link per line)</small></label><textarea id="sg-same" name="sameAs" maxlength="2000" placeholder="https://www.facebook.com/yourbusiness"></textarea></div>
+          </fieldset>
+        </form>
+        <div class="sg-output">
+          <div class="sg-output-head">
+            <h2 id="sg-code-h">Your code</h2>
+            <button class="btn btn-small" type="button" id="sg-copy">Copy code</button>
+          </div>
+          <label class="sr-only" for="sg-code">Generated JSON-LD</label>
+          <textarea class="sg-code" id="sg-code" readonly spellcheck="false" aria-labelledby="sg-code-h"></textarea>
+          <p class="sg-copied" id="sg-copied" role="status" aria-live="polite"></p>
+          <ul class="sg-checks" id="sg-checks" aria-live="polite"></ul>
+          <p class="sg-test">Then test it with <a href="https://search.google.com/test/rich-results" rel="noopener">Google's Rich Results Test</a>.</p>
+        </div>
+      </div>
+      <div class="page-grid tool-explain">
+        <article class="prose">
+          <h2>How to add the code to your site</h2>
+          <ol>
+            <li>Fill in the form. The code updates as you type.</li>
+            <li>Copy the code and paste it into your home page, inside the &lt;head&gt; section or anywhere in the page.</li>
+            <li>On WordPress, a plugin for adding code to the header does the job. On Wix and Squarespace, look for custom code or code injection in the site settings.</li>
+            <li>Test the page with Google's Rich Results Test, and update the code whenever your details change.</li>
+          </ol>
+          <p>Keep the details the same everywhere: your site, your Google Business Profile and any directories. Matching details are easier for Google and AI tools to trust.</p>
+        <h2 id="faq">Common questions</h2>
+        <div class="faq">
+          <details>
+            <summary>What is LocalBusiness schema?</summary>
+            <p>A small block of code, in a format called JSON-LD, that describes your business to search engines: your name, type of business, location, hours and contact details. Visitors don't see it.</p>
+          </details>
+          <details>
+            <summary>Where do I put the code?</summary>
+            <p>On your home page, inside the head section or anywhere in the page. One copy is enough. If your site builder already adds business schema, update that instead of adding a second one.</p>
+          </details>
+          <details>
+            <summary>I visit customers and don&#x27;t have a storefront. Should I include my address?</summary>
+            <p>Tick the box to hide your street address. Your town, region and ZIP code still tell search engines where you're based, and the areas you serve show where you work.</p>
+          </details>
+          <details>
+            <summary>Will schema help me rank higher?</summary>
+            <p>Not on its own. It helps search engines and AI tools read your details correctly and can make you eligible for richer results, but it doesn't replace good pages and reviews.</p>
+          </details>
+          <details>
+            <summary>Why can&#x27;t I add reviews or star ratings?</summary>
+            <p>Google doesn't show star ratings from reviews a business publishes about itself, and marking them up can count against you. Ask happy customers to leave reviews on your Google Business Profile instead.</p>
+          </details>
+        </div>
+          <div class="nl-box">
+            <form class="nl-form" novalidate aria-labelledby="page-nl-h">
+      <h2 class="nl-title" id="page-nl-h">Website tips, about once a month</h2>
+      <p class="nl-sub">Practical website and search tips for small businesses. No spam.</p>
+      <div class="hp" aria-hidden="true"><label for="page-nl-bot">Leave this box unticked</label><input type="checkbox" id="page-nl-bot" name="botcheck" tabindex="-1" autocomplete="off"></div>
+      <div class="nl-fields">
+        <div class="field"><label for="page-nl-name">Name <small>(optional)</small></label><input id="page-nl-name" name="name" autocomplete="name" maxlength="80"></div>
+        <div class="field"><label for="page-nl-email">Email</label><input id="page-nl-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="120" required></div>
+        <button class="btn" type="submit">Sign up</button>
+      </div>
+      <label class="nl-consent"><input type="checkbox" name="consent" required> <span>Send me the Avello Labs newsletter: practical website and search tips for small businesses, about once a month. Unsubscribe anytime by replying &quot;unsubscribe&quot; or emailing harris@avellolabs.com.</span></label>
+      <p class="form-status" role="status" aria-live="polite"></p>
+      <p class="nl-note">We only use your email for the newsletter. See our <a href="/privacy/#newsletter">privacy policy</a>.</p>
+    </form>
+          </div>
+        </article>
+      <aside class="aside" aria-label="More free tools and guides">
+        <div class="aside-card">
+          <h2>Check your whole site</h2>
+          <p>The free site check scores 10 SEO and AEO basics in a few seconds.</p>
+          <a class="btn" href="/check/">Run a free site check</a>
+        </div>
+        <div class="aside-card">
+          <h2>Related</h2>
+          <ul>
+            <li><a href="/seo/">Why SEO matters for local businesses</a></li>
+            <li><a href="/tools/ai-crawler-check/">AI crawler check</a></li>
+            <li><a href="/tools/">All free tools</a></li>
+          </ul>
+        </div>
+      </aside>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- shared:footer -->
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="/brand/logo-horizontal-dark.svg" width="337" height="64" alt="Avello Labs">
+        <p>Fast websites, ongoing site care, SEO and AEO for small local businesses.</p>
+      </div>
+      <div>
+        <h2>Services</h2>
+        <ul>
+          <li><a href="/seo/">SEO</a></li>
+          <li><a href="/aeo/">AEO</a></li>
+          <li><a href="/website-care/">Website care</a></li>
+          <li><a href="/web-apps/">Web apps</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Free tools</h2>
+        <ul>
+          <li><a href="/check/">Free site check</a></li>
+          <li><a href="/tools/search-preview/">Search preview</a></li>
+          <li><a href="/tools/ai-crawler-check/">AI crawler check</a></li>
+          <li><a href="/tools/schema-generator/">Schema generator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Company</h2>
+        <ul>
+          <li><a href="/#work">Concept work</a></li>
+          <li><a href="/#contact">Contact</a></li>
+          <li><a href="/privacy/">Privacy policy</a></li>
+          <li><a href="/terms/">Terms of use</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Contact</h2>
+        <address>
+          <a href="mailto:harris@avellolabs.com">harris@avellolabs.com</a><br>
+          Avello Labs LLC<br>
+          PO Box 141<br>
+          Collingswood, NJ 08108-9998
+        </address>
+      </div>
+    </div>
+    <form class="nl-form" novalidate aria-labelledby="foot-nl-h">
+      <h2 class="nl-title" id="foot-nl-h">Website tips, about once a month</h2>
+      <p class="nl-sub">Practical website and search tips for small businesses. No spam.</p>
+      <div class="hp" aria-hidden="true"><label for="foot-nl-bot">Leave this box unticked</label><input type="checkbox" id="foot-nl-bot" name="botcheck" tabindex="-1" autocomplete="off"></div>
+      <div class="nl-fields">
+        <div class="field"><label for="foot-nl-name">Name <small>(optional)</small></label><input id="foot-nl-name" name="name" autocomplete="name" maxlength="80"></div>
+        <div class="field"><label for="foot-nl-email">Email</label><input id="foot-nl-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="120" required></div>
+        <button class="btn" type="submit">Sign up</button>
+      </div>
+      <label class="nl-consent"><input type="checkbox" name="consent" required> <span>Send me the Avello Labs newsletter: practical website and search tips for small businesses, about once a month. Unsubscribe anytime by replying &quot;unsubscribe&quot; or emailing harris@avellolabs.com.</span></label>
+      <p class="form-status" role="status" aria-live="polite"></p>
+      <p class="nl-note">We only use your email for the newsletter. See our <a href="/privacy/#newsletter">privacy policy</a>.</p>
+    </form>
+    <div class="foot-bottom">
+      <span>© <span data-year>2026</span> Avello Labs LLC. All rights reserved.</span>
+      <span><a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/site.js" defer></script>
+<script src="/assets/newsletter.js" data-ticket="https://avello-check.avellolabs.workers.dev/ticket/newsletter" data-alerts="https://avello-alerts.avellolabs.workers.dev/lead" data-web3forms="a6955225-5ff5-4562-ae2d-dfda9193580a" defer></script>
+<link rel="stylesheet" href="/assets/chat.css">
+<script src="/assets/chat.js" data-endpoint="https://avello-chat.avellolabs.workers.dev/chat" data-web3forms="a6955225-5ff5-4562-ae2d-dfda9193580a" data-alerts="https://avello-alerts.avellolabs.workers.dev/lead" defer></script>
+<!-- /shared:footer -->
+<!-- shared:tool-schema -->
+<link rel="stylesheet" href="/assets/tools.css">
+<script src="/assets/schema-gen.js" defer></script>
+<!-- /shared:tool-schema -->
+</body>
+</html>

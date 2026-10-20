@@ -1,5 +1,6 @@
 import { AlertGate } from "./gate";
-import { formatAlert, clean, PAUSED_NOTICE, type AlertInput } from "./message";
+import { formatAlert, formatNewsletter, quotaNote, clean, PAUSED_NOTICE, NEWSLETTER_PAUSED_NOTICE, type AlertInput } from "./message";
+import type { Limits } from "./gate";
 import { verifyTicket, leadHash } from "../../workers-shared/ticket";
 
 export { AlertGate };
@@ -15,6 +16,8 @@ export interface Env {
   PER_IP_PER_HOUR: string;
   PER_HOUR: string;
   PER_DAY: string;
+  NEWSLETTER_PER_IP_PER_HOUR: string;
+  NEWSLETTER_PER_DAY: string;
   LEAD_SIGNING_KEY?: string;
   TELEGRAM_BOT_TOKEN?: string;
   TELEGRAM_CHAT_ID?: string;
@@ -22,6 +25,9 @@ export interface Env {
 }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
+const HOUR = 3600_000;
+// Newsletter forms submitted sooner than this after the page asked for a ticket are treated as bots.
+const MIN_FORM_SECONDS = 3;
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
@@ -54,6 +60,27 @@ export default {
     const ticket = await verifyTicket(env.LEAD_SIGNING_KEY, String(body.ticket ?? ""));
     if (!ticket) return json({ error: "bad_ticket" }, 403);
 
+    const ip = request.headers.get("CF-Connecting-IP") ?? "unknown";
+    const gate = env.GATE.get(env.GATE.idFromName("global"));
+    const emailSent = body.emailSent === true;
+
+    if (ticket.tool === "newsletter") {
+      const email = typeof body.email === "string" && body.email.length <= 120 ? body.email.trim() : "";
+      const name = typeof body.name === "string" && body.name.length <= 80 ? body.name : "";
+      const page = typeof body.page === "string" && body.page.length <= 120 && body.page.startsWith("/") ? body.page : "";
+      if (!EMAIL_RE.test(email) || body.consent !== true) return json({ error: "bad_request" }, 400);
+      if (Date.now() - ticket.iat * 1000 < MIN_FORM_SECONDS * 1000) return json({ ok: false, reason: "too_fast" }, 429);
+      const limits: Limits = { perIpPerHour: Number(env.NEWSLETTER_PER_IP_PER_HOUR), perHour: Number(env.NEWSLETTER_PER_DAY),
+        perDay: Number(env.NEWSLETTER_PER_DAY), dedupeMs: 24 * HOUR, pauseFor: "day" };
+      const v = await gate.consume("newsletter", ticket.n, ticket.exp, ip, email.toLowerCase(), emailSent, limits);
+      if (!v.ok) {
+        if (v.notifyPause) await sendTelegram(env, NEWSLETTER_PAUSED_NOTICE);
+        return json({ ok: false, reason: v.reason }, v.reason === "used" ? 409 : 429);
+      }
+      const sent = await sendTelegram(env, formatNewsletter({ name, email, page, emailSent }) + quotaNote(v.monthCount));
+      return json({ ok: sent }, sent ? 200 : 502);
+    }
+
     const str = (k: string, max: number) => {
       const v = body[k];
       return typeof v === "string" && v.length <= max ? v : null;
@@ -66,27 +93,25 @@ export default {
       const website = str("website", 200) ?? "", goal = str("goal", 500) ?? "";
       // The ticket covers these exact details, so they can't be changed after the chat produced them.
       if ((await leadHash({ name, email, business, website, goal })) !== ticket.h) return json({ error: "bad_ticket" }, 403);
-      alert = { tool: "chat", name, email, business, website, wants: goal, emailSent: body.emailSent === true };
+      alert = { tool: "chat", name, email, business, website, wants: goal, emailSent };
     } else {
       // The site and score come from the ticket, not the browser.
       const note = str("note", 1000) ?? "";
       alert = {
         tool: "site-check", name, email, business, website: `${clean(ticket.site, 180)} · Score ${ticket.score}/100`,
-        wants: note.trim() ? `Full SEO + AEO report. Note: ${note}` : "Full SEO + AEO report", emailSent: body.emailSent === true,
+        wants: note.trim() ? `Full SEO + AEO report. Note: ${note}` : "Full SEO + AEO report", emailSent,
       };
     }
 
-    const gate = env.GATE.get(env.GATE.idFromName("global"));
-    const verdict = await gate.consume(ticket.n, ticket.exp, request.headers.get("CF-Connecting-IP") ?? "unknown",
-      `${ticket.tool}|${email.trim().toLowerCase()}`, {
-        perIpPerHour: Number(env.PER_IP_PER_HOUR), perHour: Number(env.PER_HOUR), perDay: Number(env.PER_DAY),
-      });
+    const verdict = await gate.consume("lead", ticket.n, ticket.exp, ip, `${ticket.tool}|${email.trim().toLowerCase()}`, emailSent, {
+      perIpPerHour: Number(env.PER_IP_PER_HOUR), perHour: Number(env.PER_HOUR), perDay: Number(env.PER_DAY), dedupeMs: HOUR, pauseFor: "hour",
+    });
     if (!verdict.ok) {
       if (verdict.notifyPause) await sendTelegram(env, PAUSED_NOTICE);
       return json({ ok: false, reason: verdict.reason }, verdict.reason === "used" ? 409 : 429);
     }
 
-    const sent = await sendTelegram(env, formatAlert(alert));
+    const sent = await sendTelegram(env, formatAlert(alert) + quotaNote(verdict.monthCount));
     return json({ ok: sent }, sent ? 200 : 502);
   },
 };

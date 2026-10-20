@@ -87,7 +87,7 @@
       <a class="nav-link" href="/website-care/" aria-current="page">Website care</a>
       <a class="nav-link" href="/web-apps/">Web apps</a>
       <a class="nav-link" href="/#work">Concept work</a>
-      <a class="nav-link" href="/check/">Free site check</a>
+      <a class="nav-link" href="/tools/">Free tools</a>
       <a class="btn btn-small" href="/#contact">Get in touch</a>
     </nav>
   </div>
@@ -232,7 +232,15 @@
           <li><a href="/aeo/">AEO</a></li>
           <li><a href="/website-care/">Website care</a></li>
           <li><a href="/web-apps/">Web apps</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Free tools</h2>
+        <ul>
           <li><a href="/check/">Free site check</a></li>
+          <li><a href="/tools/search-preview/">Search preview</a></li>
+          <li><a href="/tools/ai-crawler-check/">AI crawler check</a></li>
+          <li><a href="/tools/schema-generator/">Schema generator</a></li>
         </ul>
       </div>
       <div>
@@ -254,6 +262,19 @@
         </address>
       </div>
     </div>
+    <form class="nl-form" novalidate aria-labelledby="foot-nl-h">
+      <h2 class="nl-title" id="foot-nl-h">Website tips, about once a month</h2>
+      <p class="nl-sub">Practical website and search tips for small businesses. No spam.</p>
+      <div class="hp" aria-hidden="true"><label for="foot-nl-bot">Leave this box unticked</label><input type="checkbox" id="foot-nl-bot" name="botcheck" tabindex="-1" autocomplete="off"></div>
+      <div class="nl-fields">
+        <div class="field"><label for="foot-nl-name">Name <small>(optional)</small></label><input id="foot-nl-name" name="name" autocomplete="name" maxlength="80"></div>
+        <div class="field"><label for="foot-nl-email">Email</label><input id="foot-nl-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="120" required></div>
+        <button class="btn" type="submit">Sign up</button>
+      </div>
+      <label class="nl-consent"><input type="checkbox" name="consent" required> <span>Send me the Avello Labs newsletter: practical website and search tips for small businesses, about once a month. Unsubscribe anytime by replying &quot;unsubscribe&quot; or emailing harris@avellolabs.com.</span></label>
+      <p class="form-status" role="status" aria-live="polite"></p>
+      <p class="nl-note">We only use your email for the newsletter. See our <a href="/privacy/#newsletter">privacy policy</a>.</p>
+    </form>
     <div class="foot-bottom">
       <span>© <span data-year>2026</span> Avello Labs LLC. All rights reserved.</span>
       <span><a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a></span>
@@ -262,6 +283,7 @@
 </footer>
 
 <script src="/assets/site.js" defer></script>
+<script src="/assets/newsletter.js" data-ticket="https://avello-check.avellolabs.workers.dev/ticket/newsletter" data-alerts="https://avello-alerts.avellolabs.workers.dev/lead" data-web3forms="a6955225-5ff5-4562-ae2d-dfda9193580a" defer></script>
 <link rel="stylesheet" href="/assets/chat.css">
 <script src="/assets/chat.js" data-endpoint="https://avello-chat.avellolabs.workers.dev/chat" data-web3forms="a6955225-5ff5-4562-ae2d-dfda9193580a" data-alerts="https://avello-alerts.avellolabs.workers.dev/lead" defer></script>
 <!-- /shared:footer -->

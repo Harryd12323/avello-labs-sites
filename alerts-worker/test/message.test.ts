@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { formatAlert, clean } from "../src/message.ts";
+import { formatAlert, formatNewsletter, quotaNote, clean } from "../src/message.ts";
 
 test("chat alert has every requested field, no emoji, and the email status", () => {
   const text = formatAlert({ tool: "chat", name: "Jane Smith", email: "jane@example.com", business: "Smith Plumbing",
@@ -35,4 +35,14 @@ test("clean trims, collapses whitespace and caps length", () => {
   assert.equal(clean("  a \t\n b  ", 10), "a b");
   assert.equal(clean("abcdefghij", 5), "abcd…");
   assert.equal(clean(undefined, 5), "");
+});
+
+test("newsletter alert format", () => {
+  assert.equal(formatNewsletter({ name: "", email: "sam@example.com", page: "/tools/schema-generator/", emailSent: true }),
+    "New newsletter signup\nName: Not given\nEmail: sam@example.com\nPage: /tools/schema-generator/\nEmail copy: sent");
+});
+
+test("Web3Forms heads-up appears from 150 emails a month", () => {
+  assert.equal(quotaNote(149), "");
+  assert.match(quotaNote(150), /about 150 of the 250 free Web3Forms emails/);
 });

@@ -355,3 +355,25 @@ It depends entirely on what it needs to do. The best approach is to scope a smal
 
 ## Is there a task you'd love to stop doing by hand?
 Tell us how it works today. We'll tell you honestly whether a small custom tool, an existing app, or no change at all is the right answer. Get in touch
+
+=== https://avellolabs.com/tools/ (Free SEO and AEO Tools for Small Businesses | Avello Labs) ===
+Home / Free tools
+
+# Free tools for your website
+Quick checks and generators for the basics that help people find you on Google and in AI answers. Free, no sign-up.
+
+## Free site check
+A score out of 100 and simple fixes for 10 SEO and AEO basics on any page. Open the tool
+
+## Search preview
+See how your title and description look in Google, with warnings before they get cut off. Open the tool
+
+## AI crawler check
+Find out whether your robots.txt blocks ChatGPT, Claude, Perplexity and other AI bots. Open the tool
+
+## Business schema generator
+Fill in a short form and copy the LocalBusiness code that tells search engines who you are. Open the tool
+
+## Why these tools
+Most small business websites lose customers to a handful of fixable things: a missing description, a page Google can't read, or a setting that quietly blocks AI search. These tools find those problems in a few seconds, and each one explains what to change.
+They're rule-based checks, with no AI involved, and nothing you enter is stored. When you want a hand with the fixes, get in touch.

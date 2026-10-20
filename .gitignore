@@ -13,3 +13,6 @@ check-worker/.wrangler/
 # Lead alerts worker: dependencies and local state
 alerts-worker/node_modules/
 alerts-worker/.wrangler/
+
+# Python bytecode caches
+__pycache__/

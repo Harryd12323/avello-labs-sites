@@ -1,0 +1,12 @@
+# GitHub Pages settings. The site is plain static HTML; this only keeps source code and notes off the
+# public site. Pages, assets, brand images and the concept screenshots in work/ are still published.
+exclude:
+  - README.md
+  - scripts/
+  - worker/
+  - check-worker/
+  - alerts-worker/
+  - workers-shared/
+  - brand/build.py
+  - brand/README.md
+  - concepts/

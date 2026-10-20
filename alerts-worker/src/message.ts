@@ -45,3 +45,23 @@ export function formatAlert(a: AlertInput): string {
 
 export const PAUSED_NOTICE =
   "Lead alerts are paused for the rest of this hour because the alert limit was reached. Leads still arrive by email. If this keeps happening, someone may be sending fake leads.";
+
+export function formatNewsletter(a: { name: string; email: string; page: string; emailSent: boolean }): string {
+  return [
+    "New newsletter signup",
+    `Name: ${clean(a.name, 80) || "Not given"}`,
+    `Email: ${clean(a.email, 120)}`,
+    `Page: ${clean(a.page, 120) || "Not given"}`,
+    `Email copy: ${a.emailSent ? "sent" : "FAILED, check Web3Forms and add them from this alert"}`,
+  ].join("\n");
+}
+
+export const NEWSLETTER_PAUSED_NOTICE =
+  "Newsletter signup alerts are paused until tomorrow because today's alert limit was reached. Signups still arrive by email.";
+
+/** Added to alerts once the month's form emails get close to the Web3Forms free plan's 250. */
+export function quotaNote(monthCount: number): string {
+  return monthCount >= 150
+    ? `\nHeads up: about ${monthCount} of the 250 free Web3Forms emails used this month (not counting the contact form).`
+    : "";
+}

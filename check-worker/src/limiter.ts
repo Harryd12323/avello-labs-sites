@@ -10,13 +10,14 @@ export type Limits = { perIpPerHour: number; perTargetPerHour: number; dailyCap:
 const HOUR = 3600_000;
 
 export class Limiter extends DurableObject {
-  async consume(ip: string, target: string, limits: Limits): Promise<LimitResult> {
+  /** `scope` keeps each tool's counters separate (check, preview, crawlers, newsletter). */
+  async consume(scope: string, ip: string, target: string, limits: Limits): Promise<LimitResult> {
     const now = Date.now();
     const hour = Math.floor(now / HOUR);
     const day = new Date(now).toISOString().slice(0, 10);
-    const ipKey = `ip:${hour}:${await this.hash("ip|" + ip)}`;
-    const targetKey = `t:${hour}:${await this.hash("t|" + target)}`;
-    const dayKey = `day:${day}`;
+    const ipKey = `ip:${hour}:${scope}:${await this.hash("ip|" + ip)}`;
+    const targetKey = `t:${hour}:${scope}:${await this.hash("t|" + target)}`;
+    const dayKey = `day:${day}:${scope}`;
     const got = await this.ctx.storage.get<number>([ipKey, targetKey, dayKey]);
     const [ipN, tN, dayN] = [got.get(ipKey) ?? 0, got.get(targetKey) ?? 0, got.get(dayKey) ?? 0];
     const toNextHour = Math.ceil(((hour + 1) * HOUR - now) / 1000);
@@ -42,7 +43,7 @@ export class Limiter extends DurableObject {
     for (const prefix of ["ip:", "t:"]) {
       for (const key of (await this.ctx.storage.list({ prefix })).keys()) if (Number(key.split(":")[1]) < hour) stale.push(key);
     }
-    for (const key of (await this.ctx.storage.list({ prefix: "day:" })).keys()) if (key.slice(4) < today) stale.push(key);
+    for (const key of (await this.ctx.storage.list({ prefix: "day:" })).keys()) if (key.slice(4, 14) < today) stale.push(key);
     for (let i = 0; i < stale.length; i += 128) await this.ctx.storage.delete(stale.slice(i, i + 128));
     const left = (await this.ctx.storage.list({ limit: 2 })).size; // "salt" is always there
     if (left > 1) await this.ctx.storage.setAlarm(now + HOUR);

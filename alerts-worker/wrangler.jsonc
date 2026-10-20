@@ -20,6 +20,8 @@
     "ALLOWED_ORIGINS": "https://avellolabs.com,http://localhost:8000,http://127.0.0.1:8000",
     "PER_IP_PER_HOUR": "3",
     "PER_HOUR": "20",
-    "PER_DAY": "50"
+    "PER_DAY": "50",
+    "NEWSLETTER_PER_IP_PER_HOUR": "3",
+    "NEWSLETTER_PER_DAY": "15"
   }
 }

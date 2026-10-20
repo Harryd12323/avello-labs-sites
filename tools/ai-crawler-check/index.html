@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- shared:head -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://api.web3forms.com https://avello-chat.avellolabs.workers.dev https://avello-check.avellolabs.workers.dev https://avello-alerts.avellolabs.workers.dev; form-action https://api.web3forms.com; base-uri 'self'; object-src 'none'">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<link rel="stylesheet" href="/assets/site.css">
+<!-- /shared:head -->
+<title>AI Crawler Check: Is Your Site Blocking AI? | Avello Labs</title>
+<meta name="description" content="Check whether your robots.txt blocks AI crawlers like GPTBot, ClaudeBot, PerplexityBot and Google-Extended, and which blocks hurt you in AI answers.">
+<link rel="canonical" href="https://avellolabs.com/tools/ai-crawler-check/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Avello Labs">
+<meta property="og:title" content="AI Crawler Check: Is Your Site Blocking AI? | Avello Labs">
+<meta property="og:description" content="Check whether your robots.txt blocks AI crawlers like GPTBot, ClaudeBot, PerplexityBot and Google-Extended, and which blocks hurt you in AI answers.">
+<meta property="og:url" content="https://avellolabs.com/tools/ai-crawler-check/">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is robots.txt?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A small text file at yourbusiness.com/robots.txt that tells crawlers which parts of your site they may visit. Well-behaved bots follow it, but it's a request, not a lock."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I block AI crawlers?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It depends what they do. Blocking AI search bots like OAI-SearchBot or PerplexityBot can keep you out of AI answers, which most local businesses want to be in. Blocking training bots like GPTBot only opts you out of model training."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does blocking GPTBot keep my site out of ChatGPT?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not by itself. OpenAI uses OAI-SearchBot for ChatGPT search results. GPTBot collects pages for training."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is Google-Extended?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A control token rather than a separate crawler. It tells Google whether your pages can be used to train Gemini and to ground its answers. It doesn't affect Google Search or your rankings."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "My robots.txt allows everything. Why might AI tools still not see my site?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Firewalls and settings like Cloudflare's AI bot blocking can turn bots away before robots.txt comes into it. This check can only read robots.txt, so if AI tools still can't see you, check your hosting and security settings too."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<!-- shared:header -->
+<a class="skip" href="#main">Skip to content</a>
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="Avello Labs, home">
+      <img src="/brand/logo-horizontal-dark.svg" width="337" height="64" alt="Avello Labs">
+    </a>
+    <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+      <svg class="bars" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      <svg class="x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <a class="nav-link" href="/seo/">SEO</a>
+      <a class="nav-link" href="/aeo/">AEO</a>
+      <a class="nav-link" href="/website-care/">Website care</a>
+      <a class="nav-link" href="/web-apps/">Web apps</a>
+      <a class="nav-link" href="/#work">Concept work</a>
+      <a class="nav-link" href="/tools/" aria-current="page">Free tools</a>
+      <a class="btn btn-small" href="/#contact">Get in touch</a>
+    </nav>
+  </div>
+</header>
+<!-- /shared:header -->
+
+<main id="main">
+  <section class="page-hero">
+    <div class="wrap">
+      <p class="crumbs"><a href="/">Home</a> / <a href="/tools/">Free tools</a> / AI crawler check</p>
+      <h1>AI <span class="grad-text">crawler check</span></h1>
+      <p class="lede">See which AI and search bots your robots.txt lets in, and whether any blocks could keep your business out of AI answers.</p>
+    </div>
+  </section>
+
+  <div class="page-body">
+    <div class="wrap">
+      <form class="tool-panel tool-form" id="cr-form" novalidate>
+        <label for="cr-url">Your website address</label>
+        <div class="tool-row">
+          <input id="cr-url" type="text" inputmode="url" autocomplete="url" spellcheck="false" placeholder="yourbusiness.com" maxlength="2000" required>
+          <button class="btn" type="submit" id="cr-btn">Check my robots.txt</button>
+        </div>
+        <p class="tool-hint">We read your site's robots.txt and compare it with each bot's rules. We don't store the address.</p>
+        <p class="tool-error" id="cr-error" role="alert"></p>
+      </form>
+      <div class="tool-status" id="cr-status" role="status" aria-live="polite"></div>
+      <section class="cr-results" id="cr-results" hidden aria-labelledby="cr-results-h"></section>
+      <div class="page-grid tool-explain">
+        <article class="prose">
+          <h2>Search bots and training bots do different jobs</h2>
+          <p>AI companies send out more than one kind of bot, and blocking them has very different effects:</p>
+          <ul>
+            <li><strong>AI search bots</strong>, like OAI-SearchBot, Claude-SearchBot and PerplexityBot, find pages to show in AI answers. If they're blocked, you're much less likely to be recommended. This is the block that hurts.</li>
+            <li><strong>Training bots</strong>, like GPTBot, ClaudeBot and CCBot, collect pages that may be used to train AI models. Blocking them is a fair choice and doesn't keep you out of AI search.</li>
+            <li><strong>Opt-out tokens</strong>, Google-Extended and Applebot-Extended, aren't bots at all. They tell Google and Apple whether your pages can be used for AI training, without touching search.</li>
+            <li><strong>Classic search bots</strong>, Googlebot and Bingbot, also feed Google's AI Overviews and Microsoft Copilot. Blocking them takes you out of search entirely.</li>
+          </ul>
+          <h2>How to fix a block</h2>
+          <p>Your robots.txt lives at yourbusiness.com/robots.txt. To let AI search bots in while opting out of training, the rules can look like this:</p>
+          <pre class="code-block"><code>User-agent: OAI-SearchBot
+User-agent: Claude-SearchBot
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: GPTBot
+User-agent: ClaudeBot
+User-agent: CCBot
+Disallow: /
+
+User-agent: *
+Allow: /
+
+Sitemap: https://yourbusiness.com/sitemap.xml</code></pre>
+          <p>On WordPress, an SEO plugin usually has a robots.txt editor. On Wix and Squarespace, look in the SEO settings. Changes can take a day or more to be noticed.</p>
+          <div class="note-box">
+            <p><strong>What this check can't see.</strong> robots.txt is a request that well-behaved bots follow. Firewalls, hosting settings and options like Cloudflare's AI bot blocking can turn bots away before robots.txt matters, and this check can't see those. Bot names and purposes change too; each one links to the company's own documentation.</p>
+          </div>
+        <h2 id="faq">Common questions</h2>
+        <div class="faq">
+          <details>
+            <summary>What is robots.txt?</summary>
+            <p>A small text file at yourbusiness.com/robots.txt that tells crawlers which parts of your site they may visit. Well-behaved bots follow it, but it's a request, not a lock.</p>
+          </details>
+          <details>
+            <summary>Should I block AI crawlers?</summary>
+            <p>It depends what they do. Blocking AI search bots like OAI-SearchBot or PerplexityBot can keep you out of AI answers, which most local businesses want to be in. Blocking training bots like GPTBot only opts you out of model training.</p>
+          </details>
+          <details>
+            <summary>Does blocking GPTBot keep my site out of ChatGPT?</summary>
+            <p>Not by itself. OpenAI uses OAI-SearchBot for ChatGPT search results. GPTBot collects pages for training.</p>
+          </details>
+          <details>
+            <summary>What is Google-Extended?</summary>
+            <p>A control token rather than a separate crawler. It tells Google whether your pages can be used to train Gemini and to ground its answers. It doesn't affect Google Search or your rankings.</p>
+          </details>
+          <details>
+            <summary>My robots.txt allows everything. Why might AI tools still not see my site?</summary>
+            <p>Firewalls and settings like Cloudflare's AI bot blocking can turn bots away before robots.txt comes into it. This check can only read robots.txt, so if AI tools still can't see you, check your hosting and security settings too.</p>
+          </details>
+        </div>
+          <div class="nl-box">
+            <form class="nl-form" novalidate aria-labelledby="page-nl-h">
+      <h2 class="nl-title" id="page-nl-h">Website tips, about once a month</h2>
+      <p class="nl-sub">Practical website and search tips for small businesses. No spam.</p>
+      <div class="hp" aria-hidden="true"><label for="page-nl-bot">Leave this box unticked</label><input type="checkbox" id="page-nl-bot" name="botcheck" tabindex="-1" autocomplete="off"></div>
+      <div class="nl-fields">
+        <div class="field"><label for="page-nl-name">Name <small>(optional)</small></label><input id="page-nl-name" name="name" autocomplete="name" maxlength="80"></div>
+        <div class="field"><label for="page-nl-email">Email</label><input id="page-nl-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="120" required></div>
+        <button class="btn" type="submit">Sign up</button>
+      </div>
+      <label class="nl-consent"><input type="checkbox" name="consent" required> <span>Send me the Avello Labs newsletter: practical website and search tips for small businesses, about once a month. Unsubscribe anytime by replying &quot;unsubscribe&quot; or emailing harris@avellolabs.com.</span></label>
+      <p class="form-status" role="status" aria-live="polite"></p>
+      <p class="nl-note">We only use your email for the newsletter. See our <a href="/privacy/#newsletter">privacy policy</a>.</p>
+    </form>
+          </div>
+        </article>
+      <aside class="aside" aria-label="More free tools and guides">
+        <div class="aside-card">
+          <h2>Check your whole site</h2>
+          <p>The free site check scores 10 SEO and AEO basics in a few seconds.</p>
+          <a class="btn" href="/check/">Run a free site check</a>
+        </div>
+        <div class="aside-card">
+          <h2>Related</h2>
+          <ul>
+            <li><a href="/aeo/">What is AEO, and why it matters</a></li>
+            <li><a href="/tools/search-preview/">Search preview</a></li>
+            <li><a href="/tools/">All free tools</a></li>
+          </ul>
+        </div>
+      </aside>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- shared:footer -->
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="/brand/logo-horizontal-dark.svg" width="337" height="64" alt="Avello Labs">
+        <p>Fast websites, ongoing site care, SEO and AEO for small local businesses.</p>
+      </div>
+      <div>
+        <h2>Services</h2>
+        <ul>
+          <li><a href="/seo/">SEO</a></li>
+          <li><a href="/aeo/">AEO</a></li>
+          <li><a href="/website-care/">Website care</a></li>
+          <li><a href="/web-apps/">Web apps</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Free tools</h2>
+        <ul>
+          <li><a href="/check/">Free site check</a></li>
+          <li><a href="/tools/search-preview/">Search preview</a></li>
+          <li><a href="/tools/ai-crawler-check/">AI crawler check</a></li>
+          <li><a href="/tools/schema-generator/">Schema generator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Company</h2>
+        <ul>
+          <li><a href="/#work">Concept work</a></li>
+          <li><a href="/#contact">Contact</a></li>
+          <li><a href="/privacy/">Privacy policy</a></li>
+          <li><a href="/terms/">Terms of use</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Contact</h2>
+        <address>
+          <a href="mailto:harris@avellolabs.com">harris@avellolabs.com</a><br>
+          Avello Labs LLC<br>
+          PO Box 141<br>
+          Collingswood, NJ 08108-9998
+        </address>
+      </div>
+    </div>
+    <form class="nl-form" novalidate aria-labelledby="foot-nl-h">
+      <h2 class="nl-title" id="foot-nl-h">Website tips, about once a month</h2>
+      <p class="nl-sub">Practical website and search tips for small businesses. No spam.</p>
+      <div class="hp" aria-hidden="true"><label for="foot-nl-bot">Leave this box unticked</label><input type="checkbox" id="foot-nl-bot" name="botcheck" tabindex="-1" autocomplete="off"></div>
+      <div class="nl-fields">
+        <div class="field"><label for="foot-nl-name">Name <small>(optional)</small></label><input id="foot-nl-name" name="name" autocomplete="name" maxlength="80"></div>
+        <div class="field"><label for="foot-nl-email">Email</label><input id="foot-nl-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="120" required></div>
+        <button class="btn" type="submit">Sign up</button>
+      </div>
+      <label class="nl-consent"><input type="checkbox" name="consent" required> <span>Send me the Avello Labs newsletter: practical website and search tips for small businesses, about once a month. Unsubscribe anytime by replying &quot;unsubscribe&quot; or emailing harris@avellolabs.com.</span></label>
+      <p class="form-status" role="status" aria-live="polite"></p>
+      <p class="nl-note">We only use your email for the newsletter. See our <a href="/privacy/#newsletter">privacy policy</a>.</p>
+    </form>
+    <div class="foot-bottom">
+      <span>© <span data-year>2026</span> Avello Labs LLC. All rights reserved.</span>
+      <span><a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/site.js" defer></script>
+<script src="/assets/newsletter.js" data-ticket="https://avello-check.avellolabs.workers.dev/ticket/newsletter" data-alerts="https://avello-alerts.avellolabs.workers.dev/lead" data-web3forms="a6955225-5ff5-4562-ae2d-dfda9193580a" defer></script>
+<link rel="stylesheet" href="/assets/chat.css">
+<script src="/assets/chat.js" data-endpoint="https://avello-chat.avellolabs.workers.dev/chat" data-web3forms="a6955225-5ff5-4562-ae2d-dfda9193580a" data-alerts="https://avello-alerts.avellolabs.workers.dev/lead" defer></script>
+<!-- /shared:footer -->
+<!-- shared:tool-crawlers -->
+<link rel="stylesheet" href="/assets/tools.css">
+<script src="/assets/crawlers.js" data-endpoint="https://avello-check.avellolabs.workers.dev/crawlers" defer></script>
+<!-- /shared:tool-crawlers -->
+</body>
+</html>

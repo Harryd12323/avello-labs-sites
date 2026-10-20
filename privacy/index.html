@@ -39,7 +39,7 @@
       <a class="nav-link" href="/website-care/">Website care</a>
       <a class="nav-link" href="/web-apps/">Web apps</a>
       <a class="nav-link" href="/#work">Concept work</a>
-      <a class="nav-link" href="/check/">Free site check</a>
+      <a class="nav-link" href="/tools/">Free tools</a>
       <a class="btn btn-small" href="/#contact">Get in touch</a>
     </nav>
   </div>
@@ -70,7 +70,7 @@
           <li>Your website address (optional)</li>
           <li>Your message</li>
         </ul>
-        <p>If you use the free website check, it receives the address you enter, and if you ask for the full report, your name, email, business name (optional), a note (optional) and the check's results. If you use the chat assistant, it receives the messages you type, and, if you choose to send your details to us through it, your name, email, business name, your business's website (optional), your phone number (optional) and your main goal. If you email us directly, we receive whatever you include in your email. You don't need an account to use this site, and we don't ask for payment details here.</p>
+        <p>If you sign up for the newsletter, we receive your email address, and your name if you give it. If you use the free website check, it receives the address you enter, and if you ask for the full report, your name, email, business name (optional), a note (optional) and the check's results. If you use the chat assistant, it receives the messages you type, and, if you choose to send your details to us through it, your name, email, business name, your business's website (optional), your phone number (optional) and your main goal. If you email us directly, we receive whatever you include in your email. You don't need an account to use this site, and we don't ask for payment details here.</p>
 
         <h2>How the contact form works</h2>
         <p>When you send the form, your message is delivered through <a href="https://web3forms.com">Web3Forms</a>, a form-delivery service, which forwards it to our email inbox. Web3Forms processes the information only to deliver it. You can read how they handle data in the <a href="https://web3forms.com/privacy">Web3Forms privacy policy</a>.</p>
@@ -92,11 +92,26 @@
           <li><strong>The full report:</strong> if you ask for the free full report, your name, email, the optional business name and note you add, the address you checked, and the check's results are sent to us through Web3Forms, so we can prepare and email your report. We also get a short alert about it on <a href="https://telegram.org/privacy">Telegram</a> with your name, business, email, the website checked, its score and your note. Nothing is sent to us unless you ask for the report.</li>
         </ul>
 
+        <h2 id="tools">The free tools</h2>
+        <ul>
+          <li><strong>Search preview and schema generator:</strong> what you type stays in your browser. Nothing is sent to us.</li>
+          <li><strong>Loading a page into the search preview, and the AI crawler check:</strong> these work like the website check above. A small service we run on Cloudflare loads the page or its robots.txt and checks it against fixed rules, with no AI involved. We don't store or log the addresses you enter, and keep only the same short-lived, scrambled counts to prevent abuse.</li>
+        </ul>
+
+        <h2 id="newsletter">The newsletter</h2>
+        <ul>
+          <li><strong>What we collect:</strong> your email address, your name if you give it, the page you signed up on, and a record that you ticked the consent box and when.</li>
+          <li><strong>How it's sent:</strong> your signup is emailed to us through Web3Forms, and we get a short alert about it on <a href="https://telegram.org/privacy">Telegram</a> with your name, email and the page.</li>
+          <li><strong>What we send:</strong> practical website and search tips for small businesses, about once a month. We won't use your email for anything else, and we won't sell or share the list.</li>
+          <li><strong>Unsubscribing:</strong> reply "unsubscribe" to any newsletter, or email <a href="mailto:harris@avellolabs.com">harris@avellolabs.com</a>, and we'll remove you. You can also ask us to delete your details completely.</li>
+          <li><strong>Moving the list:</strong> we may move the list to an email newsletter service later. If we do, we'll update this policy and name the service here.</li>
+        </ul>
+
         <h2>What we don't do</h2>
         <ul>
           <li>We don't use cookies, analytics, advertising pixels or any other tracking on this site.</li>
           <li>We don't sell, rent or trade your personal information.</li>
-          <li>We don't add you to a mailing list or send marketing emails without asking.</li>
+          <li>We don't add you to a mailing list or send marketing emails unless you sign up for the newsletter yourself.</li>
           <li>We don't share your information, except with the services needed to run this site and deliver your messages (Web3Forms, our email provider, Cloudflare, which runs the chat assistant and the website check, Anthropic, for the chat assistant, and Telegram, for our lead alerts), or if we're required to by law.</li>
         </ul>
 
@@ -140,7 +155,15 @@
           <li><a href="/aeo/">AEO</a></li>
           <li><a href="/website-care/">Website care</a></li>
           <li><a href="/web-apps/">Web apps</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Free tools</h2>
+        <ul>
           <li><a href="/check/">Free site check</a></li>
+          <li><a href="/tools/search-preview/">Search preview</a></li>
+          <li><a href="/tools/ai-crawler-check/">AI crawler check</a></li>
+          <li><a href="/tools/schema-generator/">Schema generator</a></li>
         </ul>
       </div>
       <div>
@@ -162,6 +185,19 @@
         </address>
       </div>
     </div>
+    <form class="nl-form" novalidate aria-labelledby="foot-nl-h">
+      <h2 class="nl-title" id="foot-nl-h">Website tips, about once a month</h2>
+      <p class="nl-sub">Practical website and search tips for small businesses. No spam.</p>
+      <div class="hp" aria-hidden="true"><label for="foot-nl-bot">Leave this box unticked</label><input type="checkbox" id="foot-nl-bot" name="botcheck" tabindex="-1" autocomplete="off"></div>
+      <div class="nl-fields">
+        <div class="field"><label for="foot-nl-name">Name <small>(optional)</small></label><input id="foot-nl-name" name="name" autocomplete="name" maxlength="80"></div>
+        <div class="field"><label for="foot-nl-email">Email</label><input id="foot-nl-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="120" required></div>
+        <button class="btn" type="submit">Sign up</button>
+      </div>
+      <label class="nl-consent"><input type="checkbox" name="consent" required> <span>Send me the Avello Labs newsletter: practical website and search tips for small businesses, about once a month. Unsubscribe anytime by replying &quot;unsubscribe&quot; or emailing harris@avellolabs.com.</span></label>
+      <p class="form-status" role="status" aria-live="polite"></p>
+      <p class="nl-note">We only use your email for the newsletter. See our <a href="/privacy/#newsletter">privacy policy</a>.</p>
+    </form>
     <div class="foot-bottom">
       <span>© <span data-year>2026</span> Avello Labs LLC. All rights reserved.</span>
       <span><a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a></span>
@@ -170,6 +206,7 @@
 </footer>
 
 <script src="/assets/site.js" defer></script>
+<script src="/assets/newsletter.js" data-ticket="https://avello-check.avellolabs.workers.dev/ticket/newsletter" data-alerts="https://avello-alerts.avellolabs.workers.dev/lead" data-web3forms="a6955225-5ff5-4562-ae2d-dfda9193580a" defer></script>
 <link rel="stylesheet" href="/assets/chat.css">
 <script src="/assets/chat.js" data-endpoint="https://avello-chat.avellolabs.workers.dev/chat" data-web3forms="a6955225-5ff5-4562-ae2d-dfda9193580a" data-alerts="https://avello-alerts.avellolabs.workers.dev/lead" defer></script>
 <!-- /shared:footer -->
