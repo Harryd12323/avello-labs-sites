@@ -11,7 +11,8 @@ Commands (run from the repo root, Python 3 only, nothing to install):
 
     python3 tools/site.py sync
         Rewrites the shared blocks on every page from the templates below, marks the current
-        page in the nav, and rebuilds sitemap.xml.
+        page in the nav, rebuilds sitemap.xml, and refreshes worker/knowledge.txt (the site text
+        the chat assistant answers from).
 
     python3 tools/site.py new /blog/my-first-post/ "Page title | Avello Labs" "Meta description"
         Creates blog/my-first-post/index.html with the shared blocks and an empty article to fill in,
@@ -22,6 +23,7 @@ never touched.
 """
 import html
 import re
+from html.parser import HTMLParser
 import sys
 from datetime import date
 from pathlib import Path
@@ -34,10 +36,26 @@ EMAIL = "harris@avellolabs.com"
 NOINDEX = False
 
 # Folders that aren't part of the site's pages.
-SKIP = {"concepts", "brand", "work", "assets", "tools", ".git"}
+SKIP = {"concepts", "brand", "work", "assets", "tools", "worker", ".git"}
 
+# Chat assistant (see worker/). CHAT_ENDPOINT is the deployed Worker's /chat URL; leave it empty to hide
+# the chat. CHAT_DEV_ENDPOINT is used only when the site is opened on localhost, for testing. Set it to
+# None before publishing so the security policy doesn't list it.
+CHAT_ENDPOINT = "https://avello-chat.avellolabs.workers.dev/chat"
+CHAT_DEV_ENDPOINT = None
+# Public by design: Web3Forms access keys only let messages be sent to the key owner's inbox.
+WEB3FORMS_KEY = "a6955225-5ff5-4562-ae2d-dfda9193580a"
+
+# Pages whose text the chat assistant answers from.
+KNOWLEDGE_PAGES = ["/", "/seo/", "/aeo/", "/website-care/", "/web-apps/"]
+
+
+def origin(url):
+    return re.match(r"^https?://[^/]+", url).group(0) if url else ""
+
+CONNECT = " ".join(o for o in ["https://api.web3forms.com", origin(CHAT_ENDPOINT), origin(CHAT_DEV_ENDPOINT or "")] if o)
 CSP = ("default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; "
-       "font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://api.web3forms.com; "
+       f"font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src {CONNECT}; "
        "form-action https://api.web3forms.com; base-uri 'self'; object-src 'none'")
 
 NAV = [("/seo/", "SEO"), ("/aeo/", "AEO"), ("/website-care/", "Website care"), ("/web-apps/", "Web apps"),
@@ -126,7 +144,71 @@ def shared_footer():
 </footer>
 
 <script src="/assets/site.js" defer></script>
+{chat_script()}
 <!-- /shared:footer -->"""
+
+
+def chat_script():
+    if not (CHAT_ENDPOINT or CHAT_DEV_ENDPOINT):
+        return ""
+    dev = f' data-dev-endpoint="{CHAT_DEV_ENDPOINT}"' if CHAT_DEV_ENDPOINT else ""
+    return (f'<link rel="stylesheet" href="/assets/chat.css">\n'
+            f'<script src="/assets/chat.js" data-endpoint="{CHAT_ENDPOINT}"{dev} data-web3forms="{WEB3FORMS_KEY}" defer></script>')
+
+
+class _Text(HTMLParser):
+    """Pulls readable text out of a page's <main>, skipping forms, buttons, dialogs, asides and SVGs."""
+    SKIP_TAGS = {"script", "style", "svg", "form", "button", "dialog", "aside", "noscript", "picture"}
+    BLOCK = {"p", "li", "h1", "h2", "h3", "h4", "summary", "dt", "dd", "tr", "div", "section", "article"}
+
+    def __init__(self):
+        super().__init__()
+        self.in_main = False
+        self.skip = 0
+        self.out = []
+
+    def handle_starttag(self, tag, attrs):
+        if tag == "main":
+            self.in_main = True
+        elif self.in_main and tag in self.SKIP_TAGS:
+            self.skip += 1
+        elif self.in_main and not self.skip:
+            if tag in ("h1", "h2", "h3"):
+                self.out.append("\n\n" + "#" * int(tag[1]) + " ")
+            elif tag == "li":
+                self.out.append("\n- ")
+            elif tag in self.BLOCK:
+                self.out.append("\n")
+
+    def handle_endtag(self, tag):
+        if tag == "main":
+            self.in_main = False
+        elif self.in_main and tag in self.SKIP_TAGS and self.skip:
+            self.skip -= 1
+
+    def handle_data(self, data):
+        if self.in_main and not self.skip:
+            self.out.append(re.sub(r"\s+", " ", data))
+
+    def text(self):
+        t = "".join(self.out)
+        t = re.sub(r"[ \t]+\n", "\n", t)
+        t = re.sub(r"\n[ \t]+", "\n", t)
+        return re.sub(r"\n{3,}", "\n\n", t).strip()
+
+
+def knowledge():
+    parts = []
+    for url in KNOWLEDGE_PAGES:
+        f = ROOT / url.strip("/") / "index.html"
+        page = f.read_text()
+        title = html.unescape(re.search(r"<title>(.*?)</title>", page).group(1))
+        parser = _Text()
+        parser.feed(page)
+        parts.append(f"=== {SITE}{url} ({title}) ===\n{parser.text()}")
+    out = ROOT / "worker" / "knowledge.txt"
+    out.write_text("\n\n".join(parts) + "\n")
+    print(f"worker/knowledge.txt: {len(out.read_text())} characters from {len(parts)} pages")
 
 
 def pages():
@@ -162,6 +244,7 @@ def sync():
     (ROOT / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n'
                                       '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + rows + "</urlset>\n")
     print(f"sitemap.xml: {len(found)} pages")
+    knowledge()
 
 
 def new(url, title, desc):

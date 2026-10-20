@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- shared:head -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://api.web3forms.com; form-action https://api.web3forms.com; base-uri 'self'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://api.web3forms.com https://avello-chat.avellolabs.workers.dev; form-action https://api.web3forms.com; base-uri 'self'; object-src 'none'">
 <link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -69,21 +69,31 @@
           <li>Your website address (optional)</li>
           <li>Your message</li>
         </ul>
-        <p>If you email us directly, we receive whatever you include in your email. You don't need an account to use this site, and we don't ask for payment details here.</p>
+        <p>If you use the chat assistant, it receives the messages you type, and, if you choose to send your details to us through it, your name, email, business name, your business's website (optional), your phone number (optional) and your main goal. If you email us directly, we receive whatever you include in your email. You don't need an account to use this site, and we don't ask for payment details here.</p>
 
         <h2>How the contact form works</h2>
         <p>When you send the form, your message is delivered through <a href="https://web3forms.com">Web3Forms</a>, a form-delivery service, which forwards it to our email inbox. Web3Forms processes the information only to deliver it. You can read how they handle data in the <a href="https://web3forms.com/privacy">Web3Forms privacy policy</a>.</p>
+
+        <h2 id="chat">The chat assistant</h2>
+        <p>The chat assistant on this site is an AI. It answers questions using the content of our website, and its replies can be wrong, so please check anything important with us directly.</p>
+        <ul>
+          <li><strong>How it works:</strong> what you type is sent to a small service we run on Cloudflare, which passes the conversation to <a href="https://www.anthropic.com">Anthropic</a> to generate a reply using its Claude AI model. Anthropic processes your messages under its commercial terms, which don't allow it to use them to train its models by default, and may keep them for a limited time for safety and abuse monitoring, where they may be reviewed. See <a href="https://www.anthropic.com/legal/privacy">Anthropic's privacy policy</a>.</li>
+          <li><strong>What we keep:</strong> we don't store chat transcripts. To prevent abuse, we keep a scrambled (salted and hashed) version of your IP address and a message count for up to one hour, plus a total count of messages per day. These can't be used to read your conversation.</li>
+          <li><strong>In your browser:</strong> the conversation is kept in your browser tab so it survives moving between pages. It's deleted when you close the tab, or when you press the clear button in the chat.</li>
+          <li><strong>Getting in touch through the chat:</strong> if you share your details and press "Send to Harris", your name, email, business name, website and phone number (if you gave them) and your main goal are sent to us through Web3Forms, the same way as the contact form. Nothing is sent to us until you press that button.</li>
+          <li>Please don't share passwords, payment details or other sensitive information in the chat.</li>
+        </ul>
 
         <h2>What we don't do</h2>
         <ul>
           <li>We don't use cookies, analytics, advertising pixels or any other tracking on this site.</li>
           <li>We don't sell, rent or trade your personal information.</li>
           <li>We don't add you to a mailing list or send marketing emails without asking.</li>
-          <li>We don't share your information, except with the services needed to deliver and store your message (Web3Forms and our email provider), or if we're required to by law.</li>
+          <li>We don't share your information, except with the services needed to run this site and deliver your messages (Web3Forms, our email provider, and, for the chat assistant, Cloudflare and Anthropic), or if we're required to by law.</li>
         </ul>
 
         <h2>Technical information</h2>
-        <p>Like any website, the services that deliver this site can see basic technical information when you visit, such as your IP address and browser type. That includes our hosting provider and Google Fonts, which supplies the site's typeface (see <a href="https://policies.google.com/privacy">Google's privacy policy</a>). We don't use this information to identify or track you.</p>
+        <p>Like any website, the services that deliver this site can see basic technical information when you visit, such as your IP address and browser type. That includes our hosting provider, Cloudflare (which runs the chat assistant) and Google Fonts, which supplies the site's typeface (see <a href="https://policies.google.com/privacy">Google's privacy policy</a>). We don't use this information to identify or track you.</p>
 
         <h2>How we use your information</h2>
         <p>We use what you send us to reply to you, to discuss or provide the services you ask about, and to keep a normal record of our conversations.</p>
@@ -151,6 +161,8 @@
 </footer>
 
 <script src="/assets/site.js" defer></script>
+<link rel="stylesheet" href="/assets/chat.css">
+<script src="/assets/chat.js" data-endpoint="https://avello-chat.avellolabs.workers.dev/chat" data-web3forms="a6955225-5ff5-4562-ae2d-dfda9193580a" defer></script>
 <!-- /shared:footer -->
 </body>
 </html>

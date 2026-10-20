@@ -1,0 +1,24 @@
+{
+  // Avello Labs chat assistant. Deploy with `npx wrangler deploy` from this folder.
+  // The Anthropic API key is a secret: `npx wrangler secret put ANTHROPIC_API_KEY`. Never put it in this file.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "avello-chat",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+
+  // One small Durable Object keeps the rate-limit counters (hashed IPs and counts only, no messages).
+  "durable_objects": {
+    "bindings": [{ "name": "LIMITER", "class_name": "Limiter" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Limiter"] }],
+
+  "vars": {
+    "ALLOWED_ORIGINS": "https://avellolabs.com,http://localhost:8000,http://127.0.0.1:8000",
+    "PER_IP_PER_HOUR": "20",
+    "DAILY_CAP": "300",
+    "MAX_MESSAGE_CHARS": "600",
+    "MAX_TURNS": "20"
+  }
+}

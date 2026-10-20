@@ -1,2 +1,7 @@
 # Concept sites stay local only; never commit or push them.
 concepts/
+
+# Chat worker: dependencies, local state and any local secrets file
+worker/node_modules/
+worker/.wrangler/
+worker/.dev.vars*
