@@ -23,19 +23,71 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Organization",
+  "@type": "ProfessionalService",
   "name": "Avello Labs LLC",
   "url": "https://avellolabs.com/",
-  "email": "harris@avellolabs.com",
   "logo": "https://avellolabs.com/brand/icon.svg",
+  "email": "harris@avellolabs.com",
   "address": {
     "@type": "PostalAddress",
-    "postOfficeBoxNumber": "PO Box 141",
     "addressLocality": "Collingswood",
     "addressRegion": "NJ",
-    "postalCode": "08108-9998",
+    "postalCode": "08108",
     "addressCountry": "US"
-  }
+  },
+  "areaServed": [
+    {
+      "@type": "Place",
+      "name": "South Jersey"
+    },
+    {
+      "@type": "City",
+      "name": "Philadelphia, PA"
+    }
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Services",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "SEO",
+          "url": "https://avellolabs.com/seo/",
+          "description": "Local search engine optimization for small businesses."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "AEO",
+          "url": "https://avellolabs.com/aeo/",
+          "description": "Answer engine optimization, so AI tools like ChatGPT and Google's AI answers can find and recommend a business."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Website care",
+          "url": "https://avellolabs.com/website-care/",
+          "description": "Ongoing website updates, monitoring, backups and fixes."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Custom web apps",
+          "url": "https://avellolabs.com/web-apps/",
+          "description": "Simple custom tools like customer portals, status trackers and intake forms."
+        }
+      }
+    ]
+  },
+  "sameAs": []
 }
 </script>
 </head>
