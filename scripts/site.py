@@ -25,6 +25,19 @@ Commands (run from the repo root, Python 3 only, nothing to install):
     python3 scripts/site.py publish /blog/my-post/
         Marks a draft as published, sets its publish and update dates to today, then runs sync.
 
+    python3 scripts/site.py check-post post.txt
+        Checks a post written in the blog text format (scripts/blogpost.py) against every rule a post must pass,
+        and prints the result as JSON. Exits 1 if anything needs fixing.
+
+    python3 scripts/site.py import-post post.txt
+        Builds a draft post page from that text format (it must pass check-post first), then runs sync.
+
+    python3 scripts/site.py keywords
+        Prints, as JSON, the target keyword each page owns, so new posts don't compete with existing pages.
+
+    python3 scripts/site.py check-keyword "how to show up on google maps"
+        Prints, as JSON, the pages a new post with that keyword would compete with (an empty list: none).
+
 Everything outside the markers (titles, meta descriptions, og tags, JSON-LD, page content) is
 never touched.
 """
@@ -32,6 +45,7 @@ import html
 import json
 import math
 import re
+import subprocess
 from html.parser import HTMLParser
 import sys
 from datetime import date, datetime, timezone
@@ -75,6 +89,21 @@ WORDS_PER_MINUTE = 230
 # pages). Write it the way it should read, like "$1,500". While it's empty, every element marked data-price
 # is hidden, and the chat assistant doesn't see it either.
 PRICE_FROM = ""
+
+# The search a page is written to rank for. Blog posts carry theirs in <meta name="blog:keyword">; these are the
+# other pages'. A new post's keyword must not compete with any of them (check-post).
+PAGE_KEYWORDS = {
+    "/": "fast websites and monthly website care for local businesses",
+    "/seo/": "why seo matters for local businesses",
+    "/aeo/": "what is aeo",
+    "/website-care/": "ongoing website care",
+    "/web-apps/": "custom web apps for small businesses",
+    "/check/": "free website check",
+    "/tools/": "free seo and aeo tools",
+    "/tools/search-preview/": "google search preview tool",
+    "/tools/ai-crawler-check/": "ai crawler check robots.txt",
+    "/tools/schema-generator/": "local business schema generator",
+}
 
 # Pages whose text the chat assistant answers from.
 KNOWLEDGE_PAGES = ["/", "/seo/", "/aeo/", "/website-care/", "/web-apps/", "/tools/"]
@@ -273,12 +302,16 @@ def blog_posts():
         if problems:
             sys.exit(f"{f}: blog post needs " + ", ".join(problems))
         words = len(re.findall(r"[\w’']+", html.unescape(re.sub(r"<[^>]+>", " ", body.group(1)))))
+        faq = re.search(r'<div class="faq">(.*?)</div>', body.group(1), re.S)
+        qa = re.findall(r"<summary>(.*?)</summary>\s*<p>(.*?)</p>", faq.group(1), re.S) if faq else []
         posts.append({
             "url": url, "file": f, "draft": status == "draft",
             "headline": html.unescape(re.sub(r"<[^>]+>", "", h1.group(1))).strip(),
             "description": _meta(text, "name", "description"),
             "published": published, "modified": modified,
             "words": words, "minutes": max(1, math.ceil(words / WORDS_PER_MINUTE)),
+            "keyword": _meta(text, "name", "blog:keyword"),
+            "faq": [tuple(html.unescape(re.sub(r"<[^>]+>", "", x)).strip() for x in pair) for pair in qa],
         })
     return sorted(posts, key=lambda p: (p["published"], p["url"]), reverse=True)
 
@@ -316,6 +349,11 @@ def blog_head(post, posts):
             "isPartOf": {"@type": "Blog", "name": BLOG_NAME, "url": SITE + "/blog/"},
         }
         lines.append('<script type="application/ld+json">\n' + json.dumps(schema, indent=2, ensure_ascii=False).replace("</", "<\\/") + "\n</script>")
+        if post["faq"]:
+            faq = {"@context": "https://schema.org", "@type": "FAQPage",
+                   "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}}
+                                  for q, a in post["faq"]]}
+            lines.append('<script type="application/ld+json">\n' + json.dumps(faq, indent=2, ensure_ascii=False).replace("</", "<\\/") + "\n</script>")
     lines.append("<!-- /shared:blog-head -->")
     return "\n".join(lines)
 
@@ -539,7 +577,7 @@ def sync():
         return not (url in by_url and by_url[url]["draft"]) and not (url == "/blog/" and not live)
 
     def lastmod(url, f):
-        return by_url[url]["modified"] if url in by_url else date.fromtimestamp(f.stat().st_mtime).isoformat()
+        return by_url[url]["modified"] if url in by_url else (committed(f) or date.fromtimestamp(f.stat().st_mtime).isoformat())
 
     rows = "".join(f"  <url><loc>{SITE}{url}</loc><lastmod>{lastmod(url, f)}</lastmod></url>\n"
                    for url, f in found if listed(url))
@@ -547,6 +585,20 @@ def sync():
                                       '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + rows + "</urlset>\n")
     print(f"sitemap.xml: {rows.count('<url>')} pages")
     knowledge()
+
+
+def committed(f):
+    """The date of the last commit that changed this file, if it has no changes since (None outside a git clone, or
+    for a changed file). A fresh clone gives every file today's time, so the file's own time can't be trusted."""
+    try:
+        args = ["git", "-C", str(ROOT)]
+        dirty = subprocess.run(args + ["status", "--porcelain", "--", str(f)], capture_output=True, text=True, timeout=10)
+        last = subprocess.run(args + ["log", "-1", "--format=%cs", "--", str(f)], capture_output=True, text=True, timeout=10)
+    except (OSError, subprocess.SubprocessError):
+        return None
+    if dirty.returncode or last.returncode or dirty.stdout.strip() or not last.stdout.strip():
+        return None
+    return last.stdout.strip()
 
 
 def new(url, title, desc):
@@ -602,17 +654,11 @@ def new(url, title, desc):
     sync()
 
 
-def post(url, headline, desc):
-    if not re.fullmatch(r"/blog/[a-z0-9-]+/", url):
-        sys.exit("The post path must look like /blog/my-post/ (lowercase letters, numbers and dashes)")
-    out = ROOT / url.strip("/") / "index.html"
-    if out.exists():
-        sys.exit(f"{out} already exists")
-    if not (ROOT / "blog" / "index.html").exists():
-        sys.exit("blog/index.html is missing")
-    t, h, d, today = html.escape(f"{headline} | Avello Labs"), html.escape(headline), html.escape(desc), date.today().isoformat()
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(f"""<!DOCTYPE html>
+def post_page(url, title, headline, desc, lede, article, keyword=""):
+    """A blog post page (a draft), with the shared blocks left empty for sync to fill in."""
+    t, h, d, today = html.escape(title), html.escape(headline), html.escape(desc), date.today().isoformat()
+    kw = f'\n<meta name="blog:keyword" content="{html.escape(keyword)}">' if keyword else ""
+    return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -621,7 +667,7 @@ def post(url, headline, desc):
 <title>{t}</title>
 <meta name="description" content="{d}">
 <link rel="canonical" href="{SITE}{url}">
-<meta name="blog:status" content="draft">
+<meta name="blog:status" content="draft">{kw}
 <meta property="article:published_time" content="{today}">
 <meta property="article:modified_time" content="{today}">
 <meta property="og:type" content="article">
@@ -640,15 +686,14 @@ def post(url, headline, desc):
     <div class="wrap">
       <p class="crumbs"><a href="/">Home</a> / <a href="/blog/">Blog</a></p>
       <h1>{h}</h1>
-      <p class="lede">TODO one or two sentences that sum up the post.</p>
+      <p class="lede">{lede}</p>
       <!-- shared:post-meta --><!-- /shared:post-meta -->
     </div>
   </section>
   <div class="page-body">
     <div class="wrap page-grid">
       <article class="prose">
-        <h2>TODO first heading</h2>
-        <p>TODO</p>
+{article}
       </article>
       <!-- shared:post-aside --><!-- /shared:post-aside -->
     </div>
@@ -658,7 +703,71 @@ def post(url, headline, desc):
 <!-- shared:footer --><!-- /shared:footer -->
 </body>
 </html>
-""")
+"""
+
+
+def new_post_file(url):
+    if not re.fullmatch(r"/blog/[a-z0-9-]+/", url):
+        sys.exit("The post path must look like /blog/my-post/ (lowercase letters, numbers and dashes)")
+    out = ROOT / url.strip("/") / "index.html"
+    if out.exists():
+        sys.exit(f"{out} already exists")
+    if not (ROOT / "blog" / "index.html").exists():
+        sys.exit("blog/index.html is missing")
+    out.parent.mkdir(parents=True, exist_ok=True)
+    return out
+
+
+def post(url, headline, desc):
+    out = new_post_file(url)
+    out.write_text(post_page(url, f"{headline} | Avello Labs", headline, desc,
+                             "TODO one or two sentences that sum up the post.",
+                             "        <h2>TODO first heading</h2>\n        <p>TODO</p>"))
+    print("created", out)
+    sync()
+
+
+def taken_keywords():
+    """[(url, keyword)] for every page that owns a target keyword: the main pages and every blog post."""
+    out = list(PAGE_KEYWORDS.items())
+    for p in blog_posts():
+        out.append((p["url"], p["keyword"] or p["headline"].lower()))
+    return out
+
+
+def post_rules():
+    """What check-post needs to know about the site: its page paths, the home page's sections, the taken keywords."""
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import blogpost
+    found = {url for url, _ in pages()}
+    anchors = set(re.findall(r'\bid="([^"]+)"', (ROOT / "index.html").read_text()))
+    return blogpost, found, anchors, taken_keywords()
+
+
+def check_post(path):
+    blogpost, found, anchors, taken = post_rules()
+    text = Path(path).read_text()
+    problems = blogpost.check(text, found, anchors, taken)
+    out = {"ok": not problems, "problems": problems}
+    if not problems:
+        fields = blogpost.parse(text)["fields"]
+        out.update(blogpost.stats(text), slug=fields["Slug"], url=f"/blog/{fields['Slug']}/", keyword=fields["Keyword"].lower())
+    print(json.dumps(out, indent=2))
+    return out
+
+
+def import_post(path):
+    blogpost, found, anchors, taken = post_rules()
+    text = Path(path).read_text()
+    problems = blogpost.check(text, found, anchors, taken)
+    if problems:
+        sys.exit("The post isn't ready:\n  " + "\n  ".join(problems))
+    post_ = blogpost.parse(text)
+    f = post_["fields"]
+    url = f"/blog/{f['Slug']}/"
+    out = new_post_file(url)
+    out.write_text(post_page(url, f["Title"] + blogpost.SUFFIX, f["Headline"], f["Description"],
+                             blogpost.inline(f["Lede"]), blogpost.body_html(post_), f["Keyword"].lower()))
     print("created", out)
     sync()
 
@@ -686,5 +795,14 @@ if __name__ == "__main__":
         post(*sys.argv[2:])
     elif len(sys.argv) == 3 and sys.argv[1] == "publish":
         publish(sys.argv[2])
+    elif len(sys.argv) == 3 and sys.argv[1] == "check-post":
+        sys.exit(0 if check_post(sys.argv[2])["ok"] else 1)
+    elif len(sys.argv) == 3 and sys.argv[1] == "import-post":
+        import_post(sys.argv[2])
+    elif len(sys.argv) == 3 and sys.argv[1] == "check-keyword":
+        blogpost = post_rules()[0]
+        print(json.dumps([{"url": u, "keyword": k} for u, k in taken_keywords() if blogpost.too_close(sys.argv[2], k)]))
+    elif len(sys.argv) == 2 and sys.argv[1] == "keywords":
+        print(json.dumps([{"url": u, "keyword": k} for u, k in taken_keywords()], indent=2))
     else:
         sys.exit(__doc__)

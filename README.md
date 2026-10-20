@@ -35,6 +35,16 @@ python3 scripts/site.py publish /blog/my-post/
 python3 scripts/test_site.py
 ```
 
+Posts can also be written in a plain text format (header lines like `Title:` and `Keyword:`, then `##` headings,
+lists, `Q:`/`A:` pairs and a `Call to action:` line; see `scripts/blogpost.py`). The blog agent drafts in it, and:
+
+```sh
+python3 scripts/site.py check-post post.txt     # every rule a post must pass (copy rules, keyword, links, FAQ...)
+python3 scripts/site.py import-post post.txt    # build it as a draft page (with FAQ schema), if it passes
+python3 scripts/site.py keywords                # the search keyword each page owns
+python3 scripts/site.py check-keyword "..."     # the pages a new keyword would compete with
+```
+
 `sync` fills in each post's byline and reading time, its Article schema, the related links beside it and the
 list on `/blog/`. While nothing is published, `/blog/` itself carries noindex and lists the drafts for review;
 after that it lists published posts only. If a published post links to a draft in its text, `sync` prints a

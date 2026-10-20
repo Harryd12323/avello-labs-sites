@@ -336,6 +336,11 @@
   }
 
   launcher.addEventListener("click", function () { setOpen(!state.open); });
+  // "Ask the chat" buttons on the page (blog posts) open the same window.
+  document.addEventListener("click", function (e) {
+    var opener = e.target.closest && e.target.closest("[data-open-chat]");
+    if (opener) { e.preventDefault(); setOpen(true); }
+  });
   root.querySelector('[data-act="close"]').addEventListener("click", function () { setOpen(false); });
   root.querySelector('[data-act="clear"]').addEventListener("click", function () {
     state.items = [];
