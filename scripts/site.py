@@ -71,6 +71,11 @@ BLOG_AUTHOR = "Avello Labs"
 BLOG_DESCRIPTION = "Practical website, search and AI answer tips for small local businesses."
 WORDS_PER_MINUTE = 230
 
+# Starting price, shown wherever a page has <!-- shared:price --> markers (the home page and the service
+# pages). Write it the way it should read, like "$1,500". While it's empty, every element marked data-price
+# is hidden, and the chat assistant doesn't see it either.
+PRICE_FROM = ""
+
 # Pages whose text the chat assistant answers from.
 KNOWLEDGE_PAGES = ["/", "/seo/", "/aeo/", "/website-care/", "/web-apps/", "/tools/"]
 
@@ -84,7 +89,7 @@ CSP = ("default-src 'self'; script-src 'self'; style-src 'self' https://fonts.go
        "form-action https://api.web3forms.com; base-uri 'self'; object-src 'none'")
 
 NAV = [("/seo/", "SEO"), ("/aeo/", "AEO"), ("/website-care/", "Website care"), ("/web-apps/", "Web apps"),
-       ("/#work", "Concept work"), ("/tools/", "Free tools")]
+       ("/#real-work", "Our work"), ("/tools/", "Free tools")]
 
 # Pages that count as part of a nav item, besides the ones under its own path.
 NAV_ALSO = {"/tools/": ["/check/"]}
@@ -105,7 +110,7 @@ def shared_head():
 
 def shared_header(current):
     links = "\n".join(
-        f'      <a class="nav-link" href="{h}"{" aria-current=\"page\"" if (current.startswith(h) or current in NAV_ALSO.get(h, [])) and h != "/#work" else ""}>{l}</a>'
+        f'      <a class="nav-link" href="{h}"{" aria-current=\"page\"" if (current.startswith(h) or current in NAV_ALSO.get(h, [])) and not h.startswith("/#") else ""}>{l}</a>'
         for h, l in NAV)
     return f"""<!-- shared:header -->
 <a class="skip" href="#main">Skip to content</a>
@@ -135,7 +140,7 @@ def shared_footer(blog=False):
     <div class="foot-grid">
       <div class="foot-brand">
         <img src="/brand/logo-horizontal-dark.svg" width="337" height="64" alt="Avello Labs">
-        <p>Fast websites, ongoing site care, SEO and AEO for small local businesses.</p>
+        <p>Custom websites for small local businesses, live in days, with monthly care, SEO and AEO.</p>
       </div>
       <div>
         <h2>Services</h2>
@@ -158,7 +163,7 @@ def shared_footer(blog=False):
       <div>
         <h2>Company</h2>
         <ul>
-          <li><a href="/#work">Concept work</a></li>{blog_link}
+          <li><a href="/#real-work">Our work</a></li>{blog_link}
           <li><a href="/#contact">Contact</a></li>
           <li><a href="/privacy/">Privacy policy</a></li>
           <li><a href="/terms/">Terms of use</a></li>
@@ -409,7 +414,7 @@ def blog_feed(posts):
 
 
 class _Text(HTMLParser):
-    """Pulls readable text out of a page's <main>, skipping forms, buttons, dialogs, asides and SVGs."""
+    """Pulls readable text out of a page's <main>, skipping forms, buttons, dialogs, asides, SVGs and anything hidden."""
     SKIP_TAGS = {"script", "style", "svg", "form", "button", "dialog", "aside", "noscript", "picture"}
     BLOCK = {"p", "li", "h1", "h2", "h3", "h4", "summary", "dt", "dd", "tr", "div", "section", "article"}
 
@@ -417,9 +422,17 @@ class _Text(HTMLParser):
         super().__init__()
         self.in_main = False
         self.skip = 0
+        self.hidden = []  # tag names of the hidden element being skipped, and of same-named tags nested in it
         self.out = []
 
     def handle_starttag(self, tag, attrs):
+        if self.hidden:
+            if tag == self.hidden[0]:
+                self.hidden.append(tag)
+            return
+        if self.in_main and any(name == "hidden" for name, _ in attrs):
+            self.hidden = [tag]
+            return
         if tag == "main":
             self.in_main = True
         elif self.in_main and tag in self.SKIP_TAGS:
@@ -433,13 +446,17 @@ class _Text(HTMLParser):
                 self.out.append("\n")
 
     def handle_endtag(self, tag):
+        if self.hidden:
+            if tag == self.hidden[0]:
+                self.hidden.pop()
+            return
         if tag == "main":
             self.in_main = False
         elif self.in_main and tag in self.SKIP_TAGS and self.skip:
             self.skip -= 1
 
     def handle_data(self, data):
-        if self.in_main and not self.skip:
+        if self.in_main and not self.skip and not self.hidden:
             self.out.append(re.sub(r"\s+", " ", data))
 
     def text(self):
@@ -495,6 +512,9 @@ def sync():
         for name in TOOL_BLOCKS:
             if f"<!-- shared:{name} -->" in text:
                 text = replace_block(text, name, tool_block(name), f)
+        price = f'<!-- shared:price --><span class="price-amount">{html.escape(PRICE_FROM)}</span><!-- /shared:price -->'
+        text = re.sub(r"<!-- shared:price -->.*?<!-- /shared:price -->", lambda _: price, text, flags=re.S)
+        text = re.sub(r"<(\w+)([^>]*?) data-price(?: hidden)?>", lambda m: f"<{m.group(1)}{m.group(2)} data-price{'' if PRICE_FROM else ' hidden'}>", text)
         if url == "/blog/":
             text = replace_block(text, "blog-head", blog_head(None, posts), f)
             text = replace_block(text, "blog-list", blog_list(posts), f)

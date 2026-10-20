@@ -132,5 +132,39 @@ class BlogBuild(unittest.TestCase):
         self.assertIn("blog:status", r.stdout + r.stderr)
 
 
+class PriceLine(unittest.TestCase):
+    PAGES = ["/", "/seo/", "/aeo/", "/website-care/", "/web-apps/"]
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp())
+        self.site = self.tmp / "site"
+        shutil.copytree(ROOT, self.site, ignore=LEAVE_OUT)
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp)
+
+    def sync_with_price(self, price):
+        script = self.site / "scripts" / "site.py"
+        script.write_text(re.sub(r'^PRICE_FROM = ".*"$', f"PRICE_FROM = {price!r}", script.read_text(), count=1, flags=re.M))
+        r = subprocess.run([sys.executable, str(script), "sync"], capture_output=True, text=True)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        return {url: (self.site / url.strip("/") / "index.html").read_text() if url != "/" else (self.site / "index.html").read_text()
+                for url in self.PAGES}
+
+    def test_blank_price_hides_the_line_everywhere(self):
+        for url, page in self.sync_with_price("").items():
+            tags = re.findall(r"<\w+[^>]* data-price[^>]*>", page)
+            self.assertTrue(tags, url)
+            self.assertTrue(all(t.endswith(" hidden>") for t in tags), url)
+            self.assertFalse("$___" in page, url)
+        self.assertFalse("Packages starting at" in (self.site / "worker" / "knowledge.txt").read_text())
+
+    def test_set_price_shows_it_everywhere(self):
+        for url, page in self.sync_with_price("$1,500").items():
+            self.assertFalse(re.search(r"data-price[^>]*hidden", page), url)
+            self.assertTrue('<span class="price-amount">$1,500</span>' in page, url)
+        self.assertTrue("Packages starting at $1,500" in (self.site / "worker" / "knowledge.txt").read_text())
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

@@ -1,5 +1,5 @@
 // Avello Labs free website check: sends the visitor's URL to our check Worker (check-worker/), shows the
-// score and fixes, and, if they ask for the full report, sends a lead to Harris through Web3Forms.
+// score and fixes, and, if they ask for the full report, sends a lead to us through Web3Forms.
 // No AI, no tracking, no third-party scripts. Message text is always set with textContent.
 (function () {
   var script = document.currentScript;
@@ -101,11 +101,12 @@
     h.focus();
   }
 
-  // "Get my free full SEO + AEO report": a lead to Harris through Web3Forms. Harris emails the report himself.
+  // Optional "Email me the full report" form: a lead to us through Web3Forms, plus a Telegram alert through
+  // the alerts Worker. We check the site by hand and email the report ourselves.
   function reportForm() {
     var box = el("div", "check-report");
-    box.appendChild(el("h2", null, "Want the full picture?"));
-    box.appendChild(el("p", null, "Get a free, hand-checked SEO + AEO report for your site. We'll email your full report within 1–2 business days."));
+    box.appendChild(el("h2", null, "Want the full report?"));
+    box.appendChild(el("p", null, "Optional. Leave your details and we'll check your site by hand, then email you a full SEO + AEO report within 1 to 2 business days. Free, no obligation."));
     var f = el("form", "check-report-form");
     f.noValidate = true;
     f.innerHTML =
@@ -114,12 +115,12 @@
         '<div class="field"><label for="r-name">Your name</label><input id="r-name" name="name" autocomplete="name" maxlength="80" required></div>' +
         '<div class="field"><label for="r-email">Email</label><input id="r-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="120" required></div>' +
       "</div>" +
-      '<div class="field"><label for="r-business">Business name <small>(optional)</small></label><input id="r-business" name="business" autocomplete="organization" maxlength="120"></div>' +
-      '<div class="field"><label for="r-note">Anything you\'d like us to look at? <small>(optional)</small></label><textarea id="r-note" name="note" maxlength="1000"></textarea></div>' +
+      '<div class="field"><label for="r-website">Website</label><input id="r-website" name="website" type="url" inputmode="url" autocomplete="url" maxlength="200" required></div>' +
       '<p class="err" id="r-err"></p>' +
-      '<button class="btn" type="submit">Get my free full SEO + AEO report</button>' +
+      '<button class="btn" type="submit">Email me the full report</button>' +
       '<p class="form-status" id="r-status" role="status" aria-live="polite"></p>' +
       '<p class="form-note">Your details and this check\'s results are sent to us through Web3Forms. See our <a class="text-link" href="/privacy/#check">privacy policy</a>.</p>';
+    f.website.defaultValue = last.finalUrl;
     f.addEventListener("submit", function (e) { e.preventDefault(); sendReport(f); });
     box.appendChild(f);
     return box;
@@ -127,10 +128,13 @@
 
   function sendReport(f) {
     var err = f.querySelector("#r-err"), st = f.querySelector("#r-status"), b = f.querySelector('button[type="submit"]');
-    var name = f.name.value.trim(), email = f.email.value.trim();
-    err.textContent = !name ? "Please enter your name." : !/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(email) ? "Please enter a valid email address." : "";
+    var name = f.name.value.trim(), email = f.email.value.trim(), website = f.website.value.trim();
+    err.textContent = !name ? "Please enter your name." : !/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(email) ? "Please enter a valid email address." :
+                      !website ? "Please enter your website's address." : "";
     if (err.textContent) return;
-    if (f.botcheck.checked) { st.className = "form-status ok"; st.textContent = "Thanks! We'll email your full report within 1–2 business days."; return; }
+    if (f.botcheck.checked) { st.className = "form-status ok"; st.textContent = "Thanks! We'll email your full report within 1 to 2 business days."; return; }
+    // The alert's site and score come from the signed ticket, so a different address typed here goes in the note.
+    var otherSite = website.replace(/\/+$/, "") !== last.finalUrl.replace(/\/+$/, "") ? website : "";
     var host = "";
     try { host = new URL(last.finalUrl).hostname; } catch (e) { host = last.finalUrl; }
     var issues = last.checks.filter(function (c) { return c.status !== "pass"; })
@@ -141,8 +145,7 @@
       from_name: "Avello Labs website check",
       name: name,
       email: email,
-      business: f.business.value.trim() || "Not given",
-      note: f.note.value.trim() || "None",
+      website: website,
       website_checked: last.finalUrl,
       score: last.score + "/100",
       issues_found: issues.length ? issues.join("\n") : "None, every check passed",
@@ -160,12 +163,12 @@
       .catch(function () { return false; })
       .then(function (ok) {
         // Email is the main path; the Telegram alert goes out in the background either way.
-        sendAlert({ ticket: last.ticket, name: name, email: email, business: data.business === "Not given" ? "" : data.business,
-                    note: data.note === "None" ? "" : data.note, emailSent: ok });
+        sendAlert({ ticket: last.ticket, name: name, email: email, business: "",
+                    note: otherSite ? "Website given: " + otherSite : "", emailSent: ok });
         if (ok) {
           f.reset();
           st.className = "form-status ok";
-          st.textContent = "Thanks, " + name + "! We'll email your full report to " + email + " within 1–2 business days.";
+          st.textContent = "Thanks, " + name + "! We'll email your full report to " + email + " within 1 to 2 business days.";
         } else {
           st.className = "form-status bad";
           st.textContent = "Sorry, that didn't send. Please try again, or email harris@avellolabs.com.";
@@ -174,7 +177,7 @@
       });
   }
 
-  // Asks our alerts Worker to message Harris on Telegram. Fire-and-forget: it never affects what the
+  // Asks our alerts Worker to send us a Telegram alert. Fire-and-forget: it never affects what the
   // visitor sees, and it only works with the signed ticket the check Worker issued for this result.
   function sendAlert(payload) {
     if (!alertsUrl || !payload.ticket) return;
