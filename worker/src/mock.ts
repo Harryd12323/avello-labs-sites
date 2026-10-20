@@ -45,7 +45,7 @@ export function mockReply(turns: Turn[]): ChatResult {
   const reply = (s: string, lead: Lead | null = null): ChatResult => ({ reply: `[Mock reply] ${s}`, lead });
 
   if (mentionsCrisis([turns[turns.length - 1]])) {
-    return reply("I'm really sorry you're going through this, and you don't have to face it alone. You can call or text 988, the Suicide & Crisis Lifeline in the US, any time. If you're in immediate danger, please call 911, or your local emergency number.");
+    return reply("I'm really sorry you're going through this, and you don't have to face it alone. You can call or text 988, the Suicide & Crisis Lifeline in the US, or chat at https://988lifeline.org any time. If you're in immediate danger, please call 911, or your local emergency number.");
   }
   if (mentionsCrisis(turns)) collecting = false;
   if (/ignore (all|your|previous)|system prompt|your instructions|pretend you|jailbreak/.test(text)) {
