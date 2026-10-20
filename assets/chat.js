@@ -6,11 +6,12 @@
   var local = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
   var endpoint = (local && script.dataset.devEndpoint) || script.dataset.endpoint;
   var formsKey = script.dataset.web3forms;
+  var alertsUrl = script.dataset.alerts;
   if (!endpoint) return;
 
   var MAX_CHARS = 600, MAX_TURNS = 20, STORE = "avello-chat-v1";
   var EMAIL = "harris@avellolabs.com";
-  var GREETING = "Hi! I can answer questions about SEO, AEO, website care and custom web apps, or pass a message to Harris. What can I help with?";
+  var GREETING = "Hi! I can answer questions about SEO, AEO, website care and custom web apps, or pass a message to us. What can I help with?";
 
   // items: {kind: "user"|"bot"|"notice"|"lead", text, failed, lead, sent}
   var state = load() || { items: [], open: false };
@@ -105,7 +106,7 @@
     card.className = "chat-lead";
     var h = document.createElement("p");
     h.className = "chat-lead-title";
-    h.textContent = item.sent ? "Sent to Harris" : "Check your details";
+    h.textContent = item.sent ? "Sent" : "Check your details";
     card.appendChild(h);
     var dl = document.createElement("dl");
     leadFields(item.lead).forEach(function (f) {
@@ -120,7 +121,7 @@
       var row = document.createElement("div");
       row.className = "chat-lead-actions";
       var send = document.createElement("button");
-      send.type = "button"; send.className = "chat-lead-send"; send.textContent = "Send to Harris";
+      send.type = "button"; send.className = "chat-lead-send"; send.textContent = "Send to Avello Labs";
       send.addEventListener("click", function () { sendLead(index, send); });
       var edit = document.createElement("button");
       edit.type = "button"; edit.className = "chat-lead-edit"; edit.textContent = "Edit details";
@@ -193,7 +194,7 @@
       .then(function (res) {
         if (res.ok && res.data.reply) {
           state.items.push({ kind: "bot", text: res.data.reply });
-          if (res.data.lead) state.items.push({ kind: "lead", lead: res.data.lead, sent: false });
+          if (res.data.lead) state.items.push({ kind: "lead", lead: res.data.lead, ticket: res.data.ticket, sent: false });
         } else {
           userItem.failed = true;
           notice(res.data.reply || "Sorry, something went wrong. You can email " + EMAIL + ".");
@@ -232,15 +233,31 @@
       body: JSON.stringify(data)
     })
       .then(function (r) { return r.json().then(function (d) { return r.ok && d.success; }); })
+      .catch(function () { return false; })
       .then(function (ok) {
-        if (!ok) throw new Error("not sent");
-        item.sent = true;
-        notice("Sent! Harris will reply to " + item.lead.email + ".");
-      })
-      .catch(function () {
-        notice("Sorry, that didn't send. Please try again, or email " + EMAIL + " directly.");
-      })
-      .then(function () { save(); render(); });
+        // Email is the main path; the Telegram alert goes out in the background either way.
+        sendAlert({
+          ticket: item.ticket, name: item.lead.name, email: item.lead.email, business: item.lead.business,
+          website: item.lead.website || "", goal: item.lead.goal || "", emailSent: ok
+        });
+        if (ok) {
+          item.sent = true;
+          notice("Sent! We'll reply to " + item.lead.email + ".");
+        } else {
+          notice("Sorry, that didn't send. Please try again, or email " + EMAIL + " directly.");
+        }
+        save(); render();
+      });
+  }
+
+  // Asks our alerts Worker to message Harris on Telegram. Fire-and-forget: it never affects what the
+  // visitor sees, and it only works with the signed ticket the chat Worker issued for this lead.
+  function sendAlert(payload) {
+    if (!alertsUrl || !payload.ticket) return;
+    try {
+      fetch(alertsUrl, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload), keepalive: true })
+        .catch(function () {});
+    } catch (e) { /* alerts are best effort */ }
   }
 
   // ---------- Open, close, input ----------

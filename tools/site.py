@@ -36,13 +36,18 @@ EMAIL = "harris@avellolabs.com"
 NOINDEX = False
 
 # Folders that aren't part of the site's pages.
-SKIP = {"concepts", "brand", "work", "assets", "tools", "worker", ".git"}
+SKIP = {"concepts", "brand", "work", "assets", "tools", "worker", "check-worker", "alerts-worker", "workers-shared", ".git"}
 
 # Chat assistant (see worker/). CHAT_ENDPOINT is the deployed Worker's /chat URL; leave it empty to hide
 # the chat. CHAT_DEV_ENDPOINT is used only when the site is opened on localhost, for testing. Set it to
 # None before publishing so the security policy doesn't list it.
 CHAT_ENDPOINT = "https://avello-chat.avellolabs.workers.dev/chat"
 CHAT_DEV_ENDPOINT = None
+# Website check tool (see check-worker/). CHECK_ENDPOINT is the deployed Worker's /check URL. The /check/ page
+# gets its script from the <!-- shared:check --> block, which sync fills in from here.
+CHECK_ENDPOINT = "https://avello-check.avellolabs.workers.dev/check"
+# Lead alerts (see alerts-worker/): after a lead is emailed, the browser also posts it here for a Telegram alert.
+ALERTS_ENDPOINT = "https://avello-alerts.avellolabs.workers.dev/lead"
 # Public by design: Web3Forms access keys only let messages be sent to the key owner's inbox.
 WEB3FORMS_KEY = "a6955225-5ff5-4562-ae2d-dfda9193580a"
 
@@ -53,13 +58,13 @@ KNOWLEDGE_PAGES = ["/", "/seo/", "/aeo/", "/website-care/", "/web-apps/"]
 def origin(url):
     return re.match(r"^https?://[^/]+", url).group(0) if url else ""
 
-CONNECT = " ".join(o for o in ["https://api.web3forms.com", origin(CHAT_ENDPOINT), origin(CHAT_DEV_ENDPOINT or "")] if o)
+CONNECT = " ".join(o for o in ["https://api.web3forms.com", origin(CHAT_ENDPOINT), origin(CHAT_DEV_ENDPOINT or ""), origin(CHECK_ENDPOINT), origin(ALERTS_ENDPOINT)] if o)
 CSP = ("default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; "
        f"font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src {CONNECT}; "
        "form-action https://api.web3forms.com; base-uri 'self'; object-src 'none'")
 
 NAV = [("/seo/", "SEO"), ("/aeo/", "AEO"), ("/website-care/", "Website care"), ("/web-apps/", "Web apps"),
-       ("/#work", "Concept work")]
+       ("/#work", "Concept work"), ("/check/", "Free site check")]
 
 
 def shared_head():
@@ -115,6 +120,7 @@ def shared_footer():
           <li><a href="/aeo/">AEO</a></li>
           <li><a href="/website-care/">Website care</a></li>
           <li><a href="/web-apps/">Web apps</a></li>
+          <li><a href="/check/">Free site check</a></li>
         </ul>
       </div>
       <div>
@@ -153,7 +159,7 @@ def chat_script():
         return ""
     dev = f' data-dev-endpoint="{CHAT_DEV_ENDPOINT}"' if CHAT_DEV_ENDPOINT else ""
     return (f'<link rel="stylesheet" href="/assets/chat.css">\n'
-            f'<script src="/assets/chat.js" data-endpoint="{CHAT_ENDPOINT}"{dev} data-web3forms="{WEB3FORMS_KEY}" defer></script>')
+            f'<script src="/assets/chat.js" data-endpoint="{CHAT_ENDPOINT}"{dev} data-web3forms="{WEB3FORMS_KEY}" data-alerts="{ALERTS_ENDPOINT}" defer></script>')
 
 
 class _Text(HTMLParser):
@@ -211,6 +217,13 @@ def knowledge():
     print(f"worker/knowledge.txt: {len(out.read_text())} characters from {len(parts)} pages")
 
 
+def shared_check():
+    return f"""<!-- shared:check -->
+<link rel="stylesheet" href="/assets/check.css">
+<script src="/assets/check.js" data-endpoint="{CHECK_ENDPOINT}" data-web3forms="{WEB3FORMS_KEY}" data-alerts="{ALERTS_ENDPOINT}" defer></script>
+<!-- /shared:check -->"""
+
+
 def pages():
     """Every index.html that belongs to the site, with its URL path."""
     found = []
@@ -237,6 +250,8 @@ def sync():
         text = replace_block(text, "head", shared_head(), f)
         text = replace_block(text, "header", shared_header(url), f)
         text = replace_block(text, "footer", shared_footer(), f)
+        if "<!-- shared:check -->" in text:
+            text = replace_block(text, "check", shared_check(), f)
         f.write_text(text)
         print("synced", url)
     rows = "".join(f"  <url><loc>{SITE}{url}</loc><lastmod>{date.fromtimestamp(f.stat().st_mtime).isoformat()}</lastmod></url>\n"

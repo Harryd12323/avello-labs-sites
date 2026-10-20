@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- shared:head -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://api.web3forms.com https://avello-chat.avellolabs.workers.dev; form-action https://api.web3forms.com; base-uri 'self'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://api.web3forms.com https://avello-chat.avellolabs.workers.dev https://avello-check.avellolabs.workers.dev https://avello-alerts.avellolabs.workers.dev; form-action https://api.web3forms.com; base-uri 'self'; object-src 'none'">
 <link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -87,6 +87,7 @@
       <a class="nav-link" href="/website-care/">Website care</a>
       <a class="nav-link" href="/web-apps/" aria-current="page">Web apps</a>
       <a class="nav-link" href="/#work">Concept work</a>
+      <a class="nav-link" href="/check/">Free site check</a>
       <a class="btn btn-small" href="/#contact">Get in touch</a>
     </nav>
   </div>
@@ -98,7 +99,7 @@
     <div class="wrap">
       <p class="crumbs"><a href="/">Home</a> / Web apps</p>
       <h1>Custom web apps and tools <span class="grad-text">for your business</span></h1>
-      <p class="lede">A website tells people about your business. A web app helps you run it: a tool your customers or your team actually use, right in the browser, built around the way you already work.</p>
+      <p class="lede">A website tells people about your business. A web app helps you run it: a tool your customers or your team use in the browser, built around the way you already work.</p>
     </div>
   </section>
 
@@ -151,7 +152,7 @@
           <li>It's hard to see at a glance what's late or what needs attention.</li>
           <li>Important details live in one person's head, inbox or notebook, which is a problem when they're away.</li>
         </ul>
-        <p>Meanwhile, small custom tools have become more practical to build and run. Hosting is inexpensive, browsers can do far more than they used to, and a focused tool doesn't need a large team behind it. That puts software built around your own process within reach of businesses that used to make do.</p>
+        <p>Small custom tools have also become cheaper to build and run. Hosting costs little, and a focused tool doesn't need a big team behind it. That puts software built around your own process within reach of businesses that used to make do.</p>
 
         <h2>When a custom tool makes sense, and when it doesn't</h2>
         <div class="columns">
@@ -248,6 +249,7 @@
           <li><a href="/aeo/">AEO</a></li>
           <li><a href="/website-care/">Website care</a></li>
           <li><a href="/web-apps/">Web apps</a></li>
+          <li><a href="/check/">Free site check</a></li>
         </ul>
       </div>
       <div>
@@ -278,7 +280,7 @@
 
 <script src="/assets/site.js" defer></script>
 <link rel="stylesheet" href="/assets/chat.css">
-<script src="/assets/chat.js" data-endpoint="https://avello-chat.avellolabs.workers.dev/chat" data-web3forms="a6955225-5ff5-4562-ae2d-dfda9193580a" defer></script>
+<script src="/assets/chat.js" data-endpoint="https://avello-chat.avellolabs.workers.dev/chat" data-web3forms="a6955225-5ff5-4562-ae2d-dfda9193580a" data-alerts="https://avello-alerts.avellolabs.workers.dev/lead" defer></script>
 <!-- /shared:footer -->
 </body>
 </html>

@@ -56,20 +56,20 @@ export function mockReply(turns: Turn[]): ChatResult {
   }
 
   if ((collecting || wantsContact) && !mentionsCrisis(turns)) {
-    if (!fields.name || !fields.email) return reply(`Happy to have Harris follow up. To start, could you share ${ASK_NAME_EMAIL}?`);
+    if (!fields.name || !fields.email) return reply(`Happy to pass your details on so we can follow up. To start, could you share ${ASK_NAME_EMAIL}?`);
     if (!fields.business) return reply(`Nice to meet you, ${fields.name}. So ${ASK_BUSINESS}? "None yet" is a fine answer.`);
     if (!askedPhone) return reply(`Got it, thanks. You're welcome to share ${ASK_PHONE}. Totally optional, so feel free to skip it.`);
     if (!fields.goal) return reply(`Thanks. Last one: what's the ${ASK_GOAL}?`);
     const lead = cleanLead(fields as Lead);
-    if (lead) return reply("Thanks! Please check your details below and press \"Send to Harris\" when they look right.", lead);
+    if (lead) return reply("Thanks! Please check your details below and press \"Send to Avello Labs\" when they look right.", lead);
     return reply(`That email doesn't look quite right. Could you share ${ASK_NAME_EMAIL} again?`);
   }
 
   if (/\b(price|pricing|cost|how much|cheap|expensive|rate)\b/.test(text)) {
-    return reply("I can't quote prices here. Harris gives a clear quote after learning about your business. Would you like him to follow up?");
+    return reply("I can't quote prices here. We give a clear quote once we know a bit about your business. Would you like us to follow up?");
   }
   if (/\baeo\b|chatgpt|ai answer|answer engine/.test(text)) {
-    return reply("AEO is about making your business easy for AI tools like ChatGPT and Google's AI answers to understand and recommend. There's a plain-English guide at https://avellolabs.com/aeo/");
+    return reply("AEO is about making your business easy for AI tools like ChatGPT and Google's AI answers to understand and recommend. There's a short guide at https://avellolabs.com/aeo/");
   }
   if (/\bseo\b|google|rank/.test(text)) {
     return reply("For local businesses, Google weighs relevance, distance and prominence. Nobody can guarantee rankings, but a complete Business Profile, clear service pages and reviews all help. More at https://avellolabs.com/seo/");
@@ -80,5 +80,5 @@ export function mockReply(turns: Turn[]): ChatResult {
   if (/care|update|maintenance|broken|backup|security|speed/.test(text)) {
     return reply("Ongoing site care covers updates, security, speed, backups and keeping your hours and services current, so problems get caught early. More at https://avellolabs.com/website-care/");
   }
-  return reply("I can answer questions about SEO, AEO, website care and custom web apps, or pass a message to Harris. What would you like to know?");
+  return reply("I can answer questions about SEO, AEO, website care and custom web apps, or pass a message to us. What would you like to know?");
 }

@@ -1,0 +1,16 @@
+{
+  "name": "avello-alerts",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "test": "node --test test/*.test.ts ../workers-shared/*.test.ts",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "5.20261019.1",
+    "typescript": "7.0.2",
+    "wrangler": "4.151.2"
+  }
+}

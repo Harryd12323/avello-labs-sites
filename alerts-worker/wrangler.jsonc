@@ -1,0 +1,25 @@
+{
+  // Avello Labs lead alerts: forwards leads to Harris on Telegram. Deploy with `npx wrangler deploy`.
+  // Secrets (set with `npx wrangler secret put NAME`, never in this file):
+  //   TELEGRAM_BOT_TOKEN  the lead-alert bot's token from BotFather
+  //   TELEGRAM_CHAT_ID    Harris's chat ID with that bot
+  //   LEAD_SIGNING_KEY    shared with the chat and check Workers, to verify lead tickets
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "avello-alerts",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": true,
+
+  // Used ticket IDs (until they expire), salted hashes and counts. No lead details are stored.
+  "durable_objects": {
+    "bindings": [{ "name": "GATE", "class_name": "AlertGate" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["AlertGate"] }],
+
+  "vars": {
+    "ALLOWED_ORIGINS": "https://avellolabs.com,http://localhost:8000,http://127.0.0.1:8000",
+    "PER_IP_PER_HOUR": "3",
+    "PER_HOUR": "20",
+    "PER_DAY": "50"
+  }
+}

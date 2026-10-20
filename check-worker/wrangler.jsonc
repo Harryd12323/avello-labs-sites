@@ -1,0 +1,22 @@
+{
+  // Avello Labs instant website check. Deploy with `npx wrangler deploy` from this folder.
+  // No secrets are needed: the tool uses no AI or paid APIs.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "avello-check",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": true,
+
+  // Rate-limit counters only: salted hashes of visitor IPs and checked hostnames, deleted after an hour.
+  "durable_objects": {
+    "bindings": [{ "name": "LIMITER", "class_name": "Limiter" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Limiter"] }],
+
+  "vars": {
+    "ALLOWED_ORIGINS": "https://avellolabs.com,http://localhost:8000,http://127.0.0.1:8000",
+    "PER_IP_PER_HOUR": "10",
+    "PER_TARGET_PER_HOUR": "15",
+    "DAILY_CAP": "300"
+  }
+}

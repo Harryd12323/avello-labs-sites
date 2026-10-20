@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- shared:head -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://api.web3forms.com https://avello-chat.avellolabs.workers.dev https://avello-check.avellolabs.workers.dev https://avello-alerts.avellolabs.workers.dev; form-action https://api.web3forms.com; base-uri 'self'; object-src 'none'">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<link rel="stylesheet" href="/assets/site.css">
+<!-- /shared:head -->
+<title>Free Website Check: Instant SEO + AEO Score | Avello Labs</title>
+<meta name="description" content="Run a free instant check of your website&#x27;s SEO and AEO basics: title, description, mobile setup, schema, sitemap and more, with simple fixes.">
+<link rel="canonical" href="https://avellolabs.com/check/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Avello Labs">
+<meta property="og:title" content="Free Website Check: Instant SEO + AEO Score | Avello Labs">
+<meta property="og:description" content="Run a free instant check of your website&#x27;s SEO and AEO basics: title, description, mobile setup, schema, sitemap and more, with simple fixes.">
+<meta property="og:url" content="https://avellolabs.com/check/">
+<meta name="twitter:card" content="summary">
+</head>
+<body>
+<!-- shared:header -->
+<a class="skip" href="#main">Skip to content</a>
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="Avello Labs, home">
+      <img src="/brand/logo-horizontal-dark.svg" width="337" height="64" alt="Avello Labs">
+    </a>
+    <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+      <svg class="bars" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      <svg class="x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <a class="nav-link" href="/seo/">SEO</a>
+      <a class="nav-link" href="/aeo/">AEO</a>
+      <a class="nav-link" href="/website-care/">Website care</a>
+      <a class="nav-link" href="/web-apps/">Web apps</a>
+      <a class="nav-link" href="/#work">Concept work</a>
+      <a class="nav-link" href="/check/" aria-current="page">Free site check</a>
+      <a class="btn btn-small" href="/#contact">Get in touch</a>
+    </nav>
+  </div>
+</header>
+<!-- /shared:header -->
+
+<main id="main">
+  <section class="page-hero">
+    <div class="wrap">
+      <p class="crumbs"><a href="/">Home</a> / Free site check</p>
+      <h1>Free instant <span class="grad-text">website check</span></h1>
+      <p class="lede">Enter your website's address. In a few seconds you'll get a score out of 100 and simple fixes for the SEO and AEO basics that help people find you on Google and in AI answers.</p>
+    </div>
+  </section>
+
+  <div class="page-body">
+    <div class="wrap">
+      <form class="check-form" id="check-form" novalidate>
+        <label for="check-url">Your website address</label>
+        <div class="check-row">
+          <input id="check-url" name="url" type="text" inputmode="url" autocomplete="url" spellcheck="false" placeholder="yourbusiness.com" maxlength="2000" required>
+          <button class="btn" type="submit" id="check-btn">Check my site
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+        <p class="check-hint">Free, no sign-up. We check the page you enter, plus its robots.txt and sitemap. We don't store the address.</p>
+        <p class="check-error" id="check-error" role="alert"></p>
+      </form>
+
+      <div class="check-status" id="check-status" role="status" aria-live="polite"></div>
+      <section class="check-results" id="check-results" hidden aria-labelledby="results-h"></section>
+
+      <div class="page-grid check-explain">
+        <article class="prose">
+          <h2>What the check looks at</h2>
+          <ul class="checklist">
+            <li><strong>Secure connection:</strong> the page loads over HTTPS, and the http:// version redirects to it.</li>
+            <li><strong>Allowed in Google:</strong> nothing on the page tells search engines to stay away.</li>
+            <li><strong>Page title and meta description:</strong> present, and a good length for search results.</li>
+            <li><strong>Mobile setup:</strong> the page is set up to fit phone screens.</li>
+            <li><strong>Main heading:</strong> one clear H1 that says what the page is about.</li>
+            <li><strong>Business details for search engines:</strong> schema markup that describes your business, which also helps AI tools get your details right.</li>
+            <li><strong>robots.txt and sitemap:</strong> search engines can find and crawl your pages.</li>
+            <li><strong>Image descriptions:</strong> images have alt text for screen readers and image search.</li>
+            <li><strong>Page size:</strong> the page's HTML isn't unusually heavy.</li>
+          </ul>
+          <div class="note-box">
+            <p><strong>What a quick check can't tell you.</strong> This looks at one page's code as your server sends it. It can't judge your content, reviews, competition or rankings, and it doesn't measure how fast images and scripts load. Sites that build their pages with JavaScript can score lower here than they deserve. For the full picture, ask for the free full report after your check.</p>
+          </div>
+        </article>
+        <aside class="aside" aria-label="More from Avello Labs">
+          <div class="aside-card">
+            <h2>Want a hand with the fixes?</h2>
+            <p>Ongoing site care, SEO and AEO are what we do every month for small businesses.</p>
+            <a class="btn" href="/#contact">Get in touch</a>
+          </div>
+          <div class="aside-card">
+            <h2>Learn more</h2>
+            <ul>
+              <li><a href="/seo/">Why SEO matters for local businesses</a></li>
+              <li><a href="/aeo/">What is AEO, and why it matters</a></li>
+              <li><a href="/website-care/">Ongoing site health, explained</a></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- shared:footer -->
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="/brand/logo-horizontal-dark.svg" width="337" height="64" alt="Avello Labs">
+        <p>Fast websites, ongoing site care, SEO and AEO for small local businesses.</p>
+      </div>
+      <div>
+        <h2>Services</h2>
+        <ul>
+          <li><a href="/seo/">SEO</a></li>
+          <li><a href="/aeo/">AEO</a></li>
+          <li><a href="/website-care/">Website care</a></li>
+          <li><a href="/web-apps/">Web apps</a></li>
+          <li><a href="/check/">Free site check</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Company</h2>
+        <ul>
+          <li><a href="/#work">Concept work</a></li>
+          <li><a href="/#contact">Contact</a></li>
+          <li><a href="/privacy/">Privacy policy</a></li>
+          <li><a href="/terms/">Terms of use</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Contact</h2>
+        <address>
+          <a href="mailto:harris@avellolabs.com">harris@avellolabs.com</a><br>
+          Avello Labs LLC<br>
+          PO Box 141<br>
+          Collingswood, NJ 08108-9998
+        </address>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span data-year>2026</span> Avello Labs LLC. All rights reserved.</span>
+      <span><a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/site.js" defer></script>
+<link rel="stylesheet" href="/assets/chat.css">
+<script src="/assets/chat.js" data-endpoint="https://avello-chat.avellolabs.workers.dev/chat" data-web3forms="a6955225-5ff5-4562-ae2d-dfda9193580a" data-alerts="https://avello-alerts.avellolabs.workers.dev/lead" defer></script>
+<!-- /shared:footer -->
+<!-- shared:check -->
+<link rel="stylesheet" href="/assets/check.css">
+<script src="/assets/check.js" data-endpoint="https://avello-check.avellolabs.workers.dev/check" data-web3forms="a6955225-5ff5-4562-ae2d-dfda9193580a" data-alerts="https://avello-alerts.avellolabs.workers.dev/lead" defer></script>
+<!-- /shared:check -->
+</body>
+</html>

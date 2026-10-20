@@ -5,3 +5,11 @@ concepts/
 worker/node_modules/
 worker/.wrangler/
 worker/.dev.vars*
+
+# Website check worker: dependencies and local state
+check-worker/node_modules/
+check-worker/.wrangler/
+
+# Lead alerts worker: dependencies and local state
+alerts-worker/node_modules/
+alerts-worker/.wrangler/

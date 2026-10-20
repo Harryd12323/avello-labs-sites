@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- shared:head -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://api.web3forms.com https://avello-chat.avellolabs.workers.dev; form-action https://api.web3forms.com; base-uri 'self'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://api.web3forms.com https://avello-chat.avellolabs.workers.dev https://avello-check.avellolabs.workers.dev https://avello-alerts.avellolabs.workers.dev; form-action https://api.web3forms.com; base-uri 'self'; object-src 'none'">
 <link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,12 +12,12 @@
 <link rel="stylesheet" href="/assets/site.css">
 <!-- /shared:head -->
 <title>Why SEO Matters for Local Businesses | Avello Labs</title>
-<meta name="description" content="A plain-English guide to local SEO: how Google picks which nearby businesses to show, what actually helps you rank, and what to expect.">
+<meta name="description" content="How Google decides which nearby businesses to show, and what actually helps a small business rank in local search.">
 <link rel="canonical" href="https://avellolabs.com/seo/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Avello Labs">
 <meta property="og:title" content="Why SEO Matters for Local Businesses | Avello Labs">
-<meta property="og:description" content="A plain-English guide to local SEO: how Google picks which nearby businesses to show, what actually helps you rank, and what to expect.">
+<meta property="og:description" content="How Google decides which nearby businesses to show, and what actually helps a small business rank in local search.">
 <meta property="og:url" content="https://avellolabs.com/seo/">
 <meta name="twitter:card" content="summary">
 <script type="application/ld+json">
@@ -87,6 +87,7 @@
       <a class="nav-link" href="/website-care/">Website care</a>
       <a class="nav-link" href="/web-apps/">Web apps</a>
       <a class="nav-link" href="/#work">Concept work</a>
+      <a class="nav-link" href="/check/">Free site check</a>
       <a class="btn btn-small" href="/#contact">Get in touch</a>
     </nav>
   </div>
@@ -156,7 +157,7 @@
         <ul>
           <li><strong>It isn't a guarantee.</strong> Nobody can promise you the top spot. Anyone who does is guessing, or bending Google's rules in ways that can backfire.</li>
           <li><strong>It isn't instant.</strong> Changes can take weeks to be noticed, and months to show their full effect.</li>
-          <li><strong>It isn't one-and-done.</strong> Competitors keep improving, Google keeps changing, and your own business details change too.</li>
+          <li><strong>It isn't one-and-done.</strong> Competitors keep improving, and Google keeps changing.</li>
         </ul>
 
         <h2>Why it's worth it for a small business</h2>
@@ -189,7 +190,7 @@
 
         <div class="cta-band">
           <h2>Want to know where you stand on Google?</h2>
-          <p>Send us your website and we'll tell you, in plain English, what's helping, what's holding you back, and what we'd fix first.</p>
+          <p>Send us your website and we'll tell you what's working and what we'd fix first.</p>
           <a class="btn" href="/#contact">Get in touch <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
       </article>
@@ -228,6 +229,7 @@
           <li><a href="/aeo/">AEO</a></li>
           <li><a href="/website-care/">Website care</a></li>
           <li><a href="/web-apps/">Web apps</a></li>
+          <li><a href="/check/">Free site check</a></li>
         </ul>
       </div>
       <div>
@@ -258,7 +260,7 @@
 
 <script src="/assets/site.js" defer></script>
 <link rel="stylesheet" href="/assets/chat.css">
-<script src="/assets/chat.js" data-endpoint="https://avello-chat.avellolabs.workers.dev/chat" data-web3forms="a6955225-5ff5-4562-ae2d-dfda9193580a" defer></script>
+<script src="/assets/chat.js" data-endpoint="https://avello-chat.avellolabs.workers.dev/chat" data-web3forms="a6955225-5ff5-4562-ae2d-dfda9193580a" data-alerts="https://avello-alerts.avellolabs.workers.dev/lead" defer></script>
 <!-- /shared:footer -->
 </body>
 </html>

@@ -5,12 +5,14 @@ import { Limiter } from "./limiter";
 import { SYSTEM_PROMPT } from "./prompt";
 import { mockReply } from "./mock";
 import { cleanLead, mentionsCrisis, type ChatResult, type Turn } from "./lead";
+import { signTicket, leadHash, CHAT_TICKET_SECONDS } from "../../workers-shared/ticket";
 
 export { Limiter };
 
 export interface Env {
   LIMITER: DurableObjectNamespace<Limiter>;
   ANTHROPIC_API_KEY?: string;
+  LEAD_SIGNING_KEY?: string;
   MOCK?: string;
   ALLOWED_ORIGINS: string;
   PER_IP_PER_HOUR: string;
@@ -77,14 +79,20 @@ export default {
       return json({ error: "rate_limited", reply }, 429, { "Retry-After": String(verdict.retryAfterSeconds) });
     }
 
-    // Never offer a lead card in a conversation where the visitor mentioned self-harm or danger.
-    const safe = (r: ChatResult): ChatResult => (mentionsCrisis(turns) ? { ...r, lead: null } : r);
+    // Never offer a lead card in a crisis conversation. Every lead that is offered gets a signed ticket,
+    // which the alerts Worker needs before it will send Harris a Telegram alert about it.
+    const safe = async (r: ChatResult): Promise<ChatResult & { ticket?: string }> => {
+      const out = mentionsCrisis(turns) ? { ...r, lead: null } : r;
+      if (!out.lead || !env.LEAD_SIGNING_KEY) return out;
+      const h = await leadHash(out.lead);
+      return { ...out, ticket: await signTicket(env.LEAD_SIGNING_KEY, { tool: "chat", h }, CHAT_TICKET_SECONDS) };
+    };
 
-    if (env.MOCK === "1") return json(safe(mockReply(turns)));
+    if (env.MOCK === "1") return json(await safe(mockReply(turns)));
     if (!env.ANTHROPIC_API_KEY) return json({ error: "not_configured", reply: `The assistant isn't available right now. ${CONTACT}` }, 503);
 
     try {
-      return json(safe(await askClaude(env.ANTHROPIC_API_KEY, turns)));
+      return json(await safe(await askClaude(env.ANTHROPIC_API_KEY, turns)));
     } catch (error) {
       // Log only the error type and status, never the conversation.
       const status = error instanceof Anthropic.APIError ? error.status : undefined;

@@ -2,7 +2,7 @@
 SEO · AEO · Ongoing site care
 
 # Keep your website healthy. Outrank your competitors.
-Avello Labs keeps your site fast, fresh and climbing, on Google and in the AI answers your customers now trust.
+Avello Labs keeps your site fast and up to date, so customers find you on Google and in AI answers.
 Get in touch   See what we do
 
 What we do
@@ -11,16 +11,21 @@ What we do
 We keep your site healthy and easy to find, on Google and in AI answers, month after month. And when spreadsheets and paper start slowing you down, we build the simple tools that help you run the business behind it.
 
 ### SEO Rank higher on Google
-We fix what's holding your site back, sharpen your pages for the searches that matter, and build the signals Google rewards. Why SEO matters
+We fix what's holding your site back and tune your pages for the searches your customers actually make. Why SEO matters
 
 ### AEO Answer Engine Optimization
 Getting your business recommended when people ask AI tools like ChatGPT and Google's AI answers for help. What AEO is
 
 ### Ongoing site health Constant updates and monitoring
-We monitor your site constantly, keep content and technical details up to date, and catch problems early so your rankings keep climbing. What site care covers
+We keep your site updated and keep an eye on it, so problems get fixed before customers notice. What site care covers
 
 ### Custom web apps Simple tools built around how you work
 Customer portals, status trackers, intake forms and dashboards that replace the spreadsheet, paper or email chain a job lives in today. What a web app can do
+
+Free instant check
+
+## How does your website stack up?
+Get a score out of 100 and simple fixes for the SEO and AEO basics in a few seconds. Free, no sign-up. Run a free site check
 
 Why it matters
 
@@ -32,7 +37,7 @@ Customers ask AI firstQuestions that used to start on Google now start in ChatGP
 2
 Fewer spots at the topAn AI answer names a handful of businesses. Everyone else is invisible.
 3
-Your competitors aren't readyMost sites were built for old-style search. Getting ahead now is your edge.
+Your competitors aren't readyMost sites were built for old-style search, so there's still room to get ahead.
 
 How customers search now
 Who's the best place near me to fix my roof?
@@ -124,7 +129,7 @@ Both matter, and they support each other. A strong website helps your profile, a
 ## What SEO isn't
 - It isn't a guarantee. Nobody can promise you the top spot. Anyone who does is guessing, or bending Google's rules in ways that can backfire.
 - It isn't instant. Changes can take weeks to be noticed, and months to show their full effect.
-- It isn't one-and-done. Competitors keep improving, Google keeps changing, and your own business details change too.
+- It isn't one-and-done. Competitors keep improving, and Google keeps changing.
 
 ## Why it's worth it for a small business
 People who find you through search are usually looking for exactly what you offer, right now. Showing up for those searches puts you in front of customers at the moment they're ready to act.
@@ -144,7 +149,7 @@ Should I just pay for ads instead?
 Ads can bring quick, targeted visits, but they stop when the spending stops. SEO builds visibility that lasts. Many businesses use both.
 
 ## Want to know where you stand on Google?
-Send us your website and we'll tell you, in plain English, what's helping, what's holding you back, and what we'd fix first. Get in touch
+Send us your website and we'll tell you what's working and what we'd fix first. Get in touch
 
 === https://avellolabs.com/aeo/ (What Is AEO? Answer Engine Optimization Explained | Avello Labs) ===
 Home / AEO
@@ -156,7 +161,7 @@ In short
 - AEO stands for answer engine optimization.
 - Answer engines reply with an answer instead of a list of links: ChatGPT, Google's AI Overviews, Perplexity, Microsoft Copilot and others.
 - They build those answers from information they can find, and trust, on the web.
-- Good AEO is mostly good SEO, plus making your information especially clear, consistent and easy for machines to read.
+- Good AEO is mostly good SEO, plus making your information clear and easy for machines to read.
 
 ## What's changing
 Traditional search shows a list of links and lets you choose. Answer engines read many sources for you and summarize them, often naming just a few businesses.
@@ -178,9 +183,9 @@ Nobody outside these companies knows exactly how each tool chooses, and they cha
 - Keeping things current. Outdated information is a reason for a tool to leave you out, or describe you wrongly.
 
 ## AEO and SEO work together
-AEO isn't a replacement for SEO. AI answers often draw on the same pages that do well in normal search, so the foundations are shared: a fast, clear, trustworthy website. AEO adds a focus on how your information reads when it's pulled out and summarized somewhere else.
+AEO isn't a replacement for SEO. AI answers often draw on the same pages that do well in normal search, so the foundation is the same: a fast website people can trust. AEO adds a focus on how your information reads when it's pulled out and summarized somewhere else.
 
-An honest note. AEO is new, and it's changing quickly. Nobody can guarantee that a particular AI tool will mention your business, and answers vary from one question, person and day to the next. What you can do is make your business easy to find, easy to understand and easy to trust, which helps everywhere people look.
+An honest note. AEO is new, and it's changing quickly. Nobody can guarantee that a particular AI tool will mention your business, and answers change from one question to the next. What you can do is make your business easy to find and easy to trust, which helps wherever people look.
 
 ## Common questions
 
@@ -202,7 +207,7 @@ We'll check how your business shows up in AI answers today, and what would make 
 Home / Website care
 
 # Ongoing site health: what it is and why it matters
-A website isn't a sign you put up once. It runs on software, depends on services that renew and change, and describes a business that keeps changing. Ongoing care keeps it working, accurate and trusted.
+A website isn't a sign you put up once. It runs on software that needs updates, and it describes a business that keeps changing. Ongoing care keeps it working and accurate.
 
 In short
 - Websites tend to break quietly: a form stops sending, a page goes missing, a certificate expires.
@@ -237,7 +242,7 @@ None of these announce themselves. You usually find out when a customer mentions
 On speed: Google measures how real visitors experience loading, responsiveness and layout stability with a set of metrics called Core Web Vitals. They're a useful, concrete way to tell whether a site feels fast or frustrating.
 
 ## Why it matters for a small business
-Your website is often the first impression a customer gets. A broken form or outdated hours costs you customers you never hear about. Search engines and AI tools favor sites that are fast, secure and accurate, so neglect slowly wears away your visibility too.
+Your website is often the first impression a customer gets. A broken form or outdated hours costs you customers you never hear about. Search engines and AI tools favor sites that are fast and accurate, so neglect slowly costs you visibility too.
 And repairing a hacked or broken site after the fact usually takes far more time and money than keeping it healthy in the first place.
 
 ## What a month of care can look like
@@ -246,8 +251,8 @@ And repairing a hacked or broken site after the fact usually takes far more time
 - Send a test message through every form
 - Review Search Console for new errors
 - Update anything that changed: hours, services, offers, photos
-- Note anything that needs your decision, in plain English
-Site care goes hand in hand with SEO and AEO: a slow, broken or outdated site is hard to rank or recommend, however good everything else is.
+- Flag anything that needs your decision
+Site care goes hand in hand with SEO and AEO: a slow or broken site is hard to rank or recommend, however good everything else is.
 
 ## Common questions
 
@@ -260,16 +265,16 @@ With monitoring in place, you find out quickly instead of from a customer. The c
 Do I need to give someone access to my website?
 Usually, yes, at the level needed to make updates. We recommend that you always own your domain, hosting and website accounts in your own name, and add anyone helping you as a separate user, so you're never locked out.
 How is this different from SEO?
-Site care keeps the website itself healthy. SEO and AEO work on how you're found. They depend on each other, because a slow, broken or outdated site is hard to rank.
+Site care keeps the website itself healthy. SEO and AEO work on how you're found. They depend on each other, because a slow or broken site is hard to rank.
 
 ## Not sure how healthy your site is?
-We'll take a look and tell you what's working, what's at risk, and what we'd keep an eye on every month. Get in touch
+We'll take a look and tell you what's working and what's at risk. Get in touch
 
 === https://avellolabs.com/web-apps/ (Custom Web Apps and Tools for Small Businesses | Avello Labs) ===
 Home / Web apps
 
 # Custom web apps and tools for your business
-A website tells people about your business. A web app helps you run it: a tool your customers or your team actually use, right in the browser, built around the way you already work.
+A website tells people about your business. A web app helps you run it: a tool your customers or your team use in the browser, built around the way you already work.
 
 In short
 - A web app is software that runs in a web browser, with nothing to install.
@@ -313,7 +318,7 @@ Spreadsheets and paper are flexible and familiar, and for a long time they were 
 - Customers can't check anything without calling you.
 - It's hard to see at a glance what's late or what needs attention.
 - Important details live in one person's head, inbox or notebook, which is a problem when they're away.
-Meanwhile, small custom tools have become more practical to build and run. Hosting is inexpensive, browsers can do far more than they used to, and a focused tool doesn't need a large team behind it. That puts software built around your own process within reach of businesses that used to make do.
+Small custom tools have also become cheaper to build and run. Hosting costs little, and a focused tool doesn't need a big team behind it. That puts software built around your own process within reach of businesses that used to make do.
 
 ## When a custom tool makes sense, and when it doesn't
 
