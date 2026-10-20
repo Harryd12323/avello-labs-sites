@@ -15,9 +15,31 @@ From the repo root (Python 3, nothing to install):
 # Re-apply the shared blocks to every page and rebuild sitemap.xml
 python3 scripts/site.py sync
 
-# Start a new page (for example a blog post), then fill in its content
-python3 scripts/site.py new /blog/my-first-post/ "Post title | Avello Labs" "One-sentence meta description"
+# Start a new page, then fill in its content
+python3 scripts/site.py new /pricing/ "Page title | Avello Labs" "One-sentence meta description"
 ```
+
+## Blog
+
+Posts live in `blog/<slug>/index.html` and are hand-written like every other page. Each one starts as a draft:
+drafts carry noindex, show a "Draft" label, and stay out of the sitemap and `blog/feed.xml`.
+
+```sh
+# Start a draft post (title, then meta description), then write it between the <article> tags
+python3 scripts/site.py post /blog/my-post/ "Post headline" "One-sentence meta description"
+
+# Publish it: sets today's date, adds it to the list, feed and sitemap, and turns on the footer link
+python3 scripts/site.py publish /blog/my-post/
+
+# Tests for the blog build (run on a throwaway copy of the site)
+python3 scripts/test_site.py
+```
+
+`sync` fills in each post's byline and reading time, its Article schema, the related links beside it and the
+list on `/blog/`. While nothing is published, `/blog/` itself carries noindex and lists the drafts for review;
+after that it lists published posts only. If a published post links to a draft in its text, `sync` prints a
+warning. To change the publish or update date by hand, edit `article:published_time` or
+`article:modified_time` in the post's head and run `sync`.
 
 Page content, titles, meta descriptions, og tags and JSON-LD sit outside the markers and are never touched.
 

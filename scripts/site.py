@@ -11,21 +11,31 @@ Commands (run from the repo root, Python 3 only, nothing to install):
 
     python3 scripts/site.py sync
         Rewrites the shared blocks on every page from the templates below, marks the current
-        page in the nav, rebuilds sitemap.xml, and refreshes worker/knowledge.txt (the site text
-        the chat assistant answers from).
+        page in the nav, rebuilds the blog list, blog/feed.xml and sitemap.xml, and refreshes
+        worker/knowledge.txt (the site text the chat assistant answers from).
 
-    python3 scripts/site.py new /blog/my-first-post/ "Page title | Avello Labs" "Meta description"
-        Creates blog/my-first-post/index.html with the shared blocks and an empty article to fill in,
+    python3 scripts/site.py new /pricing/ "Page title | Avello Labs" "Meta description"
+        Creates pricing/index.html with the shared blocks and an empty article to fill in,
         then runs sync.
+
+    python3 scripts/site.py post /blog/my-post/ "Post headline" "Meta description"
+        Creates a draft blog post to fill in, then runs sync. Drafts carry noindex and stay out
+        of the sitemap and the feed.
+
+    python3 scripts/site.py publish /blog/my-post/
+        Marks a draft as published, sets its publish and update dates to today, then runs sync.
 
 Everything outside the markers (titles, meta descriptions, og tags, JSON-LD, page content) is
 never touched.
 """
 import html
+import json
+import math
 import re
 from html.parser import HTMLParser
 import sys
-from datetime import date
+from datetime import date, datetime, timezone
+from email.utils import format_datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -51,6 +61,15 @@ CHECK_ENDPOINT = f"{CHECK_BASE}/check"
 ALERTS_ENDPOINT = "https://avello-alerts.avellolabs.workers.dev/lead"
 # Public by design: Web3Forms access keys only let messages be sent to the key owner's inbox.
 WEB3FORMS_KEY = "a6955225-5ff5-4562-ae2d-dfda9193580a"
+
+# Blog (see blog/). Each post is a hand-written page at /blog/<slug>/. Its head says whether it's a draft
+# (<meta name="blog:status">) and when it was published and updated (article:published_time and
+# article:modified_time). From those, sync fills in the byline and reading time, the Article schema, the
+# related links, the list on /blog/, blog/feed.xml and the sitemap.
+BLOG_NAME = "Avello Labs blog"
+BLOG_AUTHOR = "Avello Labs"
+BLOG_DESCRIPTION = "Practical website, search and AI answer tips for small local businesses."
+WORDS_PER_MINUTE = 230
 
 # Pages whose text the chat assistant answers from.
 KNOWLEDGE_PAGES = ["/", "/seo/", "/aeo/", "/website-care/", "/web-apps/", "/tools/"]
@@ -108,7 +127,8 @@ def shared_header(current):
 <!-- /shared:header -->"""
 
 
-def shared_footer():
+def shared_footer(blog=False):
+    blog_link = '\n          <li><a href="/blog/">Blog</a></li>' if blog else ""
     return f"""<!-- shared:footer -->
 <footer class="site">
   <div class="wrap">
@@ -138,7 +158,7 @@ def shared_footer():
       <div>
         <h2>Company</h2>
         <ul>
-          <li><a href="/#work">Concept work</a></li>
+          <li><a href="/#work">Concept work</a></li>{blog_link}
           <li><a href="/#contact">Contact</a></li>
           <li><a href="/privacy/">Privacy policy</a></li>
           <li><a href="/terms/">Terms of use</a></li>
@@ -214,6 +234,178 @@ def chat_script():
     dev = f' data-dev-endpoint="{CHAT_DEV_ENDPOINT}"' if CHAT_DEV_ENDPOINT else ""
     return (f'<link rel="stylesheet" href="/assets/chat.css">\n'
             f'<script src="/assets/chat.js" data-endpoint="{CHAT_ENDPOINT}"{dev} data-web3forms="{WEB3FORMS_KEY}" data-alerts="{ALERTS_ENDPOINT}" defer></script>')
+
+
+ARROW = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" '
+         'stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>')
+
+
+def _meta(text, attr, name):
+    m = re.search(rf'<meta {attr}="{re.escape(name)}" content="([^"]*)">', text)
+    return html.unescape(m.group(1)) if m else ""
+
+
+def _strip_blocks(text):
+    return re.sub(r"<!-- shared:([\w-]+) -->.*?<!-- /shared:\1 -->", "", text, flags=re.S)
+
+
+def blog_posts():
+    """Every post under /blog/, newest first, with the details sync needs. Exits on a post with missing details."""
+    posts = []
+    for url, f in pages():
+        if not re.fullmatch(r"/blog/[^/]+/", url):
+            continue
+        text = f.read_text()
+        status = _meta(text, "name", "blog:status")
+        published, modified = _meta(text, "property", "article:published_time"), _meta(text, "property", "article:modified_time")
+        h1 = re.search(r"<h1[^>]*>(.*?)</h1>", text, re.S)
+        body = re.search(r'<article class="prose">(.*?)</article>', _strip_blocks(text), re.S)
+        problems = [what for what, ok in [
+            ('<meta name="blog:status"> set to draft or published', status in ("draft", "published")),
+            ("article:published_time as YYYY-MM-DD", re.fullmatch(r"\d{4}-\d\d-\d\d", published)),
+            ("article:modified_time as YYYY-MM-DD", re.fullmatch(r"\d{4}-\d\d-\d\d", modified)),
+            ("an <h1>", h1), ('an <article class="prose">', body), ("a meta description", _meta(text, "name", "description"))] if not ok]
+        if problems:
+            sys.exit(f"{f}: blog post needs " + ", ".join(problems))
+        words = len(re.findall(r"[\w’']+", html.unescape(re.sub(r"<[^>]+>", " ", body.group(1)))))
+        posts.append({
+            "url": url, "file": f, "draft": status == "draft",
+            "headline": html.unescape(re.sub(r"<[^>]+>", "", h1.group(1))).strip(),
+            "description": _meta(text, "name", "description"),
+            "published": published, "modified": modified,
+            "words": words, "minutes": max(1, math.ceil(words / WORDS_PER_MINUTE)),
+        })
+    return sorted(posts, key=lambda p: (p["published"], p["url"]), reverse=True)
+
+
+def nice_date(iso):
+    d = date.fromisoformat(iso)
+    return f"{d.strftime('%B')} {d.day}, {d.year}"
+
+
+def blog_head(post, posts):
+    """Head block for /blog/ and each post: stylesheet, feed link, noindex while unpublished, Article schema."""
+    hidden = post["draft"] if post else not any(not p["draft"] for p in posts)
+    lines = ["<!-- shared:blog-head -->", '<link rel="stylesheet" href="/assets/blog.css">',
+             f'<link rel="alternate" type="application/rss+xml" title="{BLOG_NAME}" href="{SITE}/blog/feed.xml">']
+    if hidden:
+        note = "Draft" if post else "No published posts yet"
+        lines.append(f'<!-- {note}: keeps search engines out until `python3 scripts/site.py publish` is run. -->\n'
+                     '<meta name="robots" content="noindex, nofollow">')
+    if post:
+        schema = {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": post["headline"],
+            "description": post["description"],
+            "url": SITE + post["url"],
+            "mainEntityOfPage": SITE + post["url"],
+            "datePublished": post["published"],
+            "dateModified": post["modified"],
+            "author": {"@type": "Organization", "name": BLOG_AUTHOR, "url": SITE + "/"},
+            "publisher": {"@type": "Organization", "name": BLOG_AUTHOR, "url": SITE + "/",
+                          "logo": {"@type": "ImageObject", "url": SITE + "/brand/icon.svg"}},
+            "inLanguage": "en-US",
+            "wordCount": post["words"],
+            "timeRequired": f"PT{post['minutes']}M",
+            "isPartOf": {"@type": "Blog", "name": BLOG_NAME, "url": SITE + "/blog/"},
+        }
+        lines.append('<script type="application/ld+json">\n' + json.dumps(schema, indent=2, ensure_ascii=False).replace("</", "<\\/") + "\n</script>")
+    lines.append("<!-- /shared:blog-head -->")
+    return "\n".join(lines)
+
+
+def byline(post):
+    when = (f'<span class="draft-tag">Draft</span>' if post["draft"]
+            else f'<time datetime="{post["published"]}">{nice_date(post["published"])}</time>')
+    return f'By {BLOG_AUTHOR} <span aria-hidden="true">·</span> {when} <span aria-hidden="true">·</span> {post["minutes"]} min read'
+
+
+def post_meta(post):
+    lines = ["<!-- shared:post-meta -->", f'<p class="post-meta">{byline(post)}</p>']
+    if post["modified"] > post["published"] and not post["draft"]:
+        lines.append(f'<p class="post-updated">Updated <time datetime="{post["modified"]}">{nice_date(post["modified"])}</time></p>')
+    if post["draft"]:
+        lines.append('<p class="draft-note"><strong>Draft, not published.</strong> Search engines are told to skip this page, '
+                     "and it isn't in the sitemap or the blog feed yet.</p>")
+    lines.append("<!-- /shared:post-meta -->")
+    return "\n".join(lines)
+
+
+def post_aside(post, posts):
+    """Related links beside each post: the free site check, the free tools, and other posts.
+    A published post only links to other published posts; a draft links to everything, for review."""
+    others = [p for p in posts if p["url"] != post["url"] and (post["draft"] or not p["draft"])][:3]
+    more = ""
+    if others:
+        items = "\n".join(f'          <li><a href="{p["url"]}">{html.escape(p["headline"])}</a></li>' for p in others)
+        more = f"""
+      <div class="aside-card">
+        <h2>More from the blog</h2>
+        <ul>
+{items}
+        </ul>
+      </div>"""
+    return f"""<!-- shared:post-aside -->
+      <aside class="aside" aria-label="Related">
+      <div class="aside-card">
+        <h2>Check your own site</h2>
+        <p>The free site check scores 10 SEO and AEO basics on any page in a few seconds.</p>
+        <a class="btn" href="/check/">Run a free site check</a>
+      </div>
+      <div class="aside-card">
+        <h2>Free tools</h2>
+        <ul>
+          <li><a href="/tools/ai-crawler-check/">AI crawler check</a></li>
+          <li><a href="/tools/search-preview/">Search preview</a></li>
+          <li><a href="/tools/schema-generator/">Business schema generator</a></li>
+          <li><a href="/tools/">See all free tools</a></li>
+        </ul>
+      </div>{more}
+      </aside>
+      <!-- /shared:post-aside -->"""
+
+
+def blog_list(posts):
+    """The post list on /blog/. Once anything is published it lists published posts only; until then /blog/
+    carries noindex and lists the drafts, so they can be reviewed in place."""
+    posts = [p for p in posts if not p["draft"]] or posts
+    if not posts:
+        return '<!-- shared:blog-list -->\n      <p class="post-empty">The first posts are on the way.</p>\n      <!-- /shared:blog-list -->'
+    cards = "\n".join(f"""        <li class="post-card">
+          <h2><a href="{p["url"]}">{html.escape(p["headline"])}</a></h2>
+          <p class="post-meta">{byline(p)}</p>
+          <p>{html.escape(p["description"])}</p>
+          <span class="post-go" aria-hidden="true">Read the post {ARROW}</span>
+        </li>""" for p in posts)
+    return f'<!-- shared:blog-list -->\n      <ul class="post-list">\n{cards}\n      </ul>\n      <!-- /shared:blog-list -->'
+
+
+def blog_feed(posts):
+    """RSS 2.0 feed of published posts. Dates are fixed at noon UTC so they read as the right day everywhere in the US."""
+    live = [p for p in posts if not p["draft"]]
+    stamp = lambda iso: format_datetime(datetime.fromisoformat(iso + "T12:00:00").replace(tzinfo=timezone.utc))
+    x = lambda t: html.escape(t, quote=False)
+    items = "".join(f"""    <item>
+      <title>{x(p["headline"])}</title>
+      <link>{SITE}{p["url"]}</link>
+      <guid isPermaLink="true">{SITE}{p["url"]}</guid>
+      <pubDate>{stamp(p["published"])}</pubDate>
+      <description>{x(p["description"])}</description>
+    </item>
+""" for p in live)
+    built = f"    <lastBuildDate>{stamp(max(p['modified'] for p in live))}</lastBuildDate>\n" if live else ""
+    return f"""<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{BLOG_NAME}</title>
+    <link>{SITE}/blog/</link>
+    <description>{x(BLOG_DESCRIPTION)}</description>
+    <language>en-us</language>
+    <atom:link href="{SITE}/blog/feed.xml" rel="self" type="application/rss+xml"/>
+{built}{items}  </channel>
+</rss>
+"""
 
 
 class _Text(HTMLParser):
@@ -292,21 +484,48 @@ def replace_block(text, name, new, path):
 
 def sync():
     found = pages()
+    posts = blog_posts()
+    by_url = {p["url"]: p for p in posts}
+    live = [p for p in posts if not p["draft"]]
     for url, f in found:
         text = f.read_text()
         text = replace_block(text, "head", shared_head(), f)
         text = replace_block(text, "header", shared_header(url), f)
-        text = replace_block(text, "footer", shared_footer(), f)
+        text = replace_block(text, "footer", shared_footer(blog=bool(live)), f)
         for name in TOOL_BLOCKS:
             if f"<!-- shared:{name} -->" in text:
                 text = replace_block(text, name, tool_block(name), f)
+        if url == "/blog/":
+            text = replace_block(text, "blog-head", blog_head(None, posts), f)
+            text = replace_block(text, "blog-list", blog_list(posts), f)
+        elif url in by_url:
+            post = by_url[url]
+            text = replace_block(text, "blog-head", blog_head(post, posts), f)
+            text = replace_block(text, "post-meta", post_meta(post), f)
+            text = replace_block(text, "post-aside", post_aside(post, posts), f)
         f.write_text(text)
         print("synced", url)
-    rows = "".join(f"  <url><loc>{SITE}{url}</loc><lastmod>{date.fromtimestamp(f.stat().st_mtime).isoformat()}</lastmod></url>\n"
-                   for url, f in found)
+    # Links written into a published post's text are the author's, so they're only flagged, never changed.
+    for p in live:
+        for d in posts:
+            if d["draft"] and f'href="{d["url"]}' in _strip_blocks(p["file"].read_text()):
+                print(f"WARNING: {p['url']} is published but links to the draft {d['url']}. Publish it too, or remove the link.")
+    if (ROOT / "blog").is_dir():
+        (ROOT / "blog" / "feed.xml").write_text(blog_feed(posts))
+        print(f"blog/feed.xml: {len(live)} published, {len(posts) - len(live)} left out as drafts")
+
+    # Drafts, and /blog/ while nothing is published, carry noindex, so they stay out of the sitemap too.
+    def listed(url):
+        return not (url in by_url and by_url[url]["draft"]) and not (url == "/blog/" and not live)
+
+    def lastmod(url, f):
+        return by_url[url]["modified"] if url in by_url else date.fromtimestamp(f.stat().st_mtime).isoformat()
+
+    rows = "".join(f"  <url><loc>{SITE}{url}</loc><lastmod>{lastmod(url, f)}</lastmod></url>\n"
+                   for url, f in found if listed(url))
     (ROOT / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n'
                                       '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + rows + "</urlset>\n")
-    print(f"sitemap.xml: {len(found)} pages")
+    print(f"sitemap.xml: {rows.count('<url>')} pages")
     knowledge()
 
 
@@ -363,10 +582,89 @@ def new(url, title, desc):
     sync()
 
 
+def post(url, headline, desc):
+    if not re.fullmatch(r"/blog/[a-z0-9-]+/", url):
+        sys.exit("The post path must look like /blog/my-post/ (lowercase letters, numbers and dashes)")
+    out = ROOT / url.strip("/") / "index.html"
+    if out.exists():
+        sys.exit(f"{out} already exists")
+    if not (ROOT / "blog" / "index.html").exists():
+        sys.exit("blog/index.html is missing")
+    t, h, d, today = html.escape(f"{headline} | Avello Labs"), html.escape(headline), html.escape(desc), date.today().isoformat()
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- shared:head --><!-- /shared:head -->
+<title>{t}</title>
+<meta name="description" content="{d}">
+<link rel="canonical" href="{SITE}{url}">
+<meta name="blog:status" content="draft">
+<meta property="article:published_time" content="{today}">
+<meta property="article:modified_time" content="{today}">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Avello Labs">
+<meta property="og:title" content="{h}">
+<meta property="og:description" content="{d}">
+<meta property="og:url" content="{SITE}{url}">
+<meta name="twitter:card" content="summary">
+<!-- shared:blog-head --><!-- /shared:blog-head -->
+</head>
+<body>
+<!-- shared:header --><!-- /shared:header -->
+
+<main id="main">
+  <section class="page-hero">
+    <div class="wrap">
+      <p class="crumbs"><a href="/">Home</a> / <a href="/blog/">Blog</a></p>
+      <h1>{h}</h1>
+      <p class="lede">TODO one or two sentences that sum up the post.</p>
+      <!-- shared:post-meta --><!-- /shared:post-meta -->
+    </div>
+  </section>
+  <div class="page-body">
+    <div class="wrap page-grid">
+      <article class="prose">
+        <h2>TODO first heading</h2>
+        <p>TODO</p>
+      </article>
+      <!-- shared:post-aside --><!-- /shared:post-aside -->
+    </div>
+  </div>
+</main>
+
+<!-- shared:footer --><!-- /shared:footer -->
+</body>
+</html>
+""")
+    print("created", out)
+    sync()
+
+
+def publish(url):
+    f = ROOT / url.strip("/") / "index.html"
+    if not (re.fullmatch(r"/blog/[^/]+/", url) and f.exists()):
+        sys.exit(f"No blog post at {url}")
+    text, today = f.read_text(), date.today().isoformat()
+    if '<meta name="blog:status" content="draft">' not in text:
+        sys.exit(f"{url} isn't a draft")
+    text = text.replace('<meta name="blog:status" content="draft">', '<meta name="blog:status" content="published">')
+    text = re.sub(r'(<meta property="article:(?:published|modified)_time" content=")[^"]*', rf"\g<1>{today}", text)
+    f.write_text(text)
+    print("published", url)
+    sync()
+
+
 if __name__ == "__main__":
     if len(sys.argv) >= 2 and sys.argv[1] == "sync":
         sync()
     elif len(sys.argv) == 5 and sys.argv[1] == "new":
         new(*sys.argv[2:])
+    elif len(sys.argv) == 5 and sys.argv[1] == "post":
+        post(*sys.argv[2:])
+    elif len(sys.argv) == 3 and sys.argv[1] == "publish":
+        publish(sys.argv[2])
     else:
         sys.exit(__doc__)

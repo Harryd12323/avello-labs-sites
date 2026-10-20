@@ -2,6 +2,7 @@
 # public site. Pages, assets, brand images and the concept screenshots in work/ are still published.
 exclude:
   - README.md
+  - BLOG-NOTES.md
   - scripts/
   - worker/
   - check-worker/

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Avello Labs blog</title>
+    <link>https://avellolabs.com/blog/</link>
+    <description>Practical website, search and AI answer tips for small local businesses.</description>
+    <language>en-us</language>
+    <atom:link href="https://avellolabs.com/blog/feed.xml" rel="self" type="application/rss+xml"/>
+    <lastBuildDate>Tue, 20 Oct 2026 12:00:00 +0000</lastBuildDate>
+    <item>
+      <title>What AEO is, and why AI answers matter for your business now</title>
+      <link>https://avellolabs.com/blog/what-is-aeo-and-why-ai-answers-matter/</link>
+      <guid isPermaLink="true">https://avellolabs.com/blog/what-is-aeo-and-why-ai-answers-matter/</guid>
+      <pubDate>Tue, 20 Oct 2026 12:00:00 +0000</pubDate>
+      <description>AEO explained for local business owners: what AI answer tools are, where they get their information, and the steps that help them recommend you.</description>
+    </item>
+    <item>
+      <title>Why your Google Business Profile matters more than you think</title>
+      <link>https://avellolabs.com/blog/google-business-profile-matters/</link>
+      <guid isPermaLink="true">https://avellolabs.com/blog/google-business-profile-matters/</guid>
+      <pubDate>Tue, 20 Oct 2026 12:00:00 +0000</pubDate>
+      <description>Your Google Business Profile is often the first thing local customers see. Here's how Google uses it, and a checklist for getting it right.</description>
+    </item>
+    <item>
+      <title>How to check if your website blocks AI crawlers</title>
+      <link>https://avellolabs.com/blog/check-if-your-site-blocks-ai-crawlers/</link>
+      <guid isPermaLink="true">https://avellolabs.com/blog/check-if-your-site-blocks-ai-crawlers/</guid>
+      <pubDate>Tue, 20 Oct 2026 12:00:00 +0000</pubDate>
+      <description>A step-by-step guide to finding out whether your robots.txt or hosting settings keep ChatGPT, Claude, Perplexity and other AI tools off your website.</description>
+    </item>
+  </channel>
+</rss>

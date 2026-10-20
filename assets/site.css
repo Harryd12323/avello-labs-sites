@@ -265,6 +265,9 @@ form.contact-form::before { content: ""; position: absolute; left: 1.5rem; right
 .prose strong { color: var(--text); font-weight: 600; }
 .prose a { color: var(--text); text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--cyan) 70%, transparent); text-underline-offset: 4px; }
 .prose a:hover { text-decoration-color: var(--cyan); }
+/* Buttons inside an article keep their own colors, not the article's link style. */
+.prose a.btn { color: var(--btn-ink); text-decoration: none; }
+.prose a.btn-ghost { color: var(--text); }
 .summary { padding: 1.4rem 1.5rem; border: 1px solid var(--line-bright); border-left: 2px solid var(--cyan); border-radius: 12px;
            background: linear-gradient(135deg, color-mix(in srgb, var(--blue-2) 12%, var(--panel)), var(--panel)); }
 .summary .eyebrow { font-size: .75rem; }

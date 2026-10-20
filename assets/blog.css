@@ -1,0 +1,41 @@
+/* Blog pages (/blog/...). Uses the color tokens from site.css. */
+
+/* Byline under a post's headline, and on each card in the list */
+.post-meta { margin-top: 1.25rem; color: var(--muted); font-size: .92rem; }
+.post-meta span[aria-hidden] { margin: 0 .3rem; color: var(--line-bright); }
+.post-updated { margin-top: .3rem; color: var(--muted); font-size: .85rem; }
+.draft-tag { display: inline-block; padding: .05rem .5rem; border: 1px solid color-mix(in srgb, #fbbf24 55%, transparent); border-radius: 999px;
+             background: color-mix(in srgb, #fbbf24 12%, transparent); color: #fcd34d; font-size: .78rem; font-weight: 600; letter-spacing: .02em; }
+.draft-note { margin-top: 1rem; max-width: 42rem; padding: .7rem .9rem; border: 1px dashed color-mix(in srgb, #fbbf24 50%, transparent); border-radius: 10px;
+              color: var(--muted); font-size: .88rem; }
+.draft-note strong { color: #fcd34d; font-weight: 600; }
+
+/* Post list on /blog/ */
+.post-list { list-style: none; display: grid; gap: 1rem; }
+.post-card { position: relative; display: flex; flex-direction: column; padding: 1.5rem; border: 1px solid var(--line); border-radius: var(--radius);
+             background: linear-gradient(180deg, var(--panel), var(--bg-2)); transition: border-color .2s, transform .2s; }
+.post-card:hover { border-color: color-mix(in srgb, var(--blue-2) 55%, var(--line)); transform: translateY(-2px); }
+.post-card h2 { margin: 0; font-size: clamp(1.2rem, 3.2vw, 1.45rem); line-height: 1.25; letter-spacing: -.015em; max-width: none; }
+.post-card h2 a { color: var(--text); text-decoration: none; }
+/* The whole card is the link's click target. */
+.post-card h2 a::after { content: ""; position: absolute; inset: 0; border-radius: var(--radius); }
+.post-card h2 a:focus-visible { outline: none; }
+.post-card:has(h2 a:focus-visible) { outline: 2px solid var(--cyan); outline-offset: 3px; }
+.post-card .post-meta { margin-top: .5rem; font-size: .87rem; }
+.post-card p:not(.post-meta) { margin-top: .75rem; color: #c9d1e6; font-size: .98rem; }
+.post-go { margin-top: 1rem; display: inline-flex; align-items: center; gap: .4rem; font-weight: 600; font-size: .93rem; }
+.post-go svg { width: 16px; height: 16px; color: var(--cyan); transition: transform .15s; }
+.post-card:hover .post-go svg { transform: translateX(3px); }
+.post-empty { color: var(--muted); }
+
+/* Post body extras */
+.prose code { padding: .1rem .35rem; border: 1px solid var(--line); border-radius: 6px; background: var(--bg-2); color: var(--text);
+              font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .88em; overflow-wrap: anywhere; }
+.prose pre { margin-top: 1rem; padding: 1rem 1.1rem; border: 1px solid var(--line); border-radius: 12px; background: var(--bg-2); overflow-x: auto; }
+.prose pre code { padding: 0; border: 0; background: none; font-size: .9rem; line-height: 1.55; overflow-wrap: normal; }
+.prose ol li::marker { font-weight: 600; }
+
+@media (prefers-reduced-motion: reduce) {
+  .post-card, .post-go svg { transition: none; }
+  .post-card:hover { transform: none; }
+}
