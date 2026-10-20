@@ -38,7 +38,7 @@
     '<button class="chat-launcher" type="button" aria-expanded="false" aria-controls="chat-panel">' +
       icon('<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>') +
       '<span class="chat-launcher-label">Ask us</span></button>' +
-    '<section class="chat-panel" id="chat-panel" role="dialog" aria-labelledby="chat-title" hidden>' +
+    '<section class="chat-panel" id="chat-panel" role="dialog" aria-labelledby="chat-title" tabindex="-1" hidden>' +
       '<header class="chat-head">' +
         '<div class="chat-title"><h2 id="chat-title">Avello Labs assistant</h2><p>AI answers from our website</p></div>' +
         '<button class="chat-icon-btn" type="button" data-act="clear" aria-label="Clear chat">' + icon('<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>') + "</button>" +
@@ -260,17 +260,69 @@
     } catch (e) { /* alerts are best effort */ }
   }
 
+  // ---------- Phones: lock the page and fit the visual viewport ----------
+  // iOS Safari ignores overflow:hidden for scrolling, so the page is pinned with position:fixed while the
+  // chat is open and put back at the same scroll position afterwards.
+  var lockedY = 0, locked = false;
+  function lockPage() {
+    if (locked) return;
+    lockedY = window.scrollY;
+    var b = document.body.style;
+    b.position = "fixed"; b.top = -lockedY + "px"; b.left = "0"; b.right = "0"; b.width = "100%";
+    document.documentElement.classList.add("chat-locked");
+    locked = true;
+  }
+  function unlockPage() {
+    if (!locked) return;
+    var b = document.body.style;
+    b.position = ""; b.top = ""; b.left = ""; b.right = ""; b.width = "";
+    document.documentElement.classList.remove("chat-locked");
+    locked = false;
+    var html = document.documentElement.style;
+    html.scrollBehavior = "auto"; // the site scrolls smoothly; restoring should be instant
+    window.scrollTo(0, lockedY);
+    html.scrollBehavior = "";
+  }
+  // The iOS keyboard shrinks the visual viewport (and may shift it) without resizing the page, so the
+  // panel takes its height and top from window.visualViewport whenever that changes.
+  function fitViewport() {
+    if (!state.open || !narrow.matches) {
+      panel.style.removeProperty("--chat-vv-height");
+      panel.style.removeProperty("--chat-vv-top");
+      root.classList.remove("kb-open");
+      return;
+    }
+    var vv = window.visualViewport;
+    var height = vv ? vv.height : window.innerHeight, top = vv ? vv.offsetTop : 0;
+    var atBottom = log.scrollHeight - log.scrollTop - log.clientHeight < 40;
+    panel.style.setProperty("--chat-vv-height", Math.round(height) + "px");
+    panel.style.setProperty("--chat-vv-top", Math.round(top) + "px");
+    root.classList.toggle("kb-open", window.innerHeight - height > 120);
+    if (atBottom) log.scrollTop = log.scrollHeight;
+  }
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener("resize", fitViewport);
+    window.visualViewport.addEventListener("scroll", fitViewport);
+  }
+  window.addEventListener("resize", fitViewport);
+  window.addEventListener("orientationchange", fitViewport);
+  input.addEventListener("focus", function () { setTimeout(fitViewport, 50); });
+
   // ---------- Open, close, input ----------
   function setOpen(open, focus) {
     state.open = open;
     panel.hidden = !open;
     launcher.setAttribute("aria-expanded", open ? "true" : "false");
     root.classList.toggle("is-open", open);
-    document.documentElement.classList.toggle("chat-locked", open && narrow.matches);
+    if (open && narrow.matches) lockPage(); else unlockPage();
+    fitViewport();
     save();
     if (open) {
       render();
-      if (focus !== false) input.focus();
+      if (focus !== false) {
+        // On phones, focus the panel rather than the message box, so the keyboard doesn't pop up uninvited.
+        if (narrow.matches) panel.focus({ preventScroll: true }); else input.focus();
+      }
     } else if (focus !== false) {
       launcher.focus();
     }
@@ -306,7 +358,8 @@
   });
   input.addEventListener("input", autosize);
   narrow.addEventListener("change", function () {
-    document.documentElement.classList.toggle("chat-locked", state.open && narrow.matches);
+    if (state.open && narrow.matches) lockPage(); else unlockPage();
+    fitViewport();
   });
 
   // Reopen after moving between pages, but not on phones, where the chat covers the whole screen.

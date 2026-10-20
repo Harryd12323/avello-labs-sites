@@ -77,12 +77,23 @@
 .chat-note a { color: var(--text); text-decoration: underline; text-decoration-color: var(--cyan); text-underline-offset: 2px; }
 .chat .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
-/* Phones: the chat takes the whole screen and the page behind it stops scrolling. */
+/* Phones (under 640px): the chat is a fixed, full-screen sheet. chat.js locks the page behind it and sizes
+   it to the visual viewport, so it shrinks above the iOS keyboard instead of sliding under it. Only the
+   message list scrolls. Safe-area insets keep it clear of the notch and home bar. */
 @media (max-width: 39.99rem) {
   .chat-launcher-label { display: none; }
-  .chat-launcher { width: 56px; height: 56px; padding: 0; justify-content: center; }
-  .chat-panel { inset: 0; width: 100%; height: 100dvh; border: 0; border-radius: 0; padding-bottom: env(safe-area-inset-bottom); }
+  .chat-launcher { width: 56px; height: 56px; padding: 0; justify-content: center;
+                   right: calc(1rem + env(safe-area-inset-right)); bottom: calc(1rem + env(safe-area-inset-bottom)); }
   .chat.is-open .chat-launcher { display: none; }
-  html.chat-locked, html.chat-locked body { overflow: hidden; }
+  .chat-panel { top: var(--chat-vv-top, 0px); right: 0; bottom: auto; left: 0; width: 100%; height: var(--chat-vv-height, 100dvh);
+                border: 0; border-radius: 0; padding: 0 env(safe-area-inset-right) 0 env(safe-area-inset-left); overscroll-behavior: none; }
+  .chat-panel:not([hidden]) { animation: none; }
+  .chat-head { flex: none; padding-top: calc(.75rem + env(safe-area-inset-top)); }
+  .chat-log { flex: 1 1 auto; min-height: 0; overscroll-behavior: contain; }
+  .chat-form, .chat-count { flex: none; }
+  .chat-note { flex: none; padding-bottom: calc(.75rem + env(safe-area-inset-bottom)); }
+  /* With the keyboard up, it covers the home bar, so that space isn't needed. */
+  .chat.kb-open .chat-note { padding-bottom: .5rem; }
+  html.chat-locked { overflow: hidden; overscroll-behavior: none; }
 }
 @media print { .chat { display: none; } }

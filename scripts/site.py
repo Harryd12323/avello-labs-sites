@@ -322,7 +322,7 @@ def new(url, title, desc):
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 {shared_head()}
 <title>{t}</title>
 <meta name="description" content="{d}">

@@ -33,7 +33,7 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); line
        -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 a { color: inherit; }
 button, input, textarea { font: inherit; color: inherit; }
-.wrap { max-width: 72rem; margin: 0 auto; padding: 0 1.25rem; }
+.wrap { max-width: 72rem; margin: 0 auto; padding: 0 max(1.25rem, env(safe-area-inset-right)) 0 max(1.25rem, env(safe-area-inset-left)); }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .skip { position: absolute; left: 1rem; top: -4rem; z-index: 100; padding: .6rem 1rem; border-radius: 8px; background: var(--panel);
         border: 1px solid var(--cyan); color: var(--text); text-decoration: none; }
