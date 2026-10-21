@@ -84,7 +84,7 @@ button, .btn {
   padding: 10px 18px; display: inline-flex; align-items: center; gap: 8px;
 }
 button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
-button:focus-visible, input:focus-visible, label.btn:focus-within { outline: 3px solid var(--accent); outline-offset: 2px; }
+button:focus-visible, input:focus-visible, label.btn:focus-within, label.choice:focus-within { outline: 3px solid var(--accent); outline-offset: 2px; }
 
 /* top bar */
 .topbar { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; }
@@ -108,8 +108,13 @@ button:focus-visible, input:focus-visible, label.btn:focus-within { outline: 3px
 .hero .plain { margin: 14px 0 0; max-width: 680px; font-size: 16px; color: var(--ink); }
 
 /* demo */
-.demo-controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 28px 0 20px; }
-.demo-controls .note { color: var(--muted); font-size: 14px; }
+.choices { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; margin: 28px 0 16px; }
+.choice { position: relative; padding: 20px 22px; display: grid; gap: 8px; align-content: start; color: var(--ink-2); font-size: 15px; }
+.choice p, .choice .line { display: block; margin: 0; }
+.choice .small { font-size: 13px; color: var(--muted); }
+.choice button, .choice .btn { justify-self: start; font-size: 18px; padding: 12px 22px; }
+.choice.upload { cursor: pointer; }
+.choice.upload .btn { border: 2px solid var(--accent); color: var(--accent); }
 #file-input { position: absolute; width: 1px; height: 1px; opacity: 0; }
 .drop-hint { font-size: 14px; color: var(--muted); }
 .panes { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 20px; }
@@ -164,9 +169,13 @@ button:focus-visible, input:focus-visible, label.btn:focus-within { outline: 3px
 .key.red { color: #b00020; background: #fdecee; }
 .key.yel { background: #fff200; color: #111; }
 .key.tan { background: #f3e7c4; color: #111; }
-.msg { margin-top: 12px; padding: 12px 16px; border-radius: 10px; background: var(--flag-soft); color: var(--flag); display: none; }
+.msg { margin: 0 0 12px; padding: 12px 16px; border-radius: 10px; background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--muted); color: var(--ink); display: none; }
 .msg.show { display: block; }
-.msg.ok { background: var(--accent-soft); color: var(--accent); }
+.source { margin: 0 0 16px; padding: 14px 18px; border-radius: 12px; border: 2px solid; font-size: 19px; font-weight: 700; display: none; }
+.source.show { display: block; }
+.source.mine { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+.source.example { background: var(--surface-2); color: var(--ink); border-color: var(--muted); border-style: dashed; }
+.source .hint { display: block; margin-top: 2px; font-size: 14px; font-weight: 400; color: var(--ink-2); }
 
 /* steps */
 .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 32px; counter-reset: s; }
@@ -229,7 +238,7 @@ footer a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid 
   section { padding: 48px 0; }
   .ba { grid-template-columns: 1fr; }
   .ba .arrow { transform: rotate(90deg); }
-  .steps, .privacy { grid-template-columns: 1fr; }
+  .steps, .privacy, .choices { grid-template-columns: 1fr; }
   .drow { grid-template-columns: 80px minmax(0, 1fr) 54px 48px 36px; gap: 8px; font-size: 14px; }
 }
 </style>
@@ -259,7 +268,7 @@ footer a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid 
     </div>
   </div>
   <div class="hero-cta">
-    <button class="primary" type="button" data-run-sample>▶ Run sample day</button>
+    <button class="primary" type="button" data-run-sample>See an example</button>
     <a class="btn" href="#calc">See the time saved</a>
   </div>
 </div>
@@ -269,15 +278,23 @@ footer a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid 
   <div class="wrap">
     <div class="eyebrow">Live demo</div>
     <h2>Watch one day turn into a finished log.</h2>
-    <p class="lead">This uses a made-up day for two techs. Press the button and see the log fill in.</p>
+    <p class="lead">See a made-up example first, or try a Reveal file of your own.</p>
 
-    <div class="demo-controls">
-      <button class="primary" type="button" data-run-sample>▶ Run sample day</button>
-      <label class="btn" for="file-input">⬆ Try your own Reveal file (preview)
-        <input id="file-input" type="file" accept=".csv,text/csv">
+    <div class="choices">
+      <div class="card choice">
+        <button class="primary" type="button" data-run-sample>See an example</button>
+        <p>A made-up day for two techs, so you can watch the log fill in.</p>
+      </div>
+      <label class="card choice upload" id="upload-box" for="file-input">
+        <span class="btn">Upload your Reveal file</span>
+        <input id="file-input" type="file" accept=".csv,text/csv" aria-label="Upload your Reveal file">
+        <span class="line">In Reveal, export a day's detailed report as a CSV file, then click here or drag it in.</span>
+        <span class="line small">This upload is a preview: it reads Reveal files laid out like the example.</span>
+        <span class="line small">Private: your file stays on your computer.</span>
       </label>
-      <span class="note">Preview: it reads files laid out like the sample. Your file stays on this computer. It is read by your browser and never uploaded.</span>
     </div>
+    <div class="msg" id="msg" role="status"></div>
+    <div class="source" id="source" role="status"></div>
 
     <div class="panes">
       <div class="card pane">
@@ -286,7 +303,7 @@ footer a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid 
           <p id="raw-sub">The raw GPS pings, one row each.</p>
         </div>
         <div class="pane-body raw" id="raw">
-          <div class="empty">Press <b>&nbsp;Run sample day&nbsp;</b> or drop a Reveal CSV here.</div>
+          <div class="empty">Click <b>&nbsp;See an example&nbsp;</b> or upload your Reveal file.</div>
         </div>
       </div>
       <div class="card pane">
@@ -299,7 +316,6 @@ footer a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid 
         </div>
       </div>
     </div>
-    <div class="msg" id="msg" role="status"></div>
     <div class="summary" id="summary"></div>
 
     <div class="card explain">
@@ -411,7 +427,7 @@ footer a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid 
   <div class="wrap">
     <div class="eyebrow">Optional add-on, not included, available on request</div>
     <h2>Want it at a glance?</h2>
-    <p class="lead">This isn't part of the log tool. A dashboard that shows the whole team's day on one screen can be added on request. Here's a mockup with the sample day.</p>
+    <p class="lead">This isn't part of the log tool. A dashboard that shows the whole team's day on one screen can be added on request. Here's a mockup using the same data as the demo above.</p>
     <div class="card dash" id="dash">
       <div class="dash-top">
         <h3 id="dash-title">Team day</h3>
@@ -762,10 +778,23 @@ function processCSV(text) {
   // ---------- demo ----------
   let state = null, currentTech = null;
 
-  function showMsg(text, ok) {
+  function showMsg(text) {
     const m = $("msg");
     m.textContent = text || "";
-    m.className = "msg" + (text ? " show" : "") + (ok ? " ok" : "");
+    m.className = "msg" + (text ? " show" : "");
+  }
+
+  // What's on screen, in big letters: your file or the made-up example, never both.
+  let shown = null;
+  function showSource(mine, html) {
+    $("source").innerHTML = html;
+    $("source").className = "source show " + (mine ? "mine" : "example");
+  }
+
+  // A file it can't read: a friendly note, and the status line says what is still on screen.
+  function cantRead(text) {
+    showMsg(text);
+    if (shown) showSource(shown.mine, esc(shown.still));
   }
 
   function renderRaw() {
@@ -833,14 +862,14 @@ function processCSV(text) {
   const NEEDED = ["Date", "Status", "Place", "Location", "Daily Distance"];
   const FRIENDLY = "Thanks! This file's format is a little different from the demo. Send it to me and I'll set the tool up to read it exactly.";
 
-  function load(text, label) {
+  function load(text, fileName) {
     let res;
     try {
       res = processCSV(text);
       const cols = res.rows.length ? Object.keys(res.rows[0]) : [];
       if (!NEEDED.every(c => cols.includes(c)) || !(cols.includes("Driver") || cols.includes("Vehicle"))) res = null;
     } catch (e) { res = null; }
-    if (!res || !res.days.size) { showMsg(FRIENDLY, true); return false; }
+    if (!res || !res.days.size) { cantRead(FRIENDLY); return false; }
     const prev = [state, currentTech];
     try {
       state = res;
@@ -850,38 +879,45 @@ function processCSV(text) {
     } catch (e) {
       [state, currentTech] = prev;
       if (state) { renderAll(); renderDashboard(state.days); }
-      showMsg(FRIENDLY, true);
+      cantRead(FRIENDLY);
       return false;
     }
-    showMsg(label, true);
+    showMsg("");
+    const n = state.days.size, hint = `<span class="hint">Click the yellow tabs to switch techs.</span>`;
+    shown = fileName
+      ? { mine: true, now: `✓ Loaded your file: ${fileName}, ${n} tech${n === 1 ? "" : "s"} found`, still: `Still showing your earlier file: ${fileName}` }
+      : { mine: false, now: "Showing example data (made up)", still: "Still showing example data (made up)" };
+    showSource(shown.mine, esc(shown.now) + hint);
     return true;
   }
 
   const SAMPLE = $("sample-csv").textContent.replace(/^\s+/, "");
   document.querySelectorAll("[data-run-sample]").forEach(b => b.addEventListener("click", () => {
-    load(SAMPLE, "Sample day loaded (made-up data). Click the yellow tabs to switch techs.");
+    load(SAMPLE);
     if (b.closest(".hero")) $("demo").scrollIntoView({ behavior: "smooth" });
   }));
 
   function readFile(file) {
     if (!file) return;
     if (/\.xlsx?$/i.test(file.name)) {
-      showMsg("Thanks! This preview only reads CSV files. Send me the Excel file and I'll set the tool up to read it, or export it from Reveal as CSV to try it here.", true);
+      cantRead("Thanks! This preview only reads CSV files. Send me the Excel file and I'll set the tool up to read it, or export it from Reveal as CSV to try it here.");
       return;
     }
     const fr = new FileReader();
-    fr.onerror = () => showMsg(FRIENDLY, true);
+    fr.onerror = () => cantRead(FRIENDLY);
     fr.onload = () => {
-      if (load(String(fr.result), `Read “${file.name}” in your browser. Nothing was uploaded.`))
+      if (load(String(fr.result), file.name))
         $("demo").scrollIntoView({ behavior: "smooth" });
     };
     fr.readAsText(file);
   }
   $("file-input").addEventListener("change", e => { readFile(e.target.files[0]); e.target.value = ""; });
-  const panes = document.querySelector(".panes");
-  ["dragenter", "dragover"].forEach(ev => panes.addEventListener(ev, e => { e.preventDefault(); panes.classList.add("drop-on"); }));
-  ["dragleave", "drop"].forEach(ev => panes.addEventListener(ev, e => { e.preventDefault(); panes.classList.remove("drop-on"); }));
-  panes.addEventListener("drop", e => readFile(e.dataTransfer.files[0]));
+  // A file can be dropped on the upload box or on the two panes.
+  [$("upload-box"), document.querySelector(".panes")].forEach(zone => {
+    ["dragenter", "dragover"].forEach(ev => zone.addEventListener(ev, e => { e.preventDefault(); zone.classList.add("drop-on"); }));
+    ["dragleave", "drop"].forEach(ev => zone.addEventListener(ev, e => { e.preventDefault(); zone.classList.remove("drop-on"); }));
+    zone.addEventListener("drop", e => readFile(e.dataTransfer.files[0]));
+  });
 
   // ---------- calculator ----------
   const WORKDAYS = 21;
