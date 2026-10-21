@@ -322,6 +322,7 @@ footer a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid 
       <h3>What you're looking at</h3>
       <ul>
         <li><span class="key red">⚑</span><span><b>Red notes</b> are things a person should double-check, like a stop over an hour, a break at a place that isn't a store, or a GPS that didn't record the truck turning off at the end of the day.</span></li>
+        <li><span class="key tan">?</span><span><b>UNIDENTIFIED LOCATION</b> is a stop of 10 minutes or more at a place with no name in Reveal. It gets its own row with its times, and it is not counted as a call.</span></li>
         <li><span class="key yel">&nbsp;</span><span><b>A yellow mark</b> at the right of a store means that visit ran longer than an hour.</span></li>
         <li><span class="key tan">1ST</span><span><b>1ST / 2ND</b> split the day at the break, so <b>TOTAL HOURS</b> leaves the break out.</span></li>
       </ul>
@@ -581,7 +582,8 @@ Vehicle,Driver,Date,Status,Duration,Daily Distance,Speed,Place,Location
 <!-- Same logic as fleetlogs/reader.py, days.py and excel.flag_lines, in JavaScript.
      Settings are the defaults in fleetlogs.ini. -->
 <script id="fleetlogs-logic">
-const SETTINGS = { breakMinutes: 10, longVisitMinutes: 60, callPlacePrefixes: ["WAWA"], homePlaceKeyword: "HOME" };
+const SETTINGS = { breakMinutes: 10, longVisitMinutes: 60, callPlacePrefixes: ["WAWA"], homePlaceKeyword: "HOME",
+                   unidentifiedStopMinutes: 10, unidentifiedStopLabel: "UNIDENTIFIED LOCATION" };
 const MAX_STOPS = 10, MAX_FLAGS = 4;
 
 // Python floor division / modulo, so negative edge cases match too.
@@ -705,10 +707,12 @@ function buildDay(events, s) {
     const mins = fdiv((depart - arrive) / 1000, 60);
     const long = mins > s.longVisitMinutes;
     if (long) flags.push(`${v.place}: on site ${fdiv(mins, 60)}:${String(fmod(mins, 60)).padStart(2, "0")} — over ${s.longVisitMinutes} min.`);
-    stops.push({ place: v.place, arrive, depart, mins, long });
+    stops.push({ place: v.place, arrive, depart, mins, long,
+                 call: s.callPlacePrefixes.some(px => v.place.toUpperCase().startsWith(px)) });
   }
 
-  // breaks: ignition off at an unlisted spot, followed by ignition on
+  // Ignition off at an unlisted spot, followed by ignition on: a break (splits the day)
+  // and/or its own stop row under the unidentified-stop label (never a call).
   const breaks = [];
   events.forEach((e, i) => {
     if (status(e) === "ignition off" && !e.place) {
@@ -719,16 +723,20 @@ function buildDay(events, s) {
           breaks.push([e.time, nxt.time, e.address]);
           flags.push(`Stopped ${Math.trunc(gap)} min at an unlisted location (${e.address}) — logged as break.`);
         }
+        if (gap >= s.unidentifiedStopMinutes)
+          stops.push({ place: s.unidentifiedStopLabel, arrive: e.time, depart: nxt.time, mins: Math.trunc(gap),
+                       long: false, call: false, unidentified: true });
       }
     }
   });
+  stops.sort((a, b) => a.arrive - b.arrive);
   let segs;
   if (breaks.length) {
     segs = [[start, breaks[0][0]], [breaks[0][1], stop]];
     if (breaks.length > 1) flags.push(`${breaks.length} breaks found; sheet only splits on the first. Check total hours.`);
   } else segs = [[start, stop]];
   const total = segs.reduce((acc, [a, b]) => acc + (b - a), 0);
-  const calls = stops.filter(st => s.callPlacePrefixes.some(px => st.place.toUpperCase().startsWith(px))).length;
+  const calls = stops.filter(st => st.call).length;
   return { date: Math.floor(start / 86400000) * 86400000, segs, total, calls,
            miles: Math.max(...events.map(e => e.miles)), stops, flags };
 }
@@ -939,7 +947,7 @@ function processCSV(text) {
       tech,
       calls: dl.reduce((a, d) => a + d.calls, 0),
       miles: dl.reduce((a, d) => a + d.miles, 0),
-      onSite: dl.reduce((a, d) => a + d.stops.reduce((b, s) => b + s.mins, 0), 0),
+      onSite: dl.reduce((a, d) => a + d.stops.reduce((b, s) => b + (s.unidentified ? 0 : s.mins), 0), 0),
       flags: dl.reduce((a, d) => a + d.flags.length, 0),
     }));
     const sum = k => per.reduce((a, p) => a + p[k], 0);
