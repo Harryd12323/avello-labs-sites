@@ -139,6 +139,7 @@ button:focus-visible, input:focus-visible, label.btn:focus-within, label.choice:
 .xl td { border: 1px solid #999; padding: 4px 8px; text-align: center; white-space: nowrap; height: 24px; }
 .xl td.blank { border-color: transparent; }
 .xl td.lbl { font-weight: 700; }
+.xl td.office { color: #777; font-style: italic; font-size: 11.5px; }
 .xl td.day { font-weight: 700; text-align: left; border-color: transparent; padding-right: 14px; }
 .xl td.tan { background: #f3e7c4; font-weight: 700; }
 .xl td.place { min-width: 150px; }
@@ -254,7 +255,7 @@ footer a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid 
 <main>
 <div class="wrap hero">
   <h1>Tech logs that <em>fill themselves out.</em></h1>
-  <p class="lead">No more copying GPS stops into Excel by hand. The weekly tech log fills itself in, and anything unusual is pointed out for a quick review.</p>
+  <p class="lead">No more copying GPS stops into Excel by hand. The tool fills in each tech's times, stops and miles, and points out anything unusual. Your office marks the calls and C/PO/PC, then gives it a quick review.</p>
   <p class="plain">This is a working demo built from screenshots of your Reveal screen and log sheet. Before going live, I'll match it to your actual Reveal export and workbook.</p>
   <div class="ba">
     <div class="card before">
@@ -264,7 +265,7 @@ footer a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid 
     <div class="arrow" aria-hidden="true">→</div>
     <div class="card after">
       <span class="tag">With this</span>
-      <p>The log fills itself out and flags anything worth a second look. Someone reviews it in a few minutes.</p>
+      <p>The tool fills in times, stops and miles, and flags anything worth a second look. Someone marks the calls and reviews it in a few minutes.</p>
     </div>
   </div>
   <div class="hero-cta">
@@ -322,11 +323,12 @@ footer a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid 
       <h3>What you're looking at</h3>
       <ul>
         <li><span class="key red">⚑</span><span><b>Red notes</b> are things a person should double-check, like a stop over an hour, a break at a place that isn't a store, or a GPS that didn't record the truck turning off at the end of the day.</span></li>
-        <li><span class="key tan">?</span><span><b>UNIDENTIFIED LOCATION</b> is a stop of 10 minutes or more at a place with no name in Reveal. It gets its own row with its times, and it is not counted as a call.</span></li>
+        <li><span class="key tan">?</span><span><b>UNIDENTIFIED LOCATION</b> is a stop of 10 minutes or more at a place with no name in Reveal. It gets its own row with its times.</span></li>
+        <li><span class="key tan">C</span><span><b>CALLS</b> and <b>C/PO/PC</b> are left for your office to mark. GPS can't tell a service call from a parts run, so the tool doesn't guess.</span></li>
         <li><span class="key yel">&nbsp;</span><span><b>A yellow mark</b> at the right of a store means that visit ran longer than an hour.</span></li>
         <li><span class="key tan">1ST</span><span><b>1ST / 2ND</b> split the day at the break, so <b>TOTAL HOURS</b> leaves the break out.</span></li>
       </ul>
-      <p class="fine">In the real version, the counting rules (what counts as a call, how breaks and total hours work) get set to match how your office does it today.</p>
+      <p class="fine">In the real version, the rules (what counts as a stop, how breaks and total hours work) get set to match how your office does it today.</p>
     </div>
   </div>
 </section>
@@ -350,7 +352,7 @@ footer a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid 
       <div class="card step">
         <div class="num">3</div>
         <h3>The log fills itself out, then a quick review</h3>
-        <p>The tool fills in the weekly log on its own and flags anything odd. After setup, that's your actual workbook. Then someone looks over the log and the red flags, which takes a few minutes.</p>
+        <p>The tool fills in each tech's times, stops and miles on its own and flags anything odd. After setup, that's your actual workbook. Then someone marks which stops were calls, adds the C/PO/PC codes and looks over the red flags.</p>
       </div>
     </div>
     <div class="card callout">
@@ -417,7 +419,7 @@ footer a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid 
           <div class="big" id="r-dollars">$0</div>
           <div class="big-label">in typing time saved each month</div>
         </div>
-        <div class="fine">Based on 21 workdays a month. This counts all the typing time as saved; someone still spends a few minutes a day reviewing the log and the red notes.</div>
+        <div class="fine">Based on 21 workdays a month. This counts all the typing time as saved; someone still spends a few minutes a day marking the calls and C/PO/PC and reviewing the log and the red notes.</div>
       </div>
     </div>
   </div>
@@ -832,7 +834,9 @@ function processCSV(text) {
       cells += i === 0 ? `<td class="day">${esc(dayLabel(d.date))}</td>` : `<td class="blank"></td>`;
       if (i < 4) {
         cells += `<td class="lbl">${left[i][0]}</td><td class="time">${esc(left[i][1] ?? "")}</td>` +
-                 `<td class="lbl">${right[i][0]}</td><td class="lbl">${esc(right[i][1] ?? "")}</td>`;
+                 `<td class="lbl">${right[i][0]}</td>` + (i === 0
+                   ? `<td class="office" title="Your office marks the calls">office</td>`
+                   : `<td class="lbl">${esc(right[i][1] ?? "")}</td>`);
       } else if (i === 4) {
         cells += `<td class="tan" colspan="3">TOTAL HOURS</td><td class="tan">${hm(d.total)}</td>`;
       } else if (i === 5) {
@@ -860,7 +864,7 @@ function processCSV(text) {
 
   function renderSummary() {
     $("summary").innerHTML = [...state.days].flatMap(([tech, dl]) => dl.map(d =>
-      `<span class="chip">${esc(tech)} · ${esc(dayLabel(d.date))}: <b>${d.calls}</b> calls, <b>${roundMiles(d.miles)}</b> miles, <b>${hm(d.total)}</b> hours` +
+      `<span class="chip">${esc(tech)} · ${esc(dayLabel(d.date))}: <b>${d.stops.length}</b> stops, <b>${roundMiles(d.miles)}</b> miles, <b>${hm(d.total)}</b> hours` +
       (d.flags.length ? `, <span style="color:var(--flag)">⚑ ${d.flags.length}</span>` : "") + `</span>`)).join("");
   }
 
@@ -945,7 +949,7 @@ function processCSV(text) {
   function renderDashboard(days) {
     const per = [...days].map(([tech, dl]) => ({
       tech,
-      calls: dl.reduce((a, d) => a + d.calls, 0),
+      stops: dl.reduce((a, d) => a + d.stops.length, 0),
       miles: dl.reduce((a, d) => a + d.miles, 0),
       onSite: dl.reduce((a, d) => a + d.stops.reduce((b, s) => b + (s.unidentified ? 0 : s.mins), 0), 0),
       flags: dl.reduce((a, d) => a + d.flags.length, 0),
@@ -955,18 +959,18 @@ function processCSV(text) {
     $("dash-title").textContent = dates.length === 1 ? `Team day · ${dayLabel(dates[0])}` : `Team · ${dayLabel(dates[0])} to ${dayLabel(dates[dates.length - 1])}`;
     const tiles = [
       [per.length, "techs active"],
-      [sum("calls"), "calls completed"],
+      [sum("stops"), "stops logged"],
       [Math.round(sum("miles")).toLocaleString(), "miles driven"],
       [hm(sum("onSite") * 60000), "hours on site"],
       [sum("flags"), "flagged items", "warn"],
     ];
     $("tiles").innerHTML = tiles.map(([v, l, c]) => `<div class="tile ${c || ""}"><div class="v">${v}</div><div class="l">${l}</div></div>`).join("");
     const maxMiles = Math.max(...per.map(p => p.miles), 1);
-    $("dash-rows").innerHTML = `<div class="drow head"><span>Tech</span><span>Miles</span><span class="r">Calls</span><span class="r">On site</span><span class="r">Flags</span></div>` +
+    $("dash-rows").innerHTML = `<div class="drow head"><span>Tech</span><span>Miles</span><span class="r">Stops</span><span class="r">On site</span><span class="r">Flags</span></div>` +
       per.map(p => `<div class="drow" title="${esc(p.tech)}: ${roundMiles(p.miles)} miles">
         <span class="name">${esc(p.tech)}</span>
         <span class="bar" aria-label="${roundMiles(p.miles)} miles"><i style="width:${(p.miles / maxMiles * 100).toFixed(1)}%"></i></span>
-        <span class="r">${p.calls}</span><span class="r">${hm(p.onSite * 60000)}</span>
+        <span class="r">${p.stops}</span><span class="r">${hm(p.onSite * 60000)}</span>
         <span class="fl">${p.flags ? "⚑ " + p.flags : "–"}</span></div>`).join("");
   }
   renderDashboard(processCSV(SAMPLE).days);
