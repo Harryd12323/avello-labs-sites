@@ -651,6 +651,11 @@ function dayLabel(t) {
 }
 
 const status = e => e.status.toLowerCase();
+// A tech's home is a Place named like "MARCUS HOME". "HOME DEPOT" is a normal stop.
+function isHome(place, keyword) {
+  const p = place.toUpperCase();
+  return p === keyword || p.endsWith(" " + keyword);
+}
 
 function buildDay(events, s) {
   const flags = [];
@@ -673,7 +678,7 @@ function buildDay(events, s) {
   }
   const stops = [];
   for (const v of visits) {
-    if (v.place.toUpperCase().includes(s.homePlaceKeyword)) continue;
+    if (isHome(v.place, s.homePlaceKeyword)) continue;
     const offs = v.rows.filter(r => status(r) === "ignition off").map(r => r.time);
     const arrive = offs.length ? offs[0] : v.rows[0].time;
     const depart = v.rows[v.rows.length - 1].time;
