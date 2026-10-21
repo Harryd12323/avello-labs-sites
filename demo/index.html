@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <title>Tech Log Tool</title>
-<meta name="description" content="Tech logs that fill themselves out: turns Verizon Reveal GPS exports into the weekly tech log workbook.">
+<meta name="description" content="Tech logs, without the typing: turns Verizon Reveal GPS exports into the weekly tech log workbook.">
 <style>
 :root {
   --bg: #f7f6f2;
@@ -105,6 +105,7 @@ button:focus-visible, input:focus-visible, label.btn:focus-within, label.choice:
 .ba p { margin: 0; color: var(--ink-2); }
 .ba .arrow { display: grid; place-items: center; color: var(--muted); font-size: 28px; }
 .hero-cta { margin-top: 32px; display: flex; gap: 12px; flex-wrap: wrap; }
+.hero .sub { margin: 14px 0 0; max-width: 680px; font-size: 22px; font-weight: 600; color: var(--ink); }
 .hero .plain { margin: 14px 0 0; max-width: 680px; font-size: 16px; color: var(--ink); }
 
 /* demo */
@@ -254,8 +255,9 @@ footer a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid 
 <!-- 1. Headline -->
 <main>
 <div class="wrap hero">
-  <h1>Tech logs that <em>fill themselves out.</em></h1>
-  <p class="lead">No more copying GPS stops into Excel by hand. The tool fills in each tech's times, stops and miles, and points out anything unusual. Your office marks the calls and C/PO/PC, then gives it a quick review.</p>
+  <h1>Tech logs, <em>without the typing.</em></h1>
+  <p class="sub">The tool fills in times, stops and miles. Your office just marks the calls.</p>
+  <p class="lead">No more copying GPS stops into Excel by hand. Anything unusual is pointed out, and someone adds the C/PO/PC codes and gives it a quick review.</p>
   <p class="plain">This is a working demo built from screenshots of your Reveal screen and log sheet. Before going live, I'll match it to your actual Reveal export and workbook.</p>
   <div class="ba">
     <div class="card before">
@@ -265,7 +267,7 @@ footer a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid 
     <div class="arrow" aria-hidden="true">→</div>
     <div class="card after">
       <span class="tag">With this</span>
-      <p>The tool fills in times, stops and miles, and flags anything worth a second look. Someone marks the calls and reviews it in a few minutes.</p>
+      <p>The tool fills in times, stops and miles, and flags anything worth a second look. Someone marks the calls and reviews it in minutes.</p>
     </div>
   </div>
   <div class="hero-cta">
@@ -337,7 +339,7 @@ footer a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid 
 <section id="how">
   <div class="wrap">
     <div class="eyebrow">How it runs every day</div>
-    <h2>Set it up once. Then a few minutes a day instead of hours.</h2>
+    <h2>Set it up once. Then minutes a day instead of hours.</h2>
     <div class="steps">
       <div class="card step">
         <div class="num">1</div>
@@ -351,7 +353,7 @@ footer a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid 
       </div>
       <div class="card step">
         <div class="num">3</div>
-        <h3>The log fills itself out, then a quick review</h3>
+        <h3>Times, stops and miles fill in, then the office marks the calls</h3>
         <p>The tool fills in each tech's times, stops and miles on its own and flags anything odd. After setup, that's your actual workbook. Then someone marks which stops were calls, adds the C/PO/PC codes and looks over the red flags.</p>
       </div>
     </div>
@@ -409,17 +411,22 @@ footer a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid 
           <label for="c-cost">Hourly cost of the person doing it <output id="o-cost"></output></label>
           <input type="range" id="c-cost" min="15" max="80" value="25">
         </div>
+        <div class="field">
+          <label for="c-check">Minutes per tech still spent each day <output id="o-check"></output></label>
+          <input type="range" id="c-check" min="0" max="15" value="2">
+          <div class="help">Marking the calls and C/PO/PC and checking the red notes.</div>
+        </div>
       </div>
       <div class="card result">
         <div>
           <div class="big" id="r-hours">0</div>
-          <div class="big-label">hours of typing saved each month</div>
+          <div class="big-label">hours saved each month</div>
         </div>
         <div>
           <div class="big" id="r-dollars">$0</div>
-          <div class="big-label">in typing time saved each month</div>
+          <div class="big-label">in time saved each month</div>
         </div>
-        <div class="fine">Based on 21 workdays a month. This counts all the typing time as saved; someone still spends a few minutes a day marking the calls and C/PO/PC and reviewing the log and the red notes.</div>
+        <div class="fine">Based on 21 workdays a month. Time saved is the time to log each tech's day by hand, minus the minutes someone still spends marking the calls and C/PO/PC and checking the red notes.</div>
       </div>
     </div>
   </div>
@@ -935,14 +942,16 @@ function processCSV(text) {
   const WORKDAYS = 21;
   function calc() {
     const techs = +$("c-techs").value, mins = +$("c-mins").value, cost = +$("c-cost").value;
+    const check = +$("c-check").value;
     $("o-techs").textContent = techs;
     $("o-mins").textContent = mins + " min";
     $("o-cost").textContent = "$" + cost;
-    const hours = techs * mins * WORKDAYS / 60;
+    $("o-check").textContent = check + " min";
+    const hours = techs * Math.max(mins - check, 0) * WORKDAYS / 60;
     $("r-hours").textContent = hours.toLocaleString(undefined, { maximumFractionDigits: hours < 10 ? 1 : 0 });
     $("r-dollars").textContent = "$" + Math.round(hours * cost).toLocaleString();
   }
-  ["c-techs", "c-mins", "c-cost"].forEach(id => $(id).addEventListener("input", calc));
+  ["c-techs", "c-mins", "c-cost", "c-check"].forEach(id => $(id).addEventListener("input", calc));
   calc();
 
   // ---------- dashboard mockup ----------
