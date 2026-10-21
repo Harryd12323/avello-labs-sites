@@ -105,6 +105,7 @@ button:focus-visible, input:focus-visible, label.btn:focus-within { outline: 3px
 .ba p { margin: 0; color: var(--ink-2); }
 .ba .arrow { display: grid; place-items: center; color: var(--muted); font-size: 28px; }
 .hero-cta { margin-top: 32px; display: flex; gap: 12px; flex-wrap: wrap; }
+.hero .plain { margin: 14px 0 0; max-width: 680px; font-size: 16px; color: var(--ink); }
 
 /* demo */
 .demo-controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 28px 0 20px; }
@@ -158,6 +159,7 @@ button:focus-visible, input:focus-visible, label.btn:focus-within { outline: 3px
 .explain h3 { font-size: 17px; }
 .explain ul { margin: 0; padding-left: 0; list-style: none; display: grid; gap: 8px; color: var(--ink-2); }
 .explain li { display: flex; gap: 10px; align-items: baseline; }
+.explain .fine { margin: 0; }
 .key { flex: none; display: inline-block; min-width: 28px; text-align: center; font-weight: 700; border-radius: 4px; font-size: 13px; padding: 1px 6px; }
 .key.red { color: #b00020; background: #fdecee; }
 .key.yel { background: #fff200; color: #111; }
@@ -243,7 +245,8 @@ footer a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid 
 <main>
 <div class="wrap hero">
   <h1>Tech logs that <em>fill themselves out.</em></h1>
-  <p class="lead">No more copying GPS stops into Excel by hand. Your weekly tech log is ready when you are, with anything unusual already pointed out.</p>
+  <p class="lead">No more copying GPS stops into Excel by hand. The weekly tech log fills itself in, with anything unusual already pointed out.</p>
+  <p class="plain">This is a working demo built from screenshots of your Reveal screen and log sheet. Before going live, I'll match it to your actual Reveal export and workbook.</p>
   <div class="ba">
     <div class="card before">
       <span class="tag">Today</span>
@@ -270,17 +273,17 @@ footer a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid 
 
     <div class="demo-controls">
       <button class="primary" type="button" data-run-sample>▶ Run sample day</button>
-      <label class="btn" for="file-input">⬆ Try your own Reveal file
+      <label class="btn" for="file-input">⬆ Try your own Reveal file (preview)
         <input id="file-input" type="file" accept=".csv,text/csv">
       </label>
-      <span class="note">Your file stays on this computer. It is read by your browser and never uploaded.</span>
+      <span class="note">Preview: it reads files laid out like the sample. Your file stays on this computer. It is read by your browser and never uploaded.</span>
     </div>
 
     <div class="panes">
       <div class="card pane">
         <div class="pane-head">
           <h3>What Reveal gives you</h3>
-          <p id="raw-sub">Hundreds of raw GPS pings per tech, per day.</p>
+          <p id="raw-sub">The raw GPS pings, one row each.</p>
         </div>
         <div class="pane-body raw" id="raw">
           <div class="empty">Press <b>&nbsp;Run sample day&nbsp;</b> or drop a Reveal CSV here.</div>
@@ -288,8 +291,8 @@ footer a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid 
       </div>
       <div class="card pane">
         <div class="pane-head">
-          <h3>What your office gets</h3>
-          <p>The weekly log, one yellow tab per tech, already filled in.</p>
+          <h3>What your office would get</h3>
+          <p>A sheet laid out like your log sheet, one yellow tab per tech. After setup, the real version fills in your actual workbook.</p>
         </div>
         <div class="pane-body xl" id="xl">
           <div class="empty" style="color:#777">The finished log shows up here.</div>
@@ -306,6 +309,7 @@ footer a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid 
         <li><span class="key yel">&nbsp;</span><span><b>A yellow mark</b> at the right of a store means that visit ran longer than an hour.</span></li>
         <li><span class="key tan">1ST</span><span><b>1ST / 2ND</b> split the day at the break, so <b>TOTAL HOURS</b> leaves the break out.</span></li>
       </ul>
+      <p class="fine">In the real version, the counting rules (what counts as a call, how breaks and total hours work) get set to match how your office does it today.</p>
     </div>
   </div>
 </section>
@@ -318,24 +322,24 @@ footer a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid 
     <div class="steps">
       <div class="card step">
         <div class="num">1</div>
-        <h3>Reveal emails the daily GPS report</h3>
-        <p>Each morning, Verizon Reveal sends it as a scheduled report.</p>
+        <h3>A daily GPS report from Reveal</h3>
+        <p>Verizon Reveal can usually schedule a daily report by email. We'll confirm your plan supports it during setup.</p>
       </div>
       <div class="card step">
         <div class="num">2</div>
         <h3>Someone saves it to the inbox folder</h3>
-        <p>Save the email attachment into a folder on the office PC. It takes about 10 seconds. Later, an email rule can do this step for you.</p>
+        <p>Save the email attachment into a folder on the office PC. It takes about 10 seconds. Later, this step may be automated too, depending on your email setup.</p>
       </div>
       <div class="card step">
         <div class="num">3</div>
         <h3>The log fills itself out</h3>
-        <p>The tool fills in the weekly log automatically and flags anything odd.</p>
+        <p>The tool fills in the weekly log on its own and flags anything odd. After setup, that's your actual workbook.</p>
       </div>
     </div>
     <div class="card callout">
       <span>Runs on its own on a schedule, every 30 minutes on workdays</span>
       <span>Tested on Windows</span>
-      <span>Never logs the same report twice</span>
+      <span>Skips a report file it has already done</span>
     </div>
   </div>
 </section>
@@ -344,22 +348,22 @@ footer a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid 
 <section id="privacy">
   <div class="wrap">
     <div class="eyebrow">Privacy</div>
-    <h2>Your techs' data stays with you.</h2>
+    <h2>The tool doesn't send your data anywhere.</h2>
     <div class="privacy">
       <div class="card">
         <div class="icon" aria-hidden="true">🖥️</div>
         <h3>Runs on your own PC</h3>
-        <p>Everything happens on the office computer. No new accounts, no cloud.</p>
+        <p>The tool does all its work on the office computer. No new accounts, no cloud.</p>
       </div>
       <div class="card">
         <div class="icon" aria-hidden="true">🔒</div>
-        <h3>Nothing is sent out</h3>
-        <p>GPS data and home addresses are never sent to any outside service.</p>
+        <h3>No new outside services</h3>
+        <p>The tool doesn't send GPS data or home addresses anywhere. Reveal and your email already have that data today; the tool adds nowhere new.</p>
       </div>
       <div class="card">
         <div class="icon" aria-hidden="true">🗑️</div>
         <h3>Old GPS files clean up</h3>
-        <p>Raw GPS files are deleted automatically after 30 days. Your finished logs are kept.</p>
+        <p>The tool's copies of the raw GPS files are deleted automatically after 30 days. Your finished logs are kept.</p>
       </div>
     </div>
   </div>
@@ -370,7 +374,7 @@ footer a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid 
   <div class="wrap">
     <div class="eyebrow">Time saved</div>
     <h2>What would it save you?</h2>
-    <p class="lead">Move the sliders to match your office.</p>
+    <p class="lead">The starting numbers are examples, not your figures. Move the sliders to enter your own.</p>
     <div class="calc">
       <div class="card inputs">
         <div class="field">
@@ -396,7 +400,7 @@ footer a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid 
           <div class="big" id="r-dollars">$0</div>
           <div class="big-label">saved each month</div>
         </div>
-        <div class="fine">Based on 21 workdays a month. Someone still spends a minute or two checking the red notes.</div>
+        <div class="fine">Based on 21 workdays a month. This counts all the typing time as saved; someone still spends a minute or two checking the red notes.</div>
       </div>
     </div>
   </div>
@@ -405,9 +409,9 @@ footer a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid 
 <!-- 6. Dashboard teaser -->
 <section id="dashboard">
   <div class="wrap">
-    <div class="eyebrow">Optional upgrade</div>
+    <div class="eyebrow">Optional add-on, not included, available on request</div>
     <h2>Want it at a glance?</h2>
-    <p class="lead">An optional dashboard that shows the whole team's day on one screen. Here's what it would look like with the sample day.</p>
+    <p class="lead">This isn't part of the log tool. A dashboard that shows the whole team's day on one screen can be added on request. Here's a mockup with the sample day.</p>
     <div class="card dash" id="dash">
       <div class="dash-top">
         <h3 id="dash-title">Team day</h3>
@@ -825,17 +829,30 @@ function processCSV(text) {
 
   function renderAll() { renderRaw(); renderSheet(); renderSummary(); }
 
+  // The columns the tool reads. A file without them gets a friendly note, never an error or an empty sheet.
+  const NEEDED = ["Date", "Status", "Place", "Location", "Daily Distance"];
+  const FRIENDLY = "Thanks! This file's format is a little different from the demo. Send it to me and I'll set the tool up to read it exactly.";
+
   function load(text, label) {
     let res;
-    try { res = processCSV(text); } catch (e) { res = null; }
-    if (!res || !res.days.size) {
-      showMsg("No usable rows found. This doesn't look like a Reveal detailed export. Export it from Reveal again as CSV.");
+    try {
+      res = processCSV(text);
+      const cols = res.rows.length ? Object.keys(res.rows[0]) : [];
+      if (!NEEDED.every(c => cols.includes(c)) || !(cols.includes("Driver") || cols.includes("Vehicle"))) res = null;
+    } catch (e) { res = null; }
+    if (!res || !res.days.size) { showMsg(FRIENDLY, true); return false; }
+    const prev = [state, currentTech];
+    try {
+      state = res;
+      currentTech = [...state.days.keys()][0];
+      renderAll();
+      renderDashboard(state.days);
+    } catch (e) {
+      [state, currentTech] = prev;
+      if (state) { renderAll(); renderDashboard(state.days); }
+      showMsg(FRIENDLY, true);
       return false;
     }
-    state = res;
-    currentTech = [...state.days.keys()][0];
-    renderAll();
-    renderDashboard(state.days);
     showMsg(label, true);
     return true;
   }
@@ -849,10 +866,11 @@ function processCSV(text) {
   function readFile(file) {
     if (!file) return;
     if (/\.xlsx?$/i.test(file.name)) {
-      showMsg("This demo reads CSV files. In Reveal, export as CSV (the real tool also reads Excel files).");
+      showMsg("Thanks! This preview only reads CSV files. Send me the Excel file and I'll set the tool up to read it, or export it from Reveal as CSV to try it here.", true);
       return;
     }
     const fr = new FileReader();
+    fr.onerror = () => showMsg(FRIENDLY, true);
     fr.onload = () => {
       if (load(String(fr.result), `Read “${file.name}” in your browser. Nothing was uploaded.`))
         $("demo").scrollIntoView({ behavior: "smooth" });
