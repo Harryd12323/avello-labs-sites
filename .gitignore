@@ -16,3 +16,6 @@ alerts-worker/.wrangler/
 
 # Python bytecode caches
 __pycache__/
+
+# Claude Code project notes: kept on this Mac only, never pushed (the repo is public)
+CLAUDE.md
