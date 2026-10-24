@@ -97,7 +97,7 @@ export function score(page: PageFacts, site: SiteFacts): Report {
   const title = (page.title ?? "").replace(/\s+/g, " ").trim();
   if (!title) {
     checks.push(check("title", "Page title", 10, "fail", "This page has no title tag.",
-      "Add a title that says what you do and where, for example \"Emergency Plumber in Collingswood, NJ | Smith Plumbing\"."));
+      "Add a title that says what you do and where, for example \"Emergency Plumber in Cherry Hill, NJ | Smith Plumbing\"."));
   } else if (title.length < 10 || title.length > 60) {
     checks.push(check("title", "Page title", 10, "warn", `Your title is ${title.length} characters: "${clip(title, 70)}"`,
       title.length < 10 ? "Make the title more descriptive: what you do, where, and your business name, in about 30 to 60 characters."
@@ -133,7 +133,7 @@ export function score(page: PageFacts, site: SiteFacts): Report {
   // 6. H1
   if (page.h1Count === 0) {
     checks.push(check("h1", "Main heading (H1)", 10, "fail", "This page has no main heading (H1).",
-      "Give the page one clear H1 that says what the page is about, like \"Emergency Plumbing in Collingswood\"."));
+      "Give the page one clear H1 that says what the page is about, like \"Emergency Plumbing in Cherry Hill\"."));
   } else if (page.h1Count > 1) {
     checks.push(check("h1", "Main heading (H1)", 10, "warn", `This page has ${page.h1Count} main headings (H1s).`,
       "Keep one H1 for the page's main topic and make the others H2 or H3 subheadings."));

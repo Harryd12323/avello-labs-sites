@@ -35,7 +35,7 @@
 - Font: Montserrat. Wordmark "Avello" SemiBold 600 with a Λ for the A, "Labs" Light 300. `logo-ring.svg` is for dark backgrounds only. Change logo colours in `brand/build.py`, not the SVGs.
 - Copy: no em or en dashes or spaced hyphens; "we" and "us", never "our team"/"the team"; straight apostrophes and curly double quotes; no statistics or invented numbers; no promises (guarantees, "first page on Google", "overnight").
 - Banned words list: `BANNED` in `scripts/blogpost.py` (seamless, elevate, leverage, unlock, robust, delve, tailored, journey, and more).
-- Never name the owner's nearby towns in posts: Haddon Township, Collingswood, Haddonfield. CHECK: Collingswood still appears in index.html, aeo/ and the blog posts.
+- Never name the owner's nearby towns in posts: Haddon Township, Collingswood, Haddonfield. Collingswood now appears only in the business mailing address (PO Box 141, Collingswood, NJ) in the footers, Privacy, Terms and the homepage's structured data, kept on purpose; examples use Cherry Hill.
 - Factual claims name their source ("Google says..."). Page titles Title Case, under 62 characters with " | Avello Labs"; headings sentence case; meta descriptions 120 to 160 characters.
 - Drafts must stay noindex and out of the sitemap and feed; live pages never link to drafts.
 - Main nav is full (about 1050px). Blog link lives in the footer only.

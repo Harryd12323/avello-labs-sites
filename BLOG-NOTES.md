@@ -115,8 +115,8 @@ links to post 2. If you publish one on its own, `sync` will warn you that it lin
   apostrophes and curly double quotes, matching the existing pages. The only matches from my word search were
   "whether your" and "your team" (meaning the reader's team).
 - **The AEO post** builds on the existing `/aeo/` page instead of repeating it: more on why it matters now, and a
-  step-by-step "what to do". Its example searches use Cherry Hill and Collingswood, since that's your area. Change them
-  if you'd rather not use real towns.
+  step-by-step "what to do". Its example searches use Cherry Hill (Collingswood was changed to Cherry Hill, October 2026:
+  it's one of the towns posts never name).
 - **The crawler post** uses the same bot names and descriptions as the AI crawler check (`check-worker/src/bots.ts`,
   reviewed October 2026), so the post and the tool agree.
 

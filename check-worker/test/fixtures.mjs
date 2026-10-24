@@ -17,7 +17,7 @@ const status = (r, id) => r.report.checks.find((c) => c.id === id).status;
 
 const cases = [
   ["a complete page", `<!doctype html><html><head><title>Emergency Plumber in Town | Smith &amp; Sons</title>
-    <meta name="description" content="24/7 emergency plumbing in Collingswood and nearby towns. Licensed, insured, upfront prices, same-day service.">
+    <meta name="description" content="24/7 emergency plumbing in Cherry Hill and nearby towns. Licensed, insured, upfront prices, same-day service.">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"Plumber","name":"Smith"}</script></head>
     <body><h1>Plumbing</h1><p>${"Real text. ".repeat(60)}</p><img src="a.jpg" alt="Van"><img src="b.jpg" alt=""></body></html>`,

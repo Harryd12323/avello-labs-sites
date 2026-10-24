@@ -3,8 +3,8 @@ import assert from "node:assert/strict";
 import { score, schemaTypes, parseRobots, type PageFacts, type SiteFacts } from "../src/scoring.ts";
 
 const goodPage: PageFacts = {
-  title: "Emergency Plumber in Collingswood, NJ | Smith Plumbing",
-  metaDescription: "24/7 emergency plumbing in Collingswood and nearby towns. Licensed, insured, upfront prices. Call for same-day service.",
+  title: "Emergency Plumber in Cherry Hill, NJ | Smith Plumbing",
+  metaDescription: "24/7 emergency plumbing in Cherry Hill and nearby towns. Licensed, insured, upfront prices. Call for same-day service.",
   robotsMeta: [], viewport: "width=device-width, initial-scale=1", h1Count: 1,
   jsonLd: [JSON.stringify({ "@context": "https://schema.org", "@type": "Plumber", name: "Smith Plumbing" })], itemTypes: [],
   imgTotal: 4, imgMissingAlt: 0, textChars: 4000, scriptCount: 2, appRoot: false,
