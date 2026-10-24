@@ -3,6 +3,7 @@
 exclude:
   - README.md
   - BLOG-NOTES.md
+  - CLAUDE.md
   - scripts/
   - worker/
   - check-worker/
