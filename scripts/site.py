@@ -59,8 +59,9 @@ EMAIL = "harris@avellolabs.com"
 # Preview mode: every page carries noindex. Set to False and run `sync` to go live.
 NOINDEX = False
 
-# Folders that aren't part of the site's pages.
-SKIP = {"concepts", "brand", "work", "assets", "scripts", "worker", "check-worker", "alerts-worker", "workers-shared", ".git"}
+# Folders that aren't part of the site's pages. demo/ is a standalone app demo with its own look, inline styles and
+# scripts: the shared head's security policy would block them, so sync leaves it alone (and out of the sitemap).
+SKIP = {"concepts", "brand", "work", "demo", "assets", "scripts", "worker", "check-worker", "alerts-worker", "workers-shared", ".git"}
 
 # Chat assistant (see worker/). CHAT_ENDPOINT is the deployed Worker's /chat URL; leave it empty to hide
 # the chat. CHAT_DEV_ENDPOINT is used only when the site is opened on localhost, for testing. Set it to

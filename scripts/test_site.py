@@ -61,6 +61,14 @@ class BlogBuild(unittest.TestCase):
         block = re.search(r'<script type="application/ld\+json">\n(.*?)\n</script>', self.read(url), re.S)
         return json.loads(block.group(1))
 
+    def test_sync_leaves_the_demo_page_alone(self):
+        # demo/ is a standalone app demo: the shared head's security policy would block its inline styles and
+        # scripts, so sync must not touch it or list it.
+        before = self.page("/demo/").read_bytes()
+        self.run_site("sync")
+        self.assertEqual(self.page("/demo/").read_bytes(), before)
+        self.assertFalse([u for u in self.sitemap() if "/demo/" in u])
+
     def test_drafts_stay_hidden(self):
         self.run_site("sync")
         self.assertEqual(self.feed_items(), [])
