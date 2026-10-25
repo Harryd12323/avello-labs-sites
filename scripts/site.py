@@ -3,7 +3,7 @@
 
 Each page is plain, hand-edited HTML. The parts every page shares sit between marker comments:
 
-    <!-- shared:head -->   ... <!-- /shared:head -->     robots/noindex, security policy, favicon, fonts, CSS
+    <!-- shared:head -->   ... <!-- /shared:head -->     robots/noindex, security policy, favicon, fonts, CSS, link preview tags
     <!-- shared:header --> ... <!-- /shared:header -->   skip link and site header/nav
     <!-- shared:footer --> ... <!-- /shared:footer -->   footer and the site script
 
@@ -125,7 +125,30 @@ NAV = [("/seo/", "SEO"), ("/aeo/", "AEO"), ("/website-care/", "Website care"), (
 NAV_ALSO = {"/tools/": ["/check/"]}
 
 
-def shared_head():
+# Link previews (iMessage, Slack, LinkedIn, Facebook, X). Every page shares one 1200x630 preview image. A page's
+# title and description come from its own og tags, or else its <title> and meta description, or else the home page's.
+OG_IMAGE = f"{SITE}/assets/og-image.png"
+OG_IMAGE_ALT = "Avello Labs logo on a dark navy background"
+HOME_TITLE = "Avello Labs | Fast Websites and Monthly Website Care"
+HOME_DESCRIPTION = "Custom websites for local businesses, live in days, with Google SEO, AI search optimization and monthly care built in."
+
+
+def social_tags(text, url):
+    """Open Graph and Twitter card tags. The basic og tags a page writes itself (outside the markers) are left alone;
+    any it lacks are added here."""
+    own = _strip_blocks(text)
+    t = re.search(r"<title>(.*?)</title>", own, re.S)
+    title = _meta(own, "property", "og:title") or (html.unescape(t.group(1).strip()) if t else "") or HOME_TITLE
+    desc = _meta(own, "property", "og:description") or _meta(own, "name", "description") or HOME_DESCRIPTION
+    basics = {"og:type": "website", "og:site_name": "Avello Labs", "og:title": title, "og:description": desc, "og:url": SITE + url}
+    tags = [("property", k, v) for k, v in basics.items() if not _meta(own, "property", k)]
+    tags += [("property", "og:image", OG_IMAGE), ("property", "og:image:width", "1200"), ("property", "og:image:height", "630"),
+             ("property", "og:image:alt", OG_IMAGE_ALT), ("name", "twitter:card", "summary_large_image"),
+             ("name", "twitter:title", title), ("name", "twitter:description", desc), ("name", "twitter:image", OG_IMAGE)]
+    return "\n".join(f'<meta {attr}="{k}" content="{html.escape(v)}">' for attr, k, v in tags)
+
+
+def shared_head(text="", url="/"):
     robots = ('<!-- Preview only: keeps search engines out. Set NOINDEX = False in scripts/site.py and run sync to go live. -->\n'
               '<meta name="robots" content="noindex, nofollow">\n') if NOINDEX else ""
     return f"""<!-- shared:head -->
@@ -135,6 +158,7 @@ def shared_head():
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
 <link rel="stylesheet" href="/assets/site.css">
+{social_tags(text, url)}
 <!-- /shared:head -->"""
 
 
@@ -545,7 +569,7 @@ def sync():
     live = [p for p in posts if not p["draft"]]
     for url, f in found:
         text = f.read_text()
-        text = replace_block(text, "head", shared_head(), f)
+        text = replace_block(text, "head", shared_head(text, url), f)
         text = replace_block(text, "header", shared_header(url), f)
         text = replace_block(text, "footer", shared_footer(blog=bool(live)), f)
         for name in TOOL_BLOCKS:
@@ -624,7 +648,6 @@ def new(url, title, desc):
 <meta property="og:title" content="{t}">
 <meta property="og:description" content="{d}">
 <meta property="og:url" content="{SITE}{url}">
-<meta name="twitter:card" content="summary">
 </head>
 <body>
 {shared_header(url)}
@@ -676,7 +699,6 @@ def post_page(url, title, headline, desc, lede, article, keyword=""):
 <meta property="og:title" content="{h}">
 <meta property="og:description" content="{d}">
 <meta property="og:url" content="{SITE}{url}">
-<meta name="twitter:card" content="summary">
 <!-- shared:blog-head --><!-- /shared:blog-head -->
 </head>
 <body>
