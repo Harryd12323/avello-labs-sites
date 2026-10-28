@@ -153,6 +153,9 @@ def shared_head(text="", url="/"):
               '<meta name="robots" content="noindex, nofollow">\n') if NOINDEX else ""
     return f"""<!-- shared:head -->
 {robots}<meta http-equiv="Content-Security-Policy" content="{CSP}">
+<link rel="icon" type="image/png" sizes="48x48" href="/brand/favicon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/brand/favicon-96.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/favicon-192.png">
 <link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
