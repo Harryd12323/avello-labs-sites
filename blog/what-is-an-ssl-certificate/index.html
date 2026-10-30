@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- shared:head -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://api.web3forms.com https://avello-chat.avellolabs.workers.dev https://avello-check.avellolabs.workers.dev https://avello-alerts.avellolabs.workers.dev; form-action https://api.web3forms.com; base-uri 'self'; object-src 'none'">
+<link rel="icon" type="image/png" sizes="48x48" href="/brand/favicon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/brand/favicon-96.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/favicon-192.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<link rel="stylesheet" href="/assets/site.css">
+<meta property="og:image" content="https://avellolabs.com/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Avello Labs logo on a dark navy background">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="What is an SSL certificate, and how do you fix a &quot;Not secure&quot; warning?">
+<meta name="twitter:description" content="What is an SSL certificate? Learn what the padlock means, why browsers show &quot;Not secure&quot; on your business site, and the steps to fix it.">
+<meta name="twitter:image" content="https://avellolabs.com/assets/og-image.png">
+<!-- /shared:head -->
+<title>What Is an SSL Certificate? Fix Not Secure | Avello Labs</title>
+<meta name="description" content="What is an SSL certificate? Learn what the padlock means, why browsers show &quot;Not secure&quot; on your business site, and the steps to fix it.">
+<link rel="canonical" href="https://avellolabs.com/blog/what-is-an-ssl-certificate/">
+<meta name="blog:status" content="published">
+<meta name="blog:keyword" content="what is an ssl certificate">
+<meta property="article:published_time" content="2026-10-30">
+<meta property="article:modified_time" content="2026-10-30">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Avello Labs">
+<meta property="og:title" content="What is an SSL certificate, and how do you fix a &quot;Not secure&quot; warning?">
+<meta property="og:description" content="What is an SSL certificate? Learn what the padlock means, why browsers show &quot;Not secure&quot; on your business site, and the steps to fix it.">
+<meta property="og:url" content="https://avellolabs.com/blog/what-is-an-ssl-certificate/">
+<!-- shared:blog-head -->
+<link rel="stylesheet" href="/assets/blog.css">
+<link rel="alternate" type="application/rss+xml" title="Avello Labs blog" href="https://avellolabs.com/blog/feed.xml">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "What is an SSL certificate, and how do you fix a \"Not secure\" warning?",
+  "description": "What is an SSL certificate? Learn what the padlock means, why browsers show \"Not secure\" on your business site, and the steps to fix it.",
+  "url": "https://avellolabs.com/blog/what-is-an-ssl-certificate/",
+  "mainEntityOfPage": "https://avellolabs.com/blog/what-is-an-ssl-certificate/",
+  "datePublished": "2026-10-30",
+  "dateModified": "2026-10-30",
+  "author": {
+    "@type": "Organization",
+    "name": "Avello Labs",
+    "url": "https://avellolabs.com/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Avello Labs",
+    "url": "https://avellolabs.com/",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://avellolabs.com/brand/icon.svg"
+    }
+  },
+  "inLanguage": "en-US",
+  "wordCount": 1310,
+  "timeRequired": "PT6M",
+  "isPartOf": {
+    "@type": "Blog",
+    "name": "Avello Labs blog",
+    "url": "https://avellolabs.com/blog/"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Do I need an SSL certificate if my site doesn't sell anything?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Any site with a contact form, a phone number to tap or a booking request benefits. Browsers also warn about plain http sites whether or not they sell anything."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is SSL the same as HTTPS?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Close. The certificate is the file that makes the secure connection possible. HTTPS is the result: your site loading over that secure connection. People use the terms loosely."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the padlock mean my site is safe from hackers?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. It only means the connection between the visitor and your site is encrypted. Your site still needs updates, strong passwords and regular care."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why did my certificate suddenly expire?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Certificates have an end date, and renewal often fails when it's manual or tied to an old payment card or email address. Turning on automatic renewal and watching for failures prevents most of it."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I fix this myself?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Often, yes, if your host has an SSL setting. If the warning stays after that, mixed content or a redirect problem is likely, and that's worth handing to a developer."
+      }
+    }
+  ]
+}
+</script>
+<!-- /shared:blog-head -->
+</head>
+<body>
+<!-- shared:header -->
+<a class="skip" href="#main">Skip to content</a>
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="Avello Labs, home">
+      <img src="/brand/logo-horizontal-dark.svg" width="337" height="64" alt="Avello Labs">
+    </a>
+    <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+      <svg class="bars" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      <svg class="x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <a class="nav-link" href="/seo/">SEO</a>
+      <a class="nav-link" href="/aeo/">AEO</a>
+      <a class="nav-link" href="/website-care/">Website care</a>
+      <a class="nav-link" href="/web-apps/">Web apps</a>
+      <a class="nav-link" href="/#real-work">Our work</a>
+      <a class="nav-link" href="/tools/">Free tools</a>
+      <a class="btn btn-small" href="/#contact">Get in touch</a>
+    </nav>
+  </div>
+</header>
+<!-- /shared:header -->
+
+<main id="main">
+  <section class="page-hero">
+    <div class="wrap">
+      <p class="crumbs"><a href="/">Home</a> / <a href="/blog/">Blog</a></p>
+      <h1>What is an SSL certificate, and how do you fix a &quot;Not secure&quot; warning?</h1>
+      <p class="lede">What is an SSL certificate? It's the small file that lets your website use a secure connection, and when it's missing or broken, visitors see a "Not secure" warning instead of trust.</p>
+      <!-- shared:post-meta -->
+<p class="post-meta">By Avello Labs <span aria-hidden="true">·</span> <time datetime="2026-10-30">October 30, 2026</time> <span aria-hidden="true">·</span> 6 min read</p>
+<!-- /shared:post-meta -->
+    </div>
+  </section>
+  <div class="page-body">
+    <div class="wrap page-grid">
+      <article class="prose">
+        <div class="summary">
+          <p class="eyebrow">In short</p>
+          <ul>
+            <li>An SSL certificate lets a visitor's browser connect to your site over an encrypted, verified connection. That's what HTTPS means.</li>
+            <li>A "Not secure" warning usually means the certificate is missing, expired, or the site is loading some things the old, unsafe way.</li>
+            <li>Fixing it is normally a host setting, not a rebuild. Expired certificates are the most common cause, and they are avoidable.</li>
+            <li>The padlock does not mean your business is trustworthy. It only means the connection is protected.</li>
+          </ul>
+        </div>
+
+        <h2>What is an SSL certificate?</h2>
+        <p>Think of a sealed envelope with your business name on the return address. Anyone can see that a letter is traveling, but nobody can read it on the way, and the sender's name is checked.</p>
+        <p>An <strong>SSL certificate</strong> does that for your website. It does two jobs:</p>
+        <ol>
+          <li><strong>It encrypts the connection.</strong> Encryption scrambles the information moving between your visitor and your website so nobody in the middle can read it. That matters for contact forms, booking requests and anything with a name, phone number or email.</li>
+          <li><strong>It confirms the site is the real one.</strong> The certificate is issued by an outside authority that checks the site really controls that web address.</li>
+        </ol>
+        <p>A quick note on the name. SSL is the older term. The current technology is called <strong>TLS</strong>, which stands for Transport Layer Security. Almost everyone still says "SSL certificate," and hosting companies often do too. They mean the same thing for your purposes.</p>
+        <p>When a site has a working certificate, its address starts with <strong>https://</strong> instead of <strong>http://</strong>. The "s" stands for secure.</p>
+
+        <h2>The padlock and the "Not secure" warning</h2>
+        <p>You've seen both. Here's what each one tells your visitor.</p>
+        <h3>The padlock</h3>
+        <p>For years, browsers showed a little padlock next to the web address when a site had a working certificate. Chrome changed this. Google replaced the padlock with a neutral icon starting in Chrome 117. The reason given was that people read the padlock as "this site is safe," when it only means the connection is protected.</p>
+        <p>That's worth remembering as an owner. A padlock, or its newer icon, does not say anything about whether your business is good. A scam site can have a certificate too. It just says the connection between the visitor and the site is private.</p>
+        <h3>The "Not secure" warning</h3>
+        <p>This is the one that costs you. When a site loads over plain http, or its certificate has a problem, browsers warn visitors. Sometimes it's a small "Not secure" label in the address bar. Sometimes it's a full page with a red warning that tells people to go back.</p>
+        <p>Picture a homeowner in Cherry Hill searching for an HVAC company on a hot afternoon. She taps your result and sees a warning. She won't read the fine print. She taps back and calls the next company on the list.</p>
+        <p>If you want to know where you stand right now, <a href="/check/">our free site check</a> looks at this along with other basics.</p>
+
+        <h2>Why your site might show "Not secure"</h2>
+        <p>Most cases come down to one of these.</p>
+        <ul>
+          <li><strong>No certificate was ever installed.</strong> Older sites, or sites built by a friend or a past freelancer, sometimes never had one set up.</li>
+          <li><strong>The certificate expired.</strong> Certificates have an end date. If renewal was manual, or the renewal card on file failed, the site flips to a warning page without anyone noticing. This is the most common surprise we see with small business sites.</li>
+          <li><strong>The certificate doesn't match the address.</strong> For example, it covers the web address with "www" but not the one without it, or the other way around.</li>
+          <li><strong>Mixed content.</strong> The page itself is secure, but it pulls in an image, script or font using an old http link. Browsers flag the page as not fully secure.</li>
+          <li><strong>The site isn't redirecting to https.</strong> Both versions of the site exist, and visitors can land on the unprotected one.</li>
+        </ul>
+
+        <h2>How to fix it, step by step</h2>
+        <p>You may not do every step yourself, but you should know what to ask for.</p>
+        <ol>
+          <li><strong>Check what visitors see.</strong> Open your site in a private browser window. Try with and without "www." Try on your phone too. Note exactly what the warning says.</li>
+          <li><strong>Look at your hosting account.</strong> Many hosting companies include certificates with the plan and can switch one on from a settings page. Look for a section named SSL, TLS, HTTPS or security. Check your own plan for details.</li>
+          <li><strong>Turn on automatic renewal.</strong> This is the step that prevents the 2 a.m. surprise. A certificate that renews itself won't quietly expire during your busiest week.</li>
+          <li><strong>Redirect http to https.</strong> Once the certificate works, every old http address should send visitors to the https version automatically.</li>
+          <li><strong>Fix mixed content.</strong> If the warning stays after the certificate is installed, something on the page still loads the old way. Common culprits are old images, embedded maps and widgets. A developer can find these quickly.</li>
+          <li><strong>Test again.</strong> Check the home page, the contact page and any booking or quote form, on a phone and a computer.</li>
+        </ol>
+        <p>If your site runs on a platform like WordPress, there's often a plugin or setting involved too, and it can be easy to break things by changing the wrong one. That's a good time to ask for help rather than guess.</p>
+
+        <h2>Does this affect Google and AI tools?</h2>
+        <p>Google has treated HTTPS as a good practice for years, and secure sites are the normal expectation. But don't think of a certificate as an SEO trick. Think of it as basic hygiene. A site with a warning page can lose visitors before they ever read a word. If you want to see how the rest of your visibility looks, our page on <a href="/seo/">why SEO matters for local businesses</a> is a good next stop.</p>
+        <p>We'd avoid promising anything specific from fixing a certificate alone. It removes a problem. It doesn't make people call.</p>
+
+        <h2>Keeping it fixed</h2>
+        <p>The certificate is not a one-time chore. It has to renew, the site has to keep redirecting, and new pages shouldn't bring in old http links. This is the kind of thing that slips when no one is watching. It's one of the reasons we offer <a href="/website-care/">ongoing website care</a>: someone is checking the small things, so a lapsed certificate gets caught before a customer finds it.</p>
+        <p>If you're also wondering why your site gets visits but no calls, a warning page is one possible cause, and we cover others in <a href="/blog/website-getting-traffic-but-no-calls/">website getting traffic but no calls</a>.</p>
+
+        <h2 id="faq">Common questions</h2>
+        <div class="faq">
+          <details>
+            <summary>Do I need an SSL certificate if my site doesn't sell anything?</summary>
+            <p>Yes. Any site with a contact form, a phone number to tap or a booking request benefits. Browsers also warn about plain http sites whether or not they sell anything.</p>
+          </details>
+          <details>
+            <summary>Is SSL the same as HTTPS?</summary>
+            <p>Close. The certificate is the file that makes the secure connection possible. HTTPS is the result: your site loading over that secure connection. People use the terms loosely.</p>
+          </details>
+          <details>
+            <summary>Does the padlock mean my site is safe from hackers?</summary>
+            <p>No. It only means the connection between the visitor and your site is encrypted. Your site still needs updates, strong passwords and regular care.</p>
+          </details>
+          <details>
+            <summary>Why did my certificate suddenly expire?</summary>
+            <p>Certificates have an end date, and renewal often fails when it's manual or tied to an old payment card or email address. Turning on automatic renewal and watching for failures prevents most of it.</p>
+          </details>
+          <details>
+            <summary>Can I fix this myself?</summary>
+            <p>Often, yes, if your host has an SSL setting. If the warning stays after that, mixed content or a redirect problem is likely, and that's worth handing to a developer.</p>
+          </details>
+        </div>
+
+        <div class="cta-band">
+          <h2>Not sure what your visitors see?</h2>
+          <p>Run our free site check and we'll tell you if your site has a security warning or other basics that need fixing. Or chat with us if you'd like us to take care of it.</p>
+          <a class="btn" href="/check/">Check my site <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </article>
+      <!-- shared:post-aside -->
+      <aside class="aside" aria-label="Related">
+      <div class="aside-card">
+        <h2>Check your own site</h2>
+        <p>The free site check scores 10 SEO and AEO basics on any page in a few seconds.</p>
+        <a class="btn" href="/check/">Run a free site check</a>
+      </div>
+      <div class="aside-card">
+        <h2>Free tools</h2>
+        <ul>
+          <li><a href="/tools/ai-crawler-check/">AI crawler check</a></li>
+          <li><a href="/tools/search-preview/">Search preview</a></li>
+          <li><a href="/tools/schema-generator/">Business schema generator</a></li>
+          <li><a href="/tools/">See all free tools</a></li>
+        </ul>
+      </div>
+      <div class="aside-card">
+        <h2>More from the blog</h2>
+        <ul>
+          <li><a href="/blog/how-much-does-a-small-business-website-cost/">How much does a small business website cost?</a></li>
+          <li><a href="/blog/website-getting-traffic-but-no-calls/">Website getting traffic but no calls? Here&#x27;s why, and how to fix it</a></li>
+          <li><a href="/blog/why-isnt-my-business-showing-up-on-google/">Why isn&#x27;t my business showing up on Google?</a></li>
+        </ul>
+      </div>
+      </aside>
+      <!-- /shared:post-aside -->
+    </div>
+  </div>
+</main>
+
+<!-- shared:footer -->
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="/brand/logo-horizontal-dark.svg" width="337" height="64" alt="Avello Labs">
+        <p>Custom websites for small local businesses, live in days, with monthly care, SEO and AEO.</p>
+      </div>
+      <div>
+        <h2>Services</h2>
+        <ul>
+          <li><a href="/seo/">SEO</a></li>
+          <li><a href="/aeo/">AEO</a></li>
+          <li><a href="/website-care/">Website care</a></li>
+          <li><a href="/web-apps/">Web apps</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Free tools</h2>
+        <ul>
+          <li><a href="/check/">Free site check</a></li>
+          <li><a href="/tools/search-preview/">Search preview</a></li>
+          <li><a href="/tools/ai-crawler-check/">AI crawler check</a></li>
+          <li><a href="/tools/schema-generator/">Schema generator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Company</h2>
+        <ul>
+          <li><a href="/#real-work">Our work</a></li>
+          <li><a href="/blog/">Blog</a></li>
+          <li><a href="/#contact">Contact</a></li>
+          <li><a href="/privacy/">Privacy policy</a></li>
+          <li><a href="/terms/">Terms of use</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Contact</h2>
+        <address>
+          <a href="mailto:harris@avellolabs.com">harris@avellolabs.com</a><br>
+          Avello Labs LLC<br>
+          PO Box 141<br>
+          Collingswood, NJ 08108-9998
+        </address>
+      </div>
+    </div>
+    <form class="nl-form" novalidate aria-labelledby="foot-nl-h">
+      <h2 class="nl-title" id="foot-nl-h">Website tips, about once a month</h2>
+      <p class="nl-sub">Practical website and search tips for small businesses. No spam.</p>
+      <div class="hp" aria-hidden="true"><label for="foot-nl-bot">Leave this box unticked</label><input type="checkbox" id="foot-nl-bot" name="botcheck" tabindex="-1" autocomplete="off"></div>
+      <div class="nl-fields">
+        <div class="field"><label for="foot-nl-name">Name <small>(optional)</small></label><input id="foot-nl-name" name="name" autocomplete="name" maxlength="80"></div>
+        <div class="field"><label for="foot-nl-email">Email</label><input id="foot-nl-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="120" required></div>
+        <button class="btn" type="submit">Sign up</button>
+      </div>
+      <label class="nl-consent"><input type="checkbox" name="consent" required> <span>Send me the Avello Labs newsletter: practical website and search tips for small businesses, about once a month. Unsubscribe anytime by replying &quot;unsubscribe&quot; or emailing harris@avellolabs.com.</span></label>
+      <p class="form-status" role="status" aria-live="polite"></p>
+      <p class="nl-note">We only use your email for the newsletter. See our <a href="/privacy/#newsletter">privacy policy</a>.</p>
+    </form>
+    <div class="foot-bottom">
+      <span>© <span data-year>2026</span> Avello Labs LLC. All rights reserved.</span>
+      <span><a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/site.js" defer></script>
+<script src="/assets/newsletter.js" data-ticket="https://avello-check.avellolabs.workers.dev/ticket/newsletter" data-alerts="https://avello-alerts.avellolabs.workers.dev/lead" data-web3forms="a6955225-5ff5-4562-ae2d-dfda9193580a" defer></script>
+<link rel="stylesheet" href="/assets/chat.css">
+<script src="/assets/chat.js" data-endpoint="https://avello-chat.avellolabs.workers.dev/chat" data-web3forms="a6955225-5ff5-4562-ae2d-dfda9193580a" data-alerts="https://avello-alerts.avellolabs.workers.dev/lead" defer></script>
+<!-- /shared:footer -->
+</body>
+</html>

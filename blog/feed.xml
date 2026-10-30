@@ -6,7 +6,14 @@
     <description>Practical website, search and AI answer tips for small local businesses.</description>
     <language>en-us</language>
     <atom:link href="https://avellolabs.com/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Wed, 28 Oct 2026 12:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 30 Oct 2026 12:00:00 +0000</lastBuildDate>
+    <item>
+      <title>What is an SSL certificate, and how do you fix a "Not secure" warning?</title>
+      <link>https://avellolabs.com/blog/what-is-an-ssl-certificate/</link>
+      <guid isPermaLink="true">https://avellolabs.com/blog/what-is-an-ssl-certificate/</guid>
+      <pubDate>Fri, 30 Oct 2026 12:00:00 +0000</pubDate>
+      <description>What is an SSL certificate? Learn what the padlock means, why browsers show "Not secure" on your business site, and the steps to fix it.</description>
+    </item>
     <item>
       <title>How much does a small business website cost?</title>
       <link>https://avellolabs.com/blog/how-much-does-a-small-business-website-cost/</link>
