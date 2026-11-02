@@ -28,6 +28,17 @@ The format (one header line each, then the body):
 
     Call to action: Heading | One or two sentences | Button label | /check/ (or "chat")
 
+A news post (owner-approved 2026-11-02) adds two header lines and is shorter: 250 to 600 words, at least two
+sections, and "Common questions" is optional (up to 3). It shows a "News" label on the blog.
+
+    Type: news
+    Source: https://www.example.com/the-original-story/
+
+Its body must link the Source (the only outside link a post may have), it paraphrases the story, and it quotes at most
+one passage, under 15 words. Quoted text under 5 words counts as a term ("AI Mode"), not a quote.
+A news post's keyword is checked against the pages that own one, but it never owns it itself, so it can't block a
+later regular post (scripts/site.py taken_keywords).
+
 Used by scripts/site.py (import-post, check-post). Python 3 stdlib only.
 """
 import html
@@ -35,6 +46,7 @@ import math
 import re
 
 HEADERS = ["Title", "Headline", "Description", "Keyword", "Slug", "Service page", "Lede"]
+OPTIONAL = ["Type", "Source"]  # news posts only
 FAQ_HEADING = "Common questions"
 SUFFIX = " | Avello Labs"
 ARROW = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" '
@@ -50,6 +62,12 @@ WORDS = (700, 1700)
 FAQ_COUNT = (3, 5)
 SUMMARY_POINTS = (2, 4)
 MIN_SECTIONS = 3             # ## headings, the FAQ included
+NEWS_WORDS = (250, 600)
+NEWS_FAQ_COUNT = (0, 3)
+NEWS_MIN_SECTIONS = 2
+MAX_QUOTES = 1               # news posts: quoted passages from the source
+MAX_QUOTE_WORDS = 14         # "under 15 words"
+QUOTE_MIN_WORDS = 5          # shorter quoted text is a term, not a quote
 WORDS_PER_MINUTE = 230       # the same as scripts/site.py
 
 # Copy rules (the site's own, plus the blog's): no dashes as punctuation, nothing AI-sounding, no invented numbers,
@@ -70,6 +88,9 @@ PROMISE = re.compile(r"\b(?:guarantee[sd]?|guaranteed)\b|\b(?:number one|#1|firs
 NEGATED = re.compile(r"\b(?:no|not|never|nobody|no one|can't|cannot|won't|isn't|doesn't)\b[^.?!]{0,40}$", re.I)
 LINK = re.compile(r"\[([^\]\n]+)\]\(([^)\s]+)\)")
 SLUG = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+QUOTE = re.compile("\u201c([^\u201d\n]+)\u201d|\"([^\"\n]+)\"")
+SOURCE = re.compile(r"^https://[a-z0-9.-]+\.[a-z]{2,}(?:[/?#]\S*)?$", re.I)
+NOT_SOURCES = ("avellolabs.com", "news.google.com")
 STOPWORDS = {"a", "an", "and", "the", "to", "for", "of", "in", "on", "my", "your", "is", "do", "i", "how", "what",
              "why", "does", "can", "should", "with", "it", "be", "are", "or", "vs", "if"}
 
@@ -85,7 +106,7 @@ def parse(text):
     while i < len(lines) and not lines[i].strip():
         i += 1
     while i < len(lines):
-        m = re.match(r"^(" + "|".join(HEADERS) + r"):\s*(.*)$", lines[i])
+        m = re.match(r"^(" + "|".join(HEADERS + OPTIONAL) + r"):\s*(.*)$", lines[i])
         if not m:
             break
         fields[m.group(1)] = m.group(2).strip()
@@ -156,16 +177,28 @@ def parse(text):
     return {"fields": fields, "blocks": blocks}
 
 
+def is_news(fields):
+    return fields.get("Type", "").strip().lower() == "news"
+
+
+def source_of(fields):
+    """A news post's Source URL ('' for any other post)."""
+    return fields.get("Source", "").strip() if is_news(fields) else ""
+
+
 # ---------- turning it into HTML ----------
 
-def inline(text):
-    """Escaped text with **bold**, `code` and [links](/path/) (our own pages only; anything else stays plain text)."""
+def inline(text, source=""):
+    """Escaped text with **bold**, `code` and [links](/path/) (our own pages only, plus a news post's `source`;
+    anything else stays plain text)."""
     out = html.escape(text, quote=False)
     out = re.sub(r"`([^`]+)`", r"<code>\1</code>", out)
     out = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", out)
 
     def link(m):
         label, url = m.group(1), html.unescape(m.group(2))
+        if source and url == source:
+            return f'<a href="{html.escape(url)}" rel="noopener">{label}</a>'
         if not url.startswith("/") or url.startswith("//"):
             return label
         return f'<a href="{html.escape(url)}">{label}</a>'
@@ -175,11 +208,15 @@ def inline(text):
 def body_html(post, indent="        "):
     """The <article> contents: summary box, sections, FAQ and the call to action."""
     out, faq = [], []
+    source = source_of(post["fields"])
+
+    def fmt(text):
+        return inline(text, source)
 
     def close_faq():
         if faq:
-            items = "\n".join(f"{indent}  <details>\n{indent}    <summary>{inline(q)}</summary>\n"
-                              f"{indent}    <p>{inline(a)}</p>\n{indent}  </details>" for q, a in faq)
+            items = "\n".join(f"{indent}  <details>\n{indent}    <summary>{fmt(q)}</summary>\n"
+                              f"{indent}    <p>{fmt(a)}</p>\n{indent}  </details>" for q, a in faq)
             out.append(f'{indent}<div class="faq">\n{items}\n{indent}</div>')
             faq.clear()
 
@@ -187,29 +224,29 @@ def body_html(post, indent="        "):
         if kind != "qa":
             close_faq()
         if kind == "summary":
-            points = "\n".join(f"{indent}    <li>{inline(p)}</li>" for p in value)
+            points = "\n".join(f"{indent}    <li>{fmt(p)}</li>" for p in value)
             out.append(f'{indent}<div class="summary">\n{indent}  <p class="eyebrow">In short</p>\n'
                        f"{indent}  <ul>\n{points}\n{indent}  </ul>\n{indent}</div>")
         elif kind == "h2":
             anchor = ' id="faq"' if value == FAQ_HEADING else ""
-            out.append(f"\n{indent}<h2{anchor}>{inline(value)}</h2>")
+            out.append(f"\n{indent}<h2{anchor}>{fmt(value)}</h2>")
         elif kind == "h3":
-            out.append(f"{indent}<h3>{inline(value)}</h3>")
+            out.append(f"{indent}<h3>{fmt(value)}</h3>")
         elif kind == "p":
-            out.append(f"{indent}<p>{inline(value)}</p>")
+            out.append(f"{indent}<p>{fmt(value)}</p>")
         elif kind in ("ul", "ol"):
-            items = "\n".join(f"{indent}  <li>{inline(i)}</li>" for i in value)
+            items = "\n".join(f"{indent}  <li>{fmt(i)}</li>" for i in value)
             out.append(f"{indent}<{kind}>\n{items}\n{indent}</{kind}>")
         elif kind == "qa":
             faq.append(value)
         elif kind == "cta":
             heading, text, label, target = (value + ["", "", "", ""])[:4]
             if target.lower() == "chat":
-                button = f'<a class="btn" href="#" data-open-chat>{CHAT_ICON}{inline(label)}</a>'
+                button = f'<a class="btn" href="#" data-open-chat>{CHAT_ICON}{fmt(label)}</a>'
             else:
-                button = f'<a class="btn" href="{html.escape(target)}">{inline(label)} {ARROW}</a>'
-            out.append(f'\n{indent}<div class="cta-band">\n{indent}  <h2>{inline(heading)}</h2>\n'
-                       f"{indent}  <p>{inline(text)}</p>\n{indent}  {button}\n{indent}</div>")
+                button = f'<a class="btn" href="{html.escape(target)}">{fmt(label)} {ARROW}</a>'
+            out.append(f'\n{indent}<div class="cta-band">\n{indent}  <h2>{fmt(heading)}</h2>\n'
+                       f"{indent}  <p>{fmt(text)}</p>\n{indent}  {button}\n{indent}</div>")
     close_faq()
     return "\n".join(out).lstrip("\n")
 
@@ -269,6 +306,19 @@ def check(text, pages=(), anchors=(), taken=()):
     for name in HEADERS:
         if not f.get(name):
             problems.append(f'Missing the "{name}:" line.')
+    news, source = is_news(f), source_of(f)
+    if "Type" in f and not news:
+        problems.append('The only "Type:" a post can have is "news".')
+    if f.get("Source") and not news:
+        problems.append('Only a news post ("Type: news") has a "Source:" line.')
+    if news:
+        host = re.sub(r"^https://([^/?#]+).*$", r"\1", source).lower()
+        if not source:
+            problems.append('A news post needs a "Source:" line with the original story\'s address.')
+        elif not SOURCE.match(source):
+            problems.append("The source must be the original story's full https:// address.")
+        elif any(host == bad or host.endswith("." + bad) for bad in NOT_SOURCES):
+            problems.append(f"The source must be the original story, not {host}.")
     title, headline, desc = f.get("Title", ""), f.get("Headline", ""), f.get("Description", "")
     keyword, slug, service = f.get("Keyword", "").lower(), f.get("Slug", ""), f.get("Service page", "")
     if title and len(title + SUFFIX) > MAX_TITLE:
@@ -293,22 +343,23 @@ def check(text, pages=(), anchors=(), taken=()):
             if url != f"/blog/{slug}/" and too_close(keyword, other):
                 problems.append(f'The keyword "{keyword}" competes with {url} ("{other}"). Pick a different one.')
 
-    words = plain_words(post)
-    if not WORDS[0] <= len(words) <= WORDS[1]:
-        problems.append(f"The post is {len(words)} words; it should be {WORDS[0]} to {WORDS[1]}.")
+    words, limits = plain_words(post), NEWS_WORDS if news else WORDS
+    if not limits[0] <= len(words) <= limits[1]:
+        problems.append(f"The post is {len(words)} words; it should be {limits[0]} to {limits[1]}.")
     summary = [v for k, v in blocks if k == "summary"]
     if not summary:
         problems.append('Missing the "In short:" list at the top.')
     elif not SUMMARY_POINTS[0] <= len(summary[0]) <= SUMMARY_POINTS[1]:
         problems.append(f'"In short:" should have {SUMMARY_POINTS[0]} to {SUMMARY_POINTS[1]} points.')
     h2s = [v for k, v in blocks if k == "h2"]
-    if len(h2s) < MIN_SECTIONS:
-        problems.append(f"The post needs at least {MIN_SECTIONS} sections (## headings).")
-    faq = [v for k, v in blocks if k == "qa"]
-    if FAQ_HEADING not in h2s:
+    sections = NEWS_MIN_SECTIONS if news else MIN_SECTIONS
+    if len(h2s) < sections:
+        problems.append(f"The post needs at least {sections} sections (## headings).")
+    faq, count = [v for k, v in blocks if k == "qa"], NEWS_FAQ_COUNT if news else FAQ_COUNT
+    if FAQ_HEADING not in h2s and (faq or not news):
         problems.append(f'Missing the "## {FAQ_HEADING}" section.')
-    if not FAQ_COUNT[0] <= len(faq) <= FAQ_COUNT[1]:
-        problems.append(f"The FAQ has {len(faq)} questions; it should have {FAQ_COUNT[0]} to {FAQ_COUNT[1]}.")
+    if not count[0] <= len(faq) <= count[1]:
+        problems.append(f"The FAQ has {len(faq)} questions; it should have {count[0]} to {count[1]}.")
     for q, a in faq:
         if not q.endswith("?"):
             problems.append(f'FAQ question doesn\'t end with "?": {q[:60]}')
@@ -331,7 +382,11 @@ def check(text, pages=(), anchors=(), taken=()):
         problems.append("The post doesn't link to the free site check (/check/).")
     if service and service not in links:
         problems.append(f"The post doesn't link to its service page ({service}).")
+    if source and SOURCE.match(source) and source not in links:
+        problems.append(f"A news post must link the original story ({source}) in its text.")
     for url in links:
+        if source and url == source:
+            continue
         if not url.startswith("/") or url.startswith("//"):
             problems.append(f"Links must go to our own pages; this one doesn't: {url}")
         elif url.startswith("/#"):
@@ -343,7 +398,7 @@ def check(text, pages=(), anchors=(), taken=()):
         problems.append(f"The service page {service} doesn't exist.")
 
     body = text.split("\n")
-    prose = "\n".join(line for line in body if not re.match(r"^(Slug|Keyword|Service page):", line))
+    prose = "\n".join(line for line in body if not re.match(r"^(Slug|Keyword|Service page|Type|Source):", line))
     if DASHES.search(prose):
         problems.append("Uses an em dash, en dash or a spaced hyphen as punctuation. Use a period or comma.")
     low = prose.lower()
@@ -358,6 +413,14 @@ def check(text, pages=(), anchors=(), taken=()):
     for m in PROMISE.finditer(prose):
         if not NEGATED.search(prose[:m.start()].split("\n")[-1]):
             problems.append(f'Sounds like a promise ("{m.group(0)}").')
+    if news:
+        quotes = [q for q in (a or b for a, b in QUOTE.findall(prose)) if len(q.split()) >= QUOTE_MIN_WORDS]
+        if len(quotes) > MAX_QUOTES:
+            problems.append(f"Quotes the source {len(quotes)} times; a news post may quote it once at most. "
+                            "Put the rest in our own words.")
+        for q in quotes:
+            if len(q.split()) > MAX_QUOTE_WORDS:
+                problems.append(f'The quote "{q[:50]}..." is {len(q.split())} words; keep a quote under 15 words.')
     return list(dict.fromkeys(problems))
 
 

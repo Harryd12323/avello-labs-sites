@@ -6,6 +6,8 @@
 .post-updated { margin-top: .3rem; color: var(--muted); font-size: .85rem; }
 .draft-tag { display: inline-block; padding: .05rem .5rem; border: 1px solid color-mix(in srgb, #fbbf24 55%, transparent); border-radius: 999px;
              background: color-mix(in srgb, #fbbf24 12%, transparent); color: #fcd34d; font-size: .78rem; font-weight: 600; letter-spacing: .02em; }
+.news-tag { display: inline-block; padding: .05rem .5rem; border: 1px solid color-mix(in srgb, var(--cyan) 55%, transparent); border-radius: 999px;
+            background: color-mix(in srgb, var(--cyan) 12%, transparent); color: var(--cyan); font-size: .78rem; font-weight: 600; letter-spacing: .02em; }
 .draft-note { margin-top: 1rem; max-width: 42rem; padding: .7rem .9rem; border: 1px dashed color-mix(in srgb, #fbbf24 50%, transparent); border-radius: 10px;
               color: var(--muted); font-size: .88rem; }
 .draft-note strong { color: #fcd34d; font-weight: 600; }

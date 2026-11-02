@@ -308,6 +308,132 @@ class PostFormat(unittest.TestCase):
         self.assertIn("<loc>https://avellolabs.com/seo/</loc><lastmod>2020-01-02</lastmod>", sitemap)
 
 
+SOURCE = "https://www.example.com/news/technical-seo-still-matters-for-ai/"
+
+
+def news_post(extra="", **changes):
+    """A news post ("Type: news") that passes every rule; `changes` swaps whole header lines (None drops one)."""
+    fields = {
+        "Title": "Google: Technical SEO Still Matters for AI",
+        "Headline": "Google says technical SEO still decides if AI search can find you",
+        "Description": "Google says technical SEO still matters for AI search. What that means for a local business "
+                       "website, and three things to check first.",
+        "Keyword": "google technical seo ai search",
+        "Slug": "google-technical-seo-ai-search",
+        "Service page": "/aeo/",
+        "Lede": "Google has warned against quick AI tricks. The technical SEO that helps you show up in Google search "
+                "also helps AI tools find you.",
+        "Type": "news",
+        "Source": SOURCE,
+    }
+    fields.update(changes)
+    filler = ("If a search engine can't load or read a page, an AI tool that relies on it usually can't either, so "
+              "the same basic fixes help with both. ")
+    return "\n".join(f"{k}: {v}" for k, v in fields.items() if v is not None) + f"""
+
+In short:
+- Google says technical SEO still matters for AI search.
+- Quick tricks sold as AI SEO are not a substitute.
+
+## What Google said
+A Google spokesperson [told reporters]({SOURCE}) that the technical basics of SEO still decide whether AI search
+can use a site. Technical SEO means the setup behind your pages that lets search engines read them.
+
+## What it means for your business
+{filler * 5}Our [AEO guide](/aeo/) covers the rest.
+
+## Three things to check this week
+1. Search Google for your business name and see if your site shows up.
+2. Make sure your services, town and phone number are written as text, not only in pictures.
+3. Open your site on your phone and see how quickly it loads.
+
+{extra}
+
+Run the [free site check](/check/) to see where you stand.
+
+Call to action: Not sure where your site stands? | Our free site check looks at the basics Google and AI tools rely on. | Run the free check | /check/
+"""
+
+
+class NewsPosts(PostFormat):
+    """News posts (owner-approved 2026-11-02): shorter, a News label, and they must link and not copy their source."""
+
+    def test_a_good_news_post_passes_and_imports_with_its_label_and_source_link(self):
+        self.assertEqual(self.problems(news_post()), [])
+        r = self.run_site("check-post", str(self.draft))
+        self.assertEqual(json.loads(r.stdout)["type"], "news")
+        r = self.run_site("import-post", str(self.draft))
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        page = (self.site / "blog" / "google-technical-seo-ai-search" / "index.html").read_text()
+        self.assertIn('<meta name="blog:type" content="news">', page)
+        self.assertIn('<span class="news-tag">News</span>', page)
+        self.assertIn(f'<a href="{SOURCE}" rel="noopener">told reporters</a>', page)
+        self.assertNotIn("FAQPage", page)
+        self.run_site("publish", "/blog/google-technical-seo-ai-search/")
+        listing = (self.site / "blog" / "index.html").read_text()     # published posts only, once any is published
+        card = re.search(r'<li class="post-card">\s*<h2><a href="/blog/google-technical-seo-ai-search/">.*?</li>', listing, re.S)
+        self.assertIn('<span class="news-tag">News</span>', card.group(0))
+        feed = (self.site / "blog" / "feed.xml").read_text()
+        item = re.search(r"<item>(?:(?!</item>).)*google-technical-seo-ai-search.*?</item>", feed, re.S).group(0)
+        self.assertIn("<category>News</category>", item)
+
+    def test_a_news_post_never_claims_its_keyword(self):
+        self.assertEqual(self.problems(news_post()), [])
+        self.run_site("import-post", str(self.draft))
+        self.assertNotIn("/blog/google-technical-seo-ai-search/",
+                         [o["url"] for o in json.loads(self.run_site("keywords").stdout)])
+        self.assertEqual(json.loads(self.run_site("check-keyword", "google technical seo ai search").stdout), [])
+        later = sample_post(Title="Google Technical SEO for AI Search", Headline="Google technical SEO for AI search",
+                            Keyword="google technical seo ai search", Slug="google-technical-seo-guide",
+                            Description="Google technical SEO for AI search, explained for local business owners, with "
+                                        "the checks that help your site get found.",
+                            Lede="Google technical SEO for AI search is simpler than it sounds.")
+        later = later.replace("To get recommended by ChatGPT", "Google technical SEO for AI search starts here. To get recommended by ChatGPT")
+        self.assertFalse(any("competes with" in p for p in self.problems(later)), self.problems(later))
+
+    def test_regular_posts_get_no_news_label(self):
+        self.assertEqual(self.problems(sample_post()), [])
+        self.run_site("import-post", str(self.draft))
+        page = (self.site / "blog" / "get-business-recommended-by-chatgpt" / "index.html").read_text()
+        self.assertNotIn("blog:type", page)
+        self.assertNotIn("news-tag", page)
+
+    def test_the_source_rules(self):
+        def has(text, expected):
+            found = self.problems(text)
+            self.assertTrue(any(expected in p for p in found), found)
+        has(news_post(Source=None), 'needs a "Source:" line')
+        has(news_post(Source="http://www.example.com/story/"), "full https:// address")
+        has(news_post(Source="https://news.google.com/rss/articles/abc"), "not news.google.com")
+        has(news_post(Source="https://avellolabs.com/blog/"), "not avellolabs.com")
+        has(news_post().replace(f"]({SOURCE})", "](/aeo/)"), "must link the original story")
+        has(news_post(extra="See [another story](https://www.example.org/other/)."), "our own pages")
+        has(news_post(Type="opinion"), 'only "Type:"')
+        has(sample_post().replace("Lede:", f"Source: {SOURCE}\nLede:"), 'Only a news post')
+
+    def test_quotes_once_and_short(self):
+        one = 'The article put it simply: \u201cthe basics still decide who gets found.\u201d'
+        self.assertEqual(self.problems(news_post(extra=one)), [])
+        terms = 'Google calls it "AI Mode" and others say "AI SEO" or "answer engines".'
+        self.assertEqual(self.problems(news_post(extra=terms)), [])
+        two = one + ' It added, "small sites can still win if pages load and read well."'
+        self.assertTrue(any("may quote it once" in p for p in self.problems(news_post(extra=two))))
+        long = 'It said: "the technical basics of search still decide whether any AI tool can use what is on your site."'
+        self.assertTrue(any("under 15 words" in p for p in self.problems(news_post(extra=long))))
+
+    def test_news_length_and_sections(self):
+        long = news_post(extra=("Keep your pages simple and your details current. " * 60))
+        self.assertTrue(any("should be 250 to 600" in p for p in self.problems(long)))
+        short = re.sub(r"## What it means.*?(?=## Three)", "", news_post(), flags=re.S)
+        self.assertTrue(any("should be 250 to 600" in p for p in self.problems(short)))
+        faq = news_post(extra="## Common questions\nQ: Is this new?\nA: No, Google has said it before.")
+        self.assertEqual(self.problems(faq), [])
+        stray_q = news_post(extra="Q: Is this new?\nA: No.")
+        self.assertTrue(any('Missing the "## Common questions"' in p for p in self.problems(stray_q)))
+        # the regular rules still apply to news posts
+        self.assertTrue(any("em dash" in p for p in self.problems(news_post(extra="It works \u2014 mostly."))))
+
+
 class PriceLine(unittest.TestCase):
     PAGES = ["/", "/seo/", "/aeo/", "/website-care/", "/web-apps/"]
 

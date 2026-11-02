@@ -339,6 +339,7 @@ def blog_posts():
             "published": published, "modified": modified,
             "words": words, "minutes": max(1, math.ceil(words / WORDS_PER_MINUTE)),
             "keyword": _meta(text, "name", "blog:keyword"),
+            "news": _meta(text, "name", "blog:type") == "news",
             "faq": [tuple(html.unescape(re.sub(r"<[^>]+>", "", x)).strip() for x in pair) for pair in qa],
         })
     return sorted(posts, key=lambda p: (p["published"], p["url"]), reverse=True)
@@ -389,7 +390,8 @@ def blog_head(post, posts):
 def byline(post):
     when = (f'<span class="draft-tag">Draft</span>' if post["draft"]
             else f'<time datetime="{post["published"]}">{nice_date(post["published"])}</time>')
-    return f'By {BLOG_AUTHOR} <span aria-hidden="true">·</span> {when} <span aria-hidden="true">·</span> {post["minutes"]} min read'
+    news = '<span class="news-tag">News</span> <span aria-hidden="true">·</span> ' if post.get("news") else ""
+    return f'{news}By {BLOG_AUTHOR} <span aria-hidden="true">·</span> {when} <span aria-hidden="true">·</span> {post["minutes"]} min read'
 
 
 def post_meta(post):
@@ -462,7 +464,7 @@ def blog_feed(posts):
       <link>{SITE}{p["url"]}</link>
       <guid isPermaLink="true">{SITE}{p["url"]}</guid>
       <pubDate>{stamp(p["published"])}</pubDate>
-      <description>{x(p["description"])}</description>
+{"      <category>News</category>" + chr(10) if p.get("news") else ""}      <description>{x(p["description"])}</description>
     </item>
 """ for p in live)
     built = f"    <lastBuildDate>{stamp(max(p['modified'] for p in live))}</lastBuildDate>\n" if live else ""
@@ -681,10 +683,11 @@ def new(url, title, desc):
     sync()
 
 
-def post_page(url, title, headline, desc, lede, article, keyword=""):
+def post_page(url, title, headline, desc, lede, article, keyword="", news=False):
     """A blog post page (a draft), with the shared blocks left empty for sync to fill in."""
     t, h, d, today = html.escape(title), html.escape(headline), html.escape(desc), date.today().isoformat()
     kw = f'\n<meta name="blog:keyword" content="{html.escape(keyword)}">' if keyword else ""
+    kw += '\n<meta name="blog:type" content="news">' if news else ""
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -754,10 +757,12 @@ def post(url, headline, desc):
 
 
 def taken_keywords():
-    """[(url, keyword)] for every page that owns a target keyword: the main pages and every blog post."""
+    """[(url, keyword)] for every page that owns a target keyword: the main pages and every regular blog post. News
+    posts own none (owner, 2026-11-02), so they never block a later regular post."""
     out = list(PAGE_KEYWORDS.items())
     for p in blog_posts():
-        out.append((p["url"], p["keyword"] or p["headline"].lower()))
+        if not p["news"]:
+            out.append((p["url"], p["keyword"] or p["headline"].lower()))
     return out
 
 
@@ -777,7 +782,8 @@ def check_post(path):
     out = {"ok": not problems, "problems": problems}
     if not problems:
         fields = blogpost.parse(text)["fields"]
-        out.update(blogpost.stats(text), slug=fields["Slug"], url=f"/blog/{fields['Slug']}/", keyword=fields["Keyword"].lower())
+        out.update(blogpost.stats(text), slug=fields["Slug"], url=f"/blog/{fields['Slug']}/", keyword=fields["Keyword"].lower(),
+                   type="news" if blogpost.is_news(fields) else "post")
     print(json.dumps(out, indent=2))
     return out
 
@@ -793,7 +799,8 @@ def import_post(path):
     url = f"/blog/{f['Slug']}/"
     out = new_post_file(url)
     out.write_text(post_page(url, f["Title"] + blogpost.SUFFIX, f["Headline"], f["Description"],
-                             blogpost.inline(f["Lede"]), blogpost.body_html(post_), f["Keyword"].lower()))
+                             blogpost.inline(f["Lede"], blogpost.source_of(f)), blogpost.body_html(post_), f["Keyword"].lower(),
+                             blogpost.is_news(f)))
     print("created", out)
     sync()
 
