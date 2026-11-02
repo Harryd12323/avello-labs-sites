@@ -12,3 +12,4 @@ exclude:
   - brand/build.py
   - brand/README.md
   - concepts/
+  - business-cards/
