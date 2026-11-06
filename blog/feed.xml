@@ -6,7 +6,14 @@
     <description>Practical website, search and AI answer tips for small local businesses.</description>
     <language>en-us</language>
     <atom:link href="https://avellolabs.com/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Wed, 04 Nov 2026 12:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 06 Nov 2026 12:00:00 +0000</lastBuildDate>
+    <item>
+      <title>What is generative engine optimization (GEO)?</title>
+      <link>https://avellolabs.com/blog/what-is-generative-engine-optimization/</link>
+      <guid isPermaLink="true">https://avellolabs.com/blog/what-is-generative-engine-optimization/</guid>
+      <pubDate>Fri, 06 Nov 2026 12:00:00 +0000</pubDate>
+      <description>What is generative engine optimization? GEO explained for local business owners, and how it fits with SEO and AEO, in simple terms.</description>
+    </item>
     <item>
       <title>Google is turning off Search in schools that say no to its AI</title>
       <link>https://avellolabs.com/blog/google-search-off-schools-ai/</link>
