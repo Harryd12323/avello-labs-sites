@@ -117,7 +117,7 @@
       "</div>" +
       '<div class="field"><label for="r-website">Website</label><input id="r-website" name="website" type="url" inputmode="url" autocomplete="url" maxlength="200" required></div>' +
       '<p class="err" id="r-err"></p>' +
-      '<button class="btn" type="submit">Email me the full report</button>' +
+      '<button class="btn" type="submit">Email me my free hand-checked report</button>' +
       '<p class="form-status" id="r-status" role="status" aria-live="polite"></p>' +
       '<p class="form-note">Your details and this check\'s results are sent to us through Web3Forms. See our <a class="text-link" href="/privacy/#check">privacy policy</a>.</p>';
     f.website.defaultValue = last.finalUrl;

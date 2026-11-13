@@ -216,6 +216,8 @@ section.block { padding: 5rem 0; border-top: 1px solid var(--line); }
                         text-underline-offset: 4px; font-weight: 600; min-height: 44px; }
 .contact-aside a.mail:hover { text-decoration-color: var(--cyan); }
 .contact-aside svg { width: 18px; height: 18px; color: var(--cyan); }
+.contact-aside .next-h { margin-top: 1.75rem; font-size: 1rem; }
+.contact-aside .next-steps { margin-top: .75rem; padding-left: 1.25rem; color: var(--muted); display: grid; gap: .4rem; }
 form.contact-form { position: relative; padding: 1.5rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); }
 form.contact-form::before { content: ""; position: absolute; left: 1.5rem; right: 1.5rem; top: -1px; height: 1px;
                             background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--cyan) 50%, transparent), var(--blue-2), transparent); }

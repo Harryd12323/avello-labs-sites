@@ -371,9 +371,9 @@ def check(text, pages=(), anchors=(), taken=()):
     else:
         parts = ctas[-1]
         if len(parts) != 4 or not all(parts):
-            problems.append('The call to action needs four parts: Heading | Text | Button label | /check/ or chat.')
-        elif parts[3].lower() not in ("/check/", "chat"):
-            problems.append('The call to action should point to /check/ or the chat ("chat").')
+            problems.append('The call to action needs four parts: Heading | Text | Button label | /check/, /#contact or chat.')
+        elif parts[3].lower() not in ("/check/", "/#contact", "chat"):
+            problems.append('The call to action should point to /check/, /#contact (the free review) or the chat ("chat").')
         if blocks[-1][0] != "cta":
             problems.append("The call to action should be the last thing in the post.")
 
