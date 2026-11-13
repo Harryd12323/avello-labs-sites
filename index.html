@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!-- shared:head -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://api.web3forms.com https://avello-chat.avellolabs.workers.dev https://avello-check.avellolabs.workers.dev https://avello-alerts.avellolabs.workers.dev; form-action https://api.web3forms.com; base-uri 'self'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://api.web3forms.com https://avello-chat.avellolabs.workers.dev https://avello-check.avellolabs.workers.dev https://avello-alerts.avellolabs.workers.dev https://cloudflareinsights.com; form-action https://api.web3forms.com; base-uri 'self'; object-src 'none'">
 <link rel="icon" type="image/png" sizes="48x48" href="/brand/favicon-48.png">
 <link rel="icon" type="image/png" sizes="96x96" href="/brand/favicon-96.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/brand/favicon-192.png">
@@ -499,7 +499,7 @@
         <p class="lede">A 20-minute phone call about your business. We look at your website, your Google Business Profile and what AI tools say about you, then walk you through the 3 fixes we'd make first. No obligation, and the fixes are yours to keep whether or not you work with us.</p>
         <h3 class="next-h">What happens next</h3>
         <ol class="next-steps">
-          <li>Fill in the form with your website and a line about your business.</li>
+          <li>Fill in your name, email and website.</li>
           <li>We email you within 1 business day to pick a time.</li>
           <li>We talk for 20 minutes and you leave with your 3 fixes.</li>
         </ol>
@@ -510,7 +510,7 @@
         <p class="lede">A 20-minute phone call about a task you do by hand. You tell us how it works today, and we tell you honestly whether a small custom tool, an existing app or no change at all is the right answer. No obligation.</p>
         <h3 class="next-h">What happens next</h3>
         <ol class="next-steps">
-          <li>Fill in the form with a line about the task.</li>
+          <li>Fill in your name, email and a line about the task.</li>
           <li>We email you within 1 business day to pick a time.</li>
           <li>We talk for 20 minutes and you leave knowing whether a tool makes sense.</li>
         </ol>
@@ -548,12 +548,13 @@
           </div>
         </div>
         <div class="field">
-          <label for="website">Website URL <small>(optional)</small></label>
-          <input id="website" name="website" type="url" inputmode="url" autocomplete="url" placeholder="yourbusiness.com" maxlength="200">
+          <label for="website">Website <small data-offer="tool" hidden>(optional)</small></label>
+          <input id="website" name="website" type="url" inputmode="url" autocomplete="url" placeholder="yourbusiness.com" maxlength="200" required>
+          <p class="err" id="err-website"></p>
         </div>
         <div class="field">
-          <label for="message">Message</label>
-          <textarea id="message" name="message" placeholder="What does your business do, and what would you like more of?" maxlength="1000" required></textarea>
+          <label for="message"><span data-offer="review">Anything we should know? <small>(optional)</small></span><span data-offer="tool" hidden>What task would you like to stop doing by hand?</span></label>
+          <input id="message" name="message" placeholder="What you'd like more of, or what's not working" maxlength="300">
           <p class="err" id="err-message"></p>
         </div>
         <div class="form-foot">
@@ -638,6 +639,7 @@
 <script src="/assets/newsletter.js" data-ticket="https://avello-check.avellolabs.workers.dev/ticket/newsletter" data-alerts="https://avello-alerts.avellolabs.workers.dev/lead" data-web3forms="a6955225-5ff5-4562-ae2d-dfda9193580a" defer></script>
 <link rel="stylesheet" href="/assets/chat.css">
 <script src="/assets/chat.js" data-endpoint="https://avello-chat.avellolabs.workers.dev/chat" data-web3forms="a6955225-5ff5-4562-ae2d-dfda9193580a" data-alerts="https://avello-alerts.avellolabs.workers.dev/lead" defer></script>
+<script src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "c13465b4292f4925a76c38488a1eff2e"}' defer></script>
 <!-- /shared:footer -->
 </body>
 </html>
