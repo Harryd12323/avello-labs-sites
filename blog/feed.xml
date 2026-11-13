@@ -6,7 +6,15 @@
     <description>Practical website, search and AI answer tips for small local businesses.</description>
     <language>en-us</language>
     <atom:link href="https://avellolabs.com/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Mon, 09 Nov 2026 12:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 12 Nov 2026 12:00:00 +0000</lastBuildDate>
+    <item>
+      <title>ChatGPT Ads are replacing bid caps with cost targets</title>
+      <link>https://avellolabs.com/blog/chatgpt-ads-cost-targets/</link>
+      <guid isPermaLink="true">https://avellolabs.com/blog/chatgpt-ads-cost-targets/</guid>
+      <pubDate>Thu, 12 Nov 2026 12:00:00 +0000</pubDate>
+      <category>News</category>
+      <description>ChatGPT Ads now use Target CPA and Target CPC instead of max bids. Here is what that means for a local business website and what to do.</description>
+    </item>
     <item>
       <title>Do I need a new website or can mine be fixed?</title>
       <link>https://avellolabs.com/blog/new-website-or-fix-mine/</link>
