@@ -1,0 +1,41 @@
+# Get found on Google and in AI answers
+Subtitle: A checklist for local businesses
+
+When someone nearby searches for what you do, or asks an AI tool for a recommendation, you want your business to be one of the names that comes up. This checklist covers the basics that help, in the order we'd tackle them.
+
+## 1. Your Google Business Profile
+Google says local results are based mainly on three things: relevance, distance and prominence. Your Business Profile feeds all three.
+- Claim and verify your profile at business.google.com.
+- Pick the most specific primary category that fits, then add any secondary ones that truly apply.
+- Fill in your hours, service area, phone number and website, and keep holiday hours up to date.
+- Add real photos of your work, your team and your location.
+- Ask happy customers for reviews, and reply to every review, good or bad.
+
+## 2. Make sure search engines and AI tools can read your site
+- Search your business name plus your town. If your site doesn't show up at all, Google may not have it indexed. Google Search Console will tell you.
+- Check your robots.txt file isn't blocking Google or the AI search bots. Our free AI crawler check at avellolabs.com/tools/ai-crawler-check/ shows which bots your site lets in.
+- Make sure your site loads on https, with no security warning.
+
+## 3. Say clearly what you do and where
+- Every page needs a title that says what the page is about, plus your town.
+- Your home page should say in the first line what you do and the area you serve.
+- Give each main service its own page, written the way customers talk about it.
+- Put your name, address and phone number on the site exactly as they appear on your Business Profile.
+
+## 4. Answer the questions customers actually ask
+AI tools build their answers from pages that answer a question directly.
+- List the questions you hear on the phone every week, and answer each one on your site in a few plain sentences.
+- Add prices or price ranges if you can. Customers ask about them first.
+- Add business details in a format search engines read (called schema). Our free schema generator at avellolabs.com/tools/schema-generator/ writes it for you.
+
+## 5. Build trust beyond your own site
+- Keep your business name, address and phone number the same everywhere you're listed.
+- Get listed in the directories and associations that matter in your trade.
+- Local news, sponsorships and partner businesses that link to you all help Google and AI tools see you as a real, active business.
+
+## What to skip
+- Anyone who promises a top spot on Google. Nobody controls that.
+- Pages stuffed with town names you don't really serve.
+- Buying reviews or links. Google's rules forbid both.
+
+CTA: Want a hand? | Free 20-minute review: the 3 fixes that would get you more calls. A short phone call, no obligation. | avellolabs.com/#contact

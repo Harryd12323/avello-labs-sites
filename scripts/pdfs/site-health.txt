@@ -1,0 +1,34 @@
+# Keep your website healthy
+Subtitle: A simple monthly checklist for local businesses
+
+A website isn't a sign you put up once. It runs on software that needs updates, and it describes a business that keeps changing. A little regular attention keeps it working and accurate.
+
+## Every week
+- Open your site on your phone. Does the home page load, and does the phone number tap to call?
+- Send yourself a test message through your contact form, and check that it arrives.
+- Check your Google Business Profile for new reviews and questions, and reply.
+
+## Every month
+- Update your hours, prices, services and staff anywhere they've changed.
+- Install updates for your website platform, theme and plugins, after a backup.
+- Check that your backups are actually running, and that you know how to restore one.
+- Click through your main pages and look for broken links, missing images or old offers.
+- Look at Google Search Console for errors or pages Google can't index.
+- Add something new: a recent project, a photo, or an answer to a question customers asked this month.
+
+## Every year
+- Renew your domain name and hosting, and turn on auto renew so they can't lapse.
+- Make sure your security certificate (the padlock) renews on its own.
+- Read every page as if you were a new customer. Remove anything out of date.
+- Check that you can still log in to your domain, hosting and website accounts, and that the logins aren't tied to someone who has left.
+
+## Warning signs to act on
+- A “Not secure” warning in the browser.
+- A sudden drop in calls or form messages.
+- Your site showing someone else's ads or strange links.
+- Pages that look broken on phones.
+
+## Who should do this?
+If you enjoy it and have the time, this list is all you need. If the website keeps slipping to the bottom of your to do list, that's what monthly care from a web company is for: someone else watches it, updates it and makes the changes you ask for.
+
+CTA: Want a hand? | Free 20-minute review: the 3 fixes that would get you more calls. A short phone call, no obligation. | avellolabs.com/#contact

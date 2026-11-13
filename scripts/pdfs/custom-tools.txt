@@ -1,0 +1,39 @@
+# Stop doing it by hand
+Subtitle: When a custom tool makes sense for a small business, and when it doesn't
+
+Many small businesses run on paper forms, spreadsheets and copy and paste. That works, until it doesn't. A custom web app is a simple tool your customers or your team use in the browser, built around the way you already work.
+
+## Signs a task is worth a tool
+- You type the same information into two or more places.
+- Customers call or email to ask “where's my order?” or “when are you coming?”
+- A spreadsheet has grown so big that only one person understands it.
+- Mistakes happen because something was copied wrong or forgotten.
+- A job that should take minutes takes hours every week.
+
+## Examples that often pay off
+- Booking and intake forms that collect everything you need up front.
+- Job or order status pages customers can check themselves.
+- Customer portals for documents, invoices and approvals.
+- Inventory and photo catalogs that the whole team can update.
+- Simple dashboards that pull your numbers into one place.
+
+## When to wait
+- An existing app already does the job well and at a fair price. Use it.
+- The process changes every month. Settle it on paper first.
+- Only one person does the task, rarely, and it doesn't cause mistakes.
+
+## Before you talk to anyone, write down
+1. The task, step by step, as it happens today.
+2. Who does it, and how often.
+3. What goes wrong, and what it costs you when it does.
+4. What “done” would look like: what you'd stop doing.
+
+That one page is the most useful thing you can bring to a conversation about a custom tool, with us or anyone else.
+
+## What a good small tool looks like
+- It does one job well, instead of trying to run the whole business.
+- It works on a phone as well as a computer.
+- Your data stays yours, and you can export it.
+- You can see a working preview early and change it before it's finished.
+
+CTA: Want to talk it through? | Free 20-minute call: is a custom tool worth it for you? Bring your one page and we'll tell you honestly. No obligation. | avellolabs.com/?offer=tool#contact

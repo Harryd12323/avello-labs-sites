@@ -1,11 +1,11 @@
 import { DurableObject } from "cloudflare:workers";
 
-// Decides whether an alert may be sent. Each ticket works once; each kind of alert ("lead" or "newsletter")
+// Decides whether an alert may be sent. Each ticket works once; each kind of alert ("lead", "newsletter" or "quiz")
 // has its own per-visitor, hourly and daily caps and its own duplicate window for the same email. It also
 // keeps a monthly count of alerts whose email copy was sent, to warn before the Web3Forms free plan runs
 // out. Stores only used ticket IDs, salted hashes and counts; an hourly alarm deletes expired entries.
 
-export type Kind = "lead" | "newsletter";
+export type Kind = "lead" | "newsletter" | "quiz";
 export type Limits = { perIpPerHour: number; perHour: number; perDay: number; dedupeMs: number; pauseFor: "hour" | "day" };
 export type GateResult =
   | { ok: true; monthCount: number }

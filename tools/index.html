@@ -67,6 +67,34 @@
 
   <div class="page-body">
     <div class="wrap">
+      <section class="tool-panel quiz" id="quiz" aria-labelledby="quiz-h">
+        <p class="eyebrow">60-second quiz</p>
+        <h2 id="quiz-h">What's your website missing?</h2>
+        <p class="quiz-sub">Answer four quick questions and get a free guide that fits your business.</p>
+        <form class="quiz-form" novalidate>
+          <div class="quiz-questions"></div>
+          <div class="quiz-send">
+            <div class="hp" aria-hidden="true"><label for="quiz-bot">Leave this box unticked</label><input type="checkbox" id="quiz-bot" name="botcheck" tabindex="-1" autocomplete="off"></div>
+            <div class="grid2">
+              <div class="field"><label for="quiz-email">Email</label><input id="quiz-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="120" placeholder="you@company.com" required></div>
+              <div class="field"><label for="quiz-name">Name <small>(optional)</small></label><input id="quiz-name" name="name" autocomplete="name" maxlength="80"></div>
+            </div>
+            <label class="nl-consent"><input type="checkbox" name="newsletter"> <span>Also send me the Avello Labs newsletter: website tips, about once a month.</span></label>
+            <div class="quiz-turnstile"></div>
+          </div>
+          <button class="btn" type="submit">Get my free guide <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          <p class="tool-error" role="alert"></p>
+          <p class="tool-hint">Free, no obligation. We email you the guide once and don't add you to any list unless you tick the box. See our <a href="/privacy/#quiz">privacy policy</a>.</p>
+        </form>
+        <div class="quiz-result" tabindex="-1" hidden>
+          <p class="eyebrow">Your guide</p>
+          <h3 class="quiz-title"></h3>
+          <a class="btn quiz-download" href="/resources/get-found.pdf" download>Download the guide (PDF)</a>
+          <p class="quiz-note" role="status"></p>
+          <p class="quiz-offer-line"><span class="quiz-offer-text"></span> <a class="text-link quiz-offer" href="/#contact"></a></p>
+        </div>
+      </section>
+
       <div class="tool-grid">
         <a class="tool-card" href="/check/">
           <h2>Free site check</h2>
@@ -204,6 +232,7 @@
 <!-- /shared:footer -->
 <!-- shared:tool-hub -->
 <link rel="stylesheet" href="/assets/tools.css">
+<script src="/assets/quiz.js" data-endpoint="https://avello-alerts.avellolabs.workers.dev/quiz" data-sitekey="" defer></script>
 <!-- /shared:tool-hub -->
 </body>
 </html>

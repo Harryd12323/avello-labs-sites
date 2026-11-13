@@ -143,3 +143,26 @@
   .sg-day .sg-open { grid-column: 1 / -1; }
   .sg-day span { display: none; }
 }
+
+/* Website quiz (top of /tools/) */
+.quiz { margin-bottom: 3rem; }
+.quiz h2 { margin-top: .4rem; font-size: clamp(1.4rem, 3.5vw, 1.8rem); max-width: none; }
+.quiz-sub { margin-top: .5rem; color: var(--muted); }
+.quiz-questions { margin-top: 1.5rem; display: grid; gap: 1.5rem; }
+.quiz-q { border: 0; }
+.quiz-q legend { font-weight: 600; margin-bottom: .6rem; }
+.quiz-q label { display: inline-flex; margin: 0 .5rem .5rem 0; cursor: pointer; }
+.quiz-q input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.quiz-q span { display: inline-block; padding: .55rem .95rem; border: 1px solid var(--line-bright); border-radius: 999px; background: var(--bg-2);
+               font-size: .95rem; transition: border-color .15s, background .15s; }
+.quiz-q label:hover span { border-color: var(--blue); }
+.quiz-q input:checked + span { border-color: var(--cyan); background: color-mix(in srgb, var(--blue) 22%, var(--bg-2)); }
+.quiz-q input:focus-visible + span { box-shadow: 0 0 0 3px color-mix(in srgb, var(--cyan) 35%, transparent); }
+.quiz-send { margin-top: 1.75rem; }
+.quiz-turnstile:not(:empty) { margin-top: 1rem; }
+.quiz-form > .btn { margin-top: 1.5rem; }
+.quiz-result { outline: none; }
+.quiz-result h3 { margin: .4rem 0 1.25rem; font-size: 1.4rem; }
+.quiz-note { margin-top: 1rem; color: var(--muted); }
+.quiz-note:empty { display: none; }
+.quiz-offer-line { margin-top: 1.25rem; }

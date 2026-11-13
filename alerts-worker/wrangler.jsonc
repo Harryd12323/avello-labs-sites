@@ -4,6 +4,8 @@
   //   TELEGRAM_BOT_TOKEN  the lead-alert bot's token from BotFather
   //   TELEGRAM_CHAT_ID    Harris's chat ID with that bot
   //   LEAD_SIGNING_KEY    shared with the chat and check Workers, to verify lead tickets
+  //   RESEND_API_KEY      Resend API key (sending access only) for the quiz emails from send.avellolabs.com
+  //   TURNSTILE_SECRET    secret key of the "Avello quiz" Turnstile widget
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "avello-alerts",
   "main": "src/index.ts",
@@ -22,6 +24,11 @@
     "PER_HOUR": "20",
     "PER_DAY": "50",
     "NEWSLETTER_PER_IP_PER_HOUR": "3",
-    "NEWSLETTER_PER_DAY": "15"
+    "NEWSLETTER_PER_DAY": "15",
+    "SITE_URL": "https://avellolabs.com",
+    "QUIZ_FROM": "Avello Labs <guides@send.avellolabs.com>",
+    "QUIZ_TO": "harris@avellolabs.com",
+    "QUIZ_PER_IP_PER_HOUR": "3",
+    "QUIZ_PER_DAY": "40"
   }
 }
