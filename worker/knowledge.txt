@@ -50,24 +50,24 @@ Why Avello Labs
 What we do
 
 ## Get found and get calls, without looking after a website yourself.
-Most businesses come to us for two things: a fast, custom website, and someone to look after it every month. Everything else builds on that.
+Most businesses come to us for two things: a fast, custom website, and someone to look after it every month. When a job needs more than a website, we build web apps and custom software too.
 
-### Website builds Live in days, not months
-A custom website designed for your business and launched in about a week, with Google SEO and AI search basics set up from the start. See the timeline
+### Websites Live in days, not months
+A fast, custom site that turns visitors into calls, live in about a week, with Google SEO and AI search basics set up from the start. See the timeline
 
-### Monthly care Updates, monitoring, backups and fixes
-We keep your site updated, watch for problems and make the changes you ask for, so it keeps working long after launch. What monthly care covers
+### Ongoing site care Updates, monitoring, backups and fixes
+Your site stays updated, backed up and working, and changes get made when you ask. What site care covers
 
-### Also available
+### Also from us
 
-### SEO Show up when people nearby search
-We fix what's holding your site back and tune your pages for the searches your customers actually make. How SEO gets you found
+### SEO and AEO Get found on Google and in AI answers
+Show up when people nearby search on Google or ask AI for a recommendation. What AEO means How you get found
 
-### AEO Answer Engine Optimization
-Getting your business recommended when people ask AI tools like ChatGPT and Google's AI answers for help. How to get named in AI answers
+### Web apps Simple tools built around how you work
+Customers and staff use one simple browser tool instead of phone calls, paper and spreadsheets. What a custom tool could save you
 
-### Custom web apps Simple tools built around how you work
-Customer portals, status trackers, intake forms and dashboards that replace the spreadsheet, paper or email chain a job lives in today. What a custom tool could save you
+### Custom software Your own data, turned into finished work
+Turn data you already have into finished reports, without hours of typing. For example, we built a Windows app that turns a sales company's GPS data into weekly tech logs. How custom software works
 
 Real work
 
@@ -380,6 +380,17 @@ One screen with the things you check every week, like open jobs, upcoming appoin
 
 ### AI helpers
 Assistants that answer common customer questions using your own information, or read incoming inquiries and sort them by type or urgency so the right person sees them first. They work best on clear, narrow jobs, with a person checking the results and an easy way to reach a human.
+
+## Custom software
+Some jobs fit better in a program on your own computer than in a browser. That's usually the case when the work starts from files you already export, like spreadsheets or reports from another system, or when the data shouldn't leave your office.
+
+### Example: weekly tech logs from GPS data
+A sales company was building its technicians' weekly logs by hand from GPS reports. We built a Windows desktop app that reads the GPS export and fills in the weekly tech log workbook. It runs on their own PC, and the data stays there.
+
+### When custom software makes sense
+- You export the same data every week and rework it into another format by hand.
+- The result has to match a set template, like a workbook, a form or a report.
+- The data is sensitive, and you'd rather it never left your own computer.
 
 ## Why businesses are moving off spreadsheets and paper
 Spreadsheets and paper are flexible and familiar, and for a long time they were the only affordable option. As a business grows, they start to strain:
