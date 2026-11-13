@@ -164,7 +164,7 @@ async function quiz(request: Request, env: Env, json: (body: unknown, status?: n
   const guide = pickGuide(answers);
   const sent = await sendEmail(env, { from: env.QUIZ_FROM, to: [email], reply_to: env.QUIZ_TO, ...visitorEmail(env.SITE_URL, guide) });
   await sendEmail(env, { from: env.QUIZ_FROM, to: [env.QUIZ_TO], reply_to: email, ...ownerEmail({ answers, guide, name, email, newsletter }) });
-  await sendTelegram(env, quizAlert({ guide, email, newsletter, sent }));
+  await sendTelegram(env, quizAlert({ answers, guide, email, newsletter, sent }));
   return json({ ok: sent, guide }, sent ? 200 : 502);
 }
 

@@ -11,6 +11,7 @@ export const QUESTIONS = [
     "Nobody keeps the site updated", "We do too much admin by hand"] },
   { q: "What should your site mainly do?", a: ["Show off our work", "Get calls and bookings", "Sell products", "Help run the business"] },
   { q: "Who looks after your site today?", a: ["Nobody", "Me, when I have time", "A developer or agency", "Not sure"] },
+  { q: "When do you want this sorted?", a: ["ASAP", "In the next month or two", "Just exploring"] },
 ] as const;
 
 export const GUIDES = {
@@ -83,10 +84,11 @@ export function ownerEmail(a: { answers: number[]; guide: Guide; name: string; e
   };
 }
 
-export function quizAlert(a: { guide: Guide; email: string; newsletter: boolean; sent: boolean }): string {
+export function quizAlert(a: { answers: number[]; guide: Guide; email: string; newsletter: boolean; sent: boolean }): string {
   return [
     "New quiz",
     `Email: ${clean(a.email, 120)}`,
+    `When: ${QUESTIONS[4].a[a.answers[4]]}`,
     `Guide: ${GUIDES[a.guide]}`,
     `Newsletter: ${a.newsletter ? "yes" : "no"}`,
     `Guide email: ${a.sent ? "sent" : "FAILED, check Resend"}`,

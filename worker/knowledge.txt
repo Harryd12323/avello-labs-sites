@@ -5,7 +5,7 @@ Website builds · Monthly care · SEO and AEO
 We build fast websites for local businesses that show up when customers search, then keep them working every month.
 Free 20-minute review: the 3 fixes that would get you more calls.
 Get my free review   See what happens in your first week
-What's your website missing? Take the 60-second quiz.
+What's your website missing? Take the 5-question quiz.
 
 How it works
 
@@ -432,10 +432,10 @@ Home / Free tools
 # Free tools for your website
 Quick checks and generators for the basics that help people find you on Google and in AI answers. Free, no sign-up.
 
-60-second quiz
+5-question quiz
 
 ## What's your website missing?
-Answer four quick questions and get a free guide that fits your business.
+Answer five quick questions and get a free guide that fits your business.
 
 ## Free site check
 A score out of 100 and simple fixes for 10 SEO and AEO basics on any page. Open the tool

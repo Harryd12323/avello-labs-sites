@@ -68,12 +68,17 @@
   <div class="page-body">
     <div class="wrap">
       <section class="tool-panel quiz" id="quiz" aria-labelledby="quiz-h">
-        <p class="eyebrow">60-second quiz</p>
+        <p class="eyebrow">5-question quiz</p>
         <h2 id="quiz-h">What's your website missing?</h2>
-        <p class="quiz-sub">Answer four quick questions and get a free guide that fits your business.</p>
+        <p class="quiz-sub">Answer five quick questions and get a free guide that fits your business.</p>
         <form class="quiz-form" novalidate>
-          <div class="quiz-questions"></div>
-          <div class="quiz-send">
+          <div class="quiz-progress">
+            <p class="quiz-count" aria-live="polite">Question 1 of 5</p>
+            <div class="quiz-bar" aria-hidden="true"><span></span></div>
+          </div>
+          <div class="quiz-stage"></div>
+          <div class="quiz-step quiz-send" hidden>
+            <h3 tabindex="-1">Where should we send your guide?</h3>
             <div class="hp" aria-hidden="true"><label for="quiz-bot">Leave this box unticked</label><input type="checkbox" id="quiz-bot" name="botcheck" tabindex="-1" autocomplete="off"></div>
             <div class="grid2">
               <div class="field"><label for="quiz-email">Email</label><input id="quiz-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="120" placeholder="you@company.com" required></div>
@@ -81,10 +86,11 @@
             </div>
             <label class="nl-consent"><input type="checkbox" name="newsletter"> <span>Also send me the Avello Labs newsletter: website tips, about once a month.</span></label>
             <div class="quiz-turnstile"></div>
+            <button class="btn" type="submit">Send my free guide <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+            <p class="tool-error" role="alert"></p>
+            <p class="tool-hint">Free, no obligation. We email you the guide once and don't add you to any list unless you tick the box. See our <a href="/privacy/#quiz">privacy policy</a>.</p>
           </div>
-          <button class="btn" type="submit">Get my free guide <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-          <p class="tool-error" role="alert"></p>
-          <p class="tool-hint">Free, no obligation. We email you the guide once and don't add you to any list unless you tick the box. See our <a href="/privacy/#quiz">privacy policy</a>.</p>
+          <button class="quiz-back" type="button" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Back</button>
         </form>
         <div class="quiz-result" tabindex="-1" hidden>
           <p class="eyebrow">Your guide</p>

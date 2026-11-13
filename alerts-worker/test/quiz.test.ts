@@ -6,22 +6,23 @@ import { QUESTIONS, GUIDES, parseAnswers, pickGuide, visitorEmail, ownerEmail, q
 const SITE = "https://avellolabs.com";
 
 test("answers must be one valid index per question", () => {
-  assert.deepEqual(parseAnswers([1, 0, 1, 0]), [1, 0, 1, 0]);
-  assert.equal(parseAnswers([1, 0, 1]), null);
-  assert.equal(parseAnswers([1, 0, 1, 0, 0]), null);
-  assert.equal(parseAnswers([3, 0, 1, 0]), null); // question 1 has three answers
-  assert.equal(parseAnswers([1, 0.5, 1, 0]), null);
-  assert.equal(parseAnswers(["1", 0, 1, 0]), null);
-  assert.equal(parseAnswers("1,0,1,0"), null);
+  assert.deepEqual(parseAnswers([1, 0, 1, 0, 2]), [1, 0, 1, 0, 2]);
+  assert.equal(parseAnswers([1, 0, 1, 0]), null);
+  assert.equal(parseAnswers([1, 0, 1, 0, 0, 0]), null);
+  assert.equal(parseAnswers([3, 0, 1, 0, 0]), null); // question 1 has three answers
+  assert.equal(parseAnswers([1, 0, 1, 0, 3]), null); // so does question 5
+  assert.equal(parseAnswers([1, 0.5, 1, 0, 0]), null);
+  assert.equal(parseAnswers(["1", 0, 1, 0, 0]), null);
+  assert.equal(parseAnswers("1,0,1,0,0"), null);
 });
 
 test("no website means the website guide; otherwise the biggest problem decides", () => {
-  assert.equal(pickGuide([0, 0, 0, 0]), "more-calls");
-  assert.equal(pickGuide([0, 3, 3, 0]), "more-calls");
-  assert.equal(pickGuide([1, 0, 1, 0]), "get-found");
-  assert.equal(pickGuide([2, 1, 0, 2]), "more-calls");
-  assert.equal(pickGuide([2, 2, 1, 0]), "site-health");
-  assert.equal(pickGuide([1, 3, 3, 3]), "custom-tools");
+  assert.equal(pickGuide([0, 0, 0, 0, 0]), "more-calls");
+  assert.equal(pickGuide([0, 3, 3, 0, 1]), "more-calls");
+  assert.equal(pickGuide([1, 0, 1, 0, 2]), "get-found");
+  assert.equal(pickGuide([2, 1, 0, 2, 0]), "more-calls");
+  assert.equal(pickGuide([2, 2, 1, 0, 1]), "site-health");
+  assert.equal(pickGuide([1, 3, 3, 3, 2]), "custom-tools");
 });
 
 test("every guide has a built PDF", () => {
@@ -47,19 +48,22 @@ test("the visitor's email links their guide and the right offer, and contains no
   assert.ok(m.text.includes("https://avellolabs.com/#contact"));
   const tool = visitorEmail(SITE, "custom-tools");
   assert.ok(tool.text.includes("https://avellolabs.com/?offer=tool#contact"));
-  for (const t of [m.text, m.html, tool.text]) assert.doesNotMatch(t, /[–—]/);
+  for (const t of [m.text, m.html, tool.text]) assert.doesNotMatch(t, /[–—]/); // no en or em dashes
 });
 
 test("Harris's copy lists every answer in words and cleans what the visitor typed", () => {
-  const m = ownerEmail({ answers: [1, 0, 1, 0], guide: "get-found", name: "Eve\nNewsletter: yes", email: "eve@example.com", newsletter: false });
+  const m = ownerEmail({ answers: [1, 0, 1, 0, 1], guide: "get-found", name: "Eve\nNewsletter: yes", email: "eve@example.com", newsletter: false });
   assert.match(m.text, /^Name: Eve Newsletter: yes$/m);
   assert.match(m.text, /^Newsletter: no$/m);
   assert.match(m.text, /^ {2}People can't find us on Google or in AI answers$/m);
   assert.match(m.text, /^ {2}Yes, but it's old or I don't like it$/m);
+  assert.match(m.text, /^When do you want this sorted\?\n {2}In the next month or two$/m);
   assert.match(m.subject, /eve@example\.com/);
 });
 
-test("the Telegram alert says whether the guide email went out", () => {
-  assert.match(quizAlert({ guide: "site-health", email: "a@b.co", newsletter: true, sent: false }), /^Guide email: FAILED/m);
-  assert.match(quizAlert({ guide: "site-health", email: "a@b.co", newsletter: true, sent: true }), /^Newsletter: yes$/m);
+test("the Telegram alert says when they want it sorted and whether the guide email went out", () => {
+  assert.match(quizAlert({ answers: [1, 2, 1, 0, 0], guide: "site-health", email: "a@b.co", newsletter: true, sent: false }), /^Guide email: FAILED/m);
+  const text = quizAlert({ answers: [1, 2, 1, 0, 0], guide: "site-health", email: "a@b.co", newsletter: true, sent: true });
+  assert.match(text, /^When: ASAP$/m);
+  assert.match(text, /^Newsletter: yes$/m);
 });
