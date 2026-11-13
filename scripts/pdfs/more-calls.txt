@@ -1,0 +1,42 @@
+# A website that turns visitors into calls
+Subtitle: What a local business site needs, whether you're starting fresh or fixing what you have
+
+A good website for a local business has one job: help the right people pick up the phone, book or visit. This guide covers what that takes, including sites that mainly show off your work.
+
+## 1. The first screen
+The top of your home page should answer three questions without any scrolling:
+- What do you do?
+- Where do you do it?
+- How do I get in touch right now?
+Put your phone number at the top of every page, and make it tap to call on phones.
+
+## 2. One clear next step
+- Pick the action you want most (call, book, or ask for a quote) and make it the main button on every page.
+- Use button words that say what happens, like “Call for a free quote”, instead of “Submit” or “Learn more”.
+- Keep forms short. Name, email or phone, and one line about what they need is usually enough.
+
+## 3. Fast on phones
+- Many customers will find you on a phone. Open your site on yours, on mobile data, and see how long it takes.
+- Large photos are a common cause of a slow site. Resize them before you upload.
+- Google's free PageSpeed Insights tool shows what's slowing a page down.
+
+## 4. Showing off your work (galleries and portfolios)
+If your work sells itself, like building, landscaping, design, art or hair, your gallery is your sales pitch.
+- Lead with your best work, not all of it.
+- Give each project a short caption: what it was, where, and what the customer wanted.
+- Put a “Want something like this?” button next to the gallery, not just at the bottom of the page.
+- Use real photos. Customers can spot stock images.
+
+## 5. Trust at the moment of decision
+- Show real reviews near your main buttons, with names if customers agree.
+- Add your licences, insurance, guarantees you actually offer, and how long you've been in business.
+- Add photos of you and your team. People like to know who they're hiring.
+
+## 6. Selling products
+- Every product needs clear photos, a price, and the details customers ask about.
+- Say how delivery or pickup works and what it costs before checkout, not during it.
+
+## Starting from scratch?
+You don't need a big site. A home page, one page per main service, a gallery if it fits your trade, and a contact page will cover most local businesses. Get those right first, then add more.
+
+CTA: Want a hand? | Free 20-minute review: the 3 fixes that would get you more calls. A short phone call, no obligation. | avellolabs.com/#contact

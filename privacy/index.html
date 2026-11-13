@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!-- shared:head -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://api.web3forms.com https://avello-chat.avellolabs.workers.dev https://avello-check.avellolabs.workers.dev https://avello-alerts.avellolabs.workers.dev https://cloudflareinsights.com; form-action https://api.web3forms.com; base-uri 'self'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com https://challenges.cloudflare.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://api.web3forms.com https://avello-chat.avellolabs.workers.dev https://avello-check.avellolabs.workers.dev https://avello-alerts.avellolabs.workers.dev https://cloudflareinsights.com; frame-src https://challenges.cloudflare.com; form-action https://api.web3forms.com; base-uri 'self'; object-src 'none'">
 <link rel="icon" type="image/png" sizes="48x48" href="/brand/favicon-48.png">
 <link rel="icon" type="image/png" sizes="96x96" href="/brand/favicon-96.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/brand/favicon-192.png">
@@ -80,7 +80,7 @@
           <li>Your website address (optional if you're asking about a custom tool)</li>
           <li>A short note (optional, or a line about the task if you're asking about a custom tool)</li>
         </ul>
-        <p>If you sign up for the newsletter, we receive your email address, and your name if you give it. If you use the free website check, it receives the address you enter, and if you ask for the full report, your name, email, your website's address and the check's results. If you use the chat assistant, it receives the messages you type, and, if you choose to send your details to us through it, your name, email, business name, your business's website (optional), your phone number (optional) and your main goal. If you email us directly, we receive whatever you include in your email. You don't need an account to use this site, and we don't ask for payment details here.</p>
+        <p>If you sign up for the newsletter, we receive your email address, and your name if you give it. If you take the website quiz, we receive your answers, your email address and your name if you give it. If you use the free website check, it receives the address you enter, and if you ask for the full report, your name, email, your website's address and the check's results. If you use the chat assistant, it receives the messages you type, and, if you choose to send your details to us through it, your name, email, business name, your business's website (optional), your phone number (optional) and your main goal. If you email us directly, we receive whatever you include in your email. You don't need an account to use this site, and we don't ask for payment details here.</p>
 
         <h2>How the contact form works</h2>
         <p>When you send the form, your message is delivered through <a href="https://web3forms.com">Web3Forms</a>, a form-delivery service, which forwards it to our email inbox. Web3Forms processes the information only to deliver it. You can read how they handle data in the <a href="https://web3forms.com/privacy">Web3Forms privacy policy</a>.</p>
@@ -108,6 +108,13 @@
           <li><strong>Loading a page into the search preview, and the AI crawler check:</strong> these work like the website check above. A small service we run on Cloudflare loads the page or its robots.txt and checks it against fixed rules, with no AI involved. We don't store or log the addresses you enter, and keep only the same short-lived, scrambled counts to prevent abuse.</li>
         </ul>
 
+        <h2 id="quiz">The website quiz</h2>
+        <ul>
+          <li><strong>What it collects:</strong> your answers to the five questions, your email address, your name if you give it, and whether you ticked the newsletter box.</li>
+          <li><strong>What happens to it:</strong> a small service we run on Cloudflare emails you the guide that fits your answers and emails us a copy of your answers, both through <a href="https://resend.com">Resend</a>, an email delivery service (see the <a href="https://resend.com/legal/privacy-policy">Resend privacy policy</a>). We also get a short alert on Telegram. We email you the guide once. We only add you to the newsletter if you tick the box.</li>
+          <li><strong>Bot check:</strong> the quiz uses <a href="https://www.cloudflare.com/products/turnstile/">Cloudflare Turnstile</a> to tell people from bots. Cloudflare says it doesn't use Turnstile data to track you for advertising. To prevent abuse, we keep short-lived, scrambled counts of quiz requests, never your answers.</li>
+        </ul>
+
         <h2 id="newsletter">The newsletter</h2>
         <ul>
           <li><strong>What we collect:</strong> your email address, your name if you give it, the page you signed up on, and a record that you ticked the consent box and when.</li>
@@ -125,7 +132,7 @@
           <li>We don't use cookies, advertising pixels or tracking that follows you across sites.</li>
           <li>We don't sell, rent or trade your personal information.</li>
           <li>We don't add you to a mailing list or send marketing emails unless you sign up for the newsletter yourself.</li>
-          <li>We don't share your information, except with the services needed to run this site and deliver your messages (Web3Forms, our email provider, Cloudflare, which runs the chat assistant, the website check and our visit statistics, Anthropic, for the chat assistant, and Telegram, for our lead alerts), or if we're required to by law.</li>
+          <li>We don't share your information, except with the services needed to run this site and deliver your messages (Web3Forms, our email provider, Cloudflare, which runs the chat assistant, the website check, the quiz and our visit statistics, Resend, which delivers the quiz emails, Anthropic, for the chat assistant, and Telegram, for our lead alerts), or if we're required to by law.</li>
         </ul>
 
         <h2>Technical information</h2>

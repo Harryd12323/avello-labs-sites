@@ -79,6 +79,11 @@ WEB3FORMS_KEY = "a6955225-5ff5-4562-ae2d-dfda9193580a"
 # Cloudflare Web Analytics (no cookies): the token from Analytics & Logs, Web Analytics, avellolabs.com. Public by
 # design, since it shows in the page source. While it's empty, no beacon is added and the security policy doesn't list it.
 CF_ANALYTICS_TOKEN = "c13465b4292f4925a76c38488a1eff2e"
+# Website quiz on /tools/ (see assets/quiz.js and alerts-worker/src/quiz.ts). TURNSTILE_SITE_KEY is the public
+# site key of the "Avello quiz" Turnstile widget. While it's empty, the quiz only shows the guide to download:
+# nothing is emailed, and the security policy doesn't list Turnstile.
+TURNSTILE_SITE_KEY = "0x4AAAAAAF_2AgkJbluDNPxk"
+QUIZ_ENDPOINT = ALERTS_ENDPOINT.rsplit("/", 1)[0] + "/quiz"
 
 # Blog (see blog/). Each post is a hand-written page at /blog/<slug>/. Its head says whether it's a draft
 # (<meta name="blog:status">) and when it was published and updated (article:published_time and
@@ -119,9 +124,11 @@ def origin(url):
 CONNECT = " ".join(o for o in ["https://api.web3forms.com", origin(CHAT_ENDPOINT), origin(CHAT_DEV_ENDPOINT or ""), origin(CHECK_ENDPOINT), origin(ALERTS_ENDPOINT)] if o)
 CF_SCRIPT, CF_CONNECT = ("https://static.cloudflareinsights.com", "https://cloudflareinsights.com") if CF_ANALYTICS_TOKEN else ("", "")
 CONNECT = " ".join(o for o in [CONNECT, CF_CONNECT] if o)
-SCRIPT_SRC = " ".join(o for o in ["'self'", CF_SCRIPT] if o)
+TURNSTILE = "https://challenges.cloudflare.com" if TURNSTILE_SITE_KEY else ""
+SCRIPT_SRC = " ".join(o for o in ["'self'", CF_SCRIPT, TURNSTILE] if o)
+FRAME_SRC = f"frame-src {TURNSTILE}; " if TURNSTILE else ""
 CSP = (f"default-src 'self'; script-src {SCRIPT_SRC}; style-src 'self' https://fonts.googleapis.com; "
-       f"font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src {CONNECT}; "
+       f"font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src {CONNECT}; {FRAME_SRC}"
        "form-action https://api.web3forms.com; base-uri 'self'; object-src 'none'")
 
 NAV = [("/seo/", "SEO"), ("/aeo/", "AEO"), ("/website-care/", "Website care"), ("/web-apps/", "Web apps"),
@@ -280,7 +287,7 @@ def newsletter_form(prefix, heading_tag="h2"):
 # Page-specific tool scripts. A page opts in with <!-- shared:NAME --> ... <!-- /shared:NAME --> markers.
 TOOL_BLOCKS = {
     "check": ("/assets/check.css", "/assets/check.js", f'data-endpoint="{CHECK_ENDPOINT}" data-web3forms="{WEB3FORMS_KEY}" data-alerts="{ALERTS_ENDPOINT}"'),
-    "tool-hub": ("/assets/tools.css", None, ""),
+    "tool-hub": ("/assets/tools.css", "/assets/quiz.js", f'data-endpoint="{QUIZ_ENDPOINT}" data-sitekey="{TURNSTILE_SITE_KEY}"'),
     "tool-preview": ("/assets/tools.css", "/assets/preview.js", f'data-endpoint="{CHECK_BASE}/preview"'),
     "tool-crawlers": ("/assets/tools.css", "/assets/crawlers.js", f'data-endpoint="{CHECK_BASE}/crawlers"'),
     "tool-schema": ("/assets/tools.css", "/assets/schema-gen.js", ""),
