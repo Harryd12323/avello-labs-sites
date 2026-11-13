@@ -46,6 +46,8 @@ test("the visitor's email links their guide and the right offer, and contains no
   assert.ok(m.text.includes("https://avellolabs.com/resources/get-found.pdf"));
   assert.ok(m.html.includes('href="https://avellolabs.com/resources/get-found.pdf"'));
   assert.ok(m.text.includes("https://avellolabs.com/#contact"));
+  assert.ok(m.html.indexOf("Open your free guide") < m.html.indexOf("Book a free 20-minute review"), "guide button comes first");
+  assert.equal(m.html.split('href="https://avellolabs.com/resources/get-found.pdf"').length - 1, 2, "button plus plain fallback link");
   const tool = visitorEmail(SITE, "custom-tools");
   assert.ok(tool.text.includes("https://avellolabs.com/?offer=tool#contact"));
   for (const t of [m.text, m.html, tool.text]) assert.doesNotMatch(t, /[–—]/); // no en or em dashes
