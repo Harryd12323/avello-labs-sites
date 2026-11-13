@@ -82,7 +82,7 @@ CF_ANALYTICS_TOKEN = "c13465b4292f4925a76c38488a1eff2e"
 # Website quiz on /tools/ (see assets/quiz.js and alerts-worker/src/quiz.ts). TURNSTILE_SITE_KEY is the public
 # site key of the "Avello quiz" Turnstile widget. While it's empty, the quiz only shows the guide to download:
 # nothing is emailed, and the security policy doesn't list Turnstile.
-TURNSTILE_SITE_KEY = ""
+TURNSTILE_SITE_KEY = "0x4AAAAAAF_2AgkJbluDNPxk"
 QUIZ_ENDPOINT = ALERTS_ENDPOINT.rsplit("/", 1)[0] + "/quiz"
 
 # Blog (see blog/). Each post is a hand-written page at /blog/<slug>/. Its head says whether it's a draft
