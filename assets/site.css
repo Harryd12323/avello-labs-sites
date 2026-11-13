@@ -122,6 +122,8 @@ h2 { margin-top: .75rem; font-size: clamp(1.8rem, 5vw, 2.6rem); line-height: 1.1
   }
 }
 .sub { margin: 1.25rem auto 0; max-width: 36rem; color: var(--muted); font-size: clamp(1.05rem, 2.6vw, 1.2rem); }
+.hero-offer { margin: 1.75rem auto 0; max-width: 36rem; font-weight: 600; }
+.hero-offer + .hero-ctas { margin-top: 1rem; }
 .hero-ctas { margin-top: 2.25rem; display: flex; flex-direction: column; gap: .75rem; align-items: stretch; max-width: 22rem; margin-left: auto; margin-right: auto; }
 
 /* Sections */

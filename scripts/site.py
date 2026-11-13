@@ -422,9 +422,9 @@ def post_aside(post, posts):
     return f"""<!-- shared:post-aside -->
       <aside class="aside" aria-label="Related">
       <div class="aside-card">
-        <h2>Check your own site</h2>
+        <h2>See what's costing you calls</h2>
         <p>The free site check scores 10 SEO and AEO basics on any page in a few seconds.</p>
-        <a class="btn" href="/check/">Free site check: see what's costing you calls</a>
+        <a class="btn" href="/check/">Free site check</a>
       </div>
       <div class="aside-card">
         <h2>Free tools</h2>
