@@ -182,7 +182,7 @@ def shared_header(current):
     </button>
     <nav class="site-nav" id="site-nav" aria-label="Main">
 {links}
-      <a class="btn btn-small" href="/#contact">Get in touch</a>
+      <a class="btn btn-small" href="/#contact">Free review</a>
     </nav>
   </div>
 </header>
@@ -263,7 +263,7 @@ def newsletter_form(prefix, heading_tag="h2"):
       <div class="nl-fields">
         <div class="field"><label for="{prefix}-nl-name">Name <small>(optional)</small></label><input id="{prefix}-nl-name" name="name" autocomplete="name" maxlength="80"></div>
         <div class="field"><label for="{prefix}-nl-email">Email</label><input id="{prefix}-nl-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="120" required></div>
-        <button class="btn" type="submit">Sign up</button>
+        <button class="btn" type="submit">Send me the tips</button>
       </div>
       <label class="nl-consent"><input type="checkbox" name="consent" required> <span>{html.escape(NEWSLETTER_CONSENT)}</span></label>
       <p class="form-status" role="status" aria-live="polite"></p>
@@ -422,9 +422,9 @@ def post_aside(post, posts):
     return f"""<!-- shared:post-aside -->
       <aside class="aside" aria-label="Related">
       <div class="aside-card">
-        <h2>Check your own site</h2>
+        <h2>See what's costing you calls</h2>
         <p>The free site check scores 10 SEO and AEO basics on any page in a few seconds.</p>
-        <a class="btn" href="/check/">Run a free site check</a>
+        <a class="btn" href="/check/">Free site check</a>
       </div>
       <div class="aside-card">
         <h2>Free tools</h2>

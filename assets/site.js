@@ -21,6 +21,13 @@
 
   // Contact form: sends through Web3Forms, which emails the message to harris@avellolabs.com.
   var form = document.getElementById("contact-form");
+  // Visitors from the web apps page (/?offer=tool#contact) see the custom tool call instead of the site review.
+  if (form && new URLSearchParams(location.search).get("offer") === "tool") {
+    document.querySelectorAll("[data-offer]").forEach(function (el) { el.hidden = el.getAttribute("data-offer") !== "tool"; });
+    form.subject.value = "Free custom tool call request from the Avello Labs website";
+    form.message.placeholder = "What task would you like to stop doing by hand?";
+    document.getElementById("send-btn").firstChild.nodeValue = "Request my free call\n";
+  }
   if (form) {
     var btn = document.getElementById("send-btn"), status = document.getElementById("form-status"), btnLabel = btn.innerHTML;
     function show(kind, html) { status.className = "form-status " + kind; status.innerHTML = html; }
@@ -36,7 +43,7 @@
       if (errs.name || errs.email || errs.message) return;
 
       // Honeypot: real visitors never see or tick this box, so a ticked box means a bot. Pretend it worked.
-      if (form.botcheck.checked) { form.reset(); show("ok", "Thanks! Your message is on its way."); return; }
+      if (form.botcheck.checked) { form.reset(); show("ok", "Thanks! We'll email you within 1 business day to pick a time for your call."); return; }
 
       var key = form.access_key.value.trim();
       if (!key || key.indexOf("YOUR_") === 0) {
@@ -56,7 +63,7 @@
         .then(function (ok) {
           if (!ok) throw new Error("not sent");
           form.reset();
-          show("ok", "Thanks! Your message is on its way. We'll reply by email soon.");
+          show("ok", "Thanks! We'll email you within 1 business day to pick a time for your call.");
         })
         .catch(function () {
           show("bad", 'Sorry, your message didn\'t send. Please try again, or email <a href="mailto:harris@avellolabs.com">harris@avellolabs.com</a>.');
