@@ -219,6 +219,7 @@ def shared_footer(blog=False):
           <li><a href="/aeo/">AEO</a></li>
           <li><a href="/website-care/">Website care</a></li>
           <li><a href="/web-apps/">Web apps</a></li>
+          <li><a href="/web-apps/#custom-software">Custom software</a></li>
         </ul>
       </div>
       <div>

@@ -151,6 +151,8 @@ section.block { padding: 5rem 0; border-top: 1px solid var(--line); }
 .card .more:hover svg { transform: translateX(3px); }
 /* Make the whole card clickable through its "Learn more" link. */
 .card .more::after { content: ""; position: absolute; inset: 0; border-radius: var(--radius); }
+/* A second link inside a card sits above the card-wide link. */
+.card .card-link { position: relative; z-index: 1; }
 
 /* Why it matters */
 .why { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2.5rem; align-items: center; }
