@@ -78,7 +78,7 @@ ALERTS_ENDPOINT = "https://avello-alerts.avellolabs.workers.dev/lead"
 WEB3FORMS_KEY = "a6955225-5ff5-4562-ae2d-dfda9193580a"
 # Cloudflare Web Analytics (no cookies): the token from Analytics & Logs, Web Analytics, avellolabs.com. Public by
 # design, since it shows in the page source. While it's empty, no beacon is added and the security policy doesn't list it.
-CF_ANALYTICS_TOKEN = ""
+CF_ANALYTICS_TOKEN = "c13465b4292f4925a76c38488a1eff2e"
 
 # Blog (see blog/). Each post is a hand-written page at /blog/<slug>/. Its head says whether it's a draft
 # (<meta name="blog:status">) and when it was published and updated (article:published_time and
