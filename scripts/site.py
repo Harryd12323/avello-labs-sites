@@ -76,6 +76,9 @@ CHECK_ENDPOINT = f"{CHECK_BASE}/check"
 ALERTS_ENDPOINT = "https://avello-alerts.avellolabs.workers.dev/lead"
 # Public by design: Web3Forms access keys only let messages be sent to the key owner's inbox.
 WEB3FORMS_KEY = "a6955225-5ff5-4562-ae2d-dfda9193580a"
+# Cloudflare Web Analytics (no cookies): the token from Analytics & Logs, Web Analytics, avellolabs.com. Public by
+# design, since it shows in the page source. While it's empty, no beacon is added and the security policy doesn't list it.
+CF_ANALYTICS_TOKEN = ""
 
 # Blog (see blog/). Each post is a hand-written page at /blog/<slug>/. Its head says whether it's a draft
 # (<meta name="blog:status">) and when it was published and updated (article:published_time and
@@ -114,7 +117,10 @@ def origin(url):
     return re.match(r"^https?://[^/]+", url).group(0) if url else ""
 
 CONNECT = " ".join(o for o in ["https://api.web3forms.com", origin(CHAT_ENDPOINT), origin(CHAT_DEV_ENDPOINT or ""), origin(CHECK_ENDPOINT), origin(ALERTS_ENDPOINT)] if o)
-CSP = ("default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; "
+CF_SCRIPT, CF_CONNECT = ("https://static.cloudflareinsights.com", "https://cloudflareinsights.com") if CF_ANALYTICS_TOKEN else ("", "")
+CONNECT = " ".join(o for o in [CONNECT, CF_CONNECT] if o)
+SCRIPT_SRC = " ".join(o for o in ["'self'", CF_SCRIPT] if o)
+CSP = (f"default-src 'self'; script-src {SCRIPT_SRC}; style-src 'self' https://fonts.googleapis.com; "
        f"font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src {CONNECT}; "
        "form-action https://api.web3forms.com; base-uri 'self'; object-src 'none'")
 
@@ -246,7 +252,7 @@ def shared_footer(blog=False):
 
 <script src="/assets/site.js" defer></script>
 <script src="/assets/newsletter.js" data-ticket="{CHECK_BASE}/ticket/newsletter" data-alerts="{ALERTS_ENDPOINT}" data-web3forms="{WEB3FORMS_KEY}" defer></script>
-{chat_script()}
+{chat_script()}{analytics_script()}
 <!-- /shared:footer -->"""
 
 
@@ -288,6 +294,13 @@ def tool_block(name):
         lines.append(f'<script src="{js}" {attrs} defer></script>'.replace("  ", " "))
     lines.append(f"<!-- /shared:{name} -->")
     return "\n".join(lines)
+
+
+def analytics_script():
+    if not CF_ANALYTICS_TOKEN:
+        return ""
+    beacon = json.dumps({"token": CF_ANALYTICS_TOKEN})
+    return f"\n<script src=\"{CF_SCRIPT}/beacon.min.js\" data-cf-beacon='{beacon}' defer></script>"
 
 
 def chat_script():

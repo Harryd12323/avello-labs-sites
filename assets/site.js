@@ -1,4 +1,4 @@
-// Avello Labs site script, shared by every page. No tracking, no cookies.
+// Avello Labs site script, shared by every page. No cookies.
 (function () {
   document.querySelectorAll("[data-year]").forEach(function (el) { el.textContent = new Date().getFullYear(); });
 
@@ -21,11 +21,15 @@
 
   // Contact form: sends through Web3Forms, which emails the message to harris@avellolabs.com.
   var form = document.getElementById("contact-form");
-  // Visitors from the web apps page (/?offer=tool#contact) see the custom tool call instead of the site review.
-  if (form && new URLSearchParams(location.search).get("offer") === "tool") {
+  // Visitors from the web apps page (/?offer=tool#contact) see the custom tool call instead of the site review:
+  // the task line is required and the website is optional.
+  var toolOffer = !!form && new URLSearchParams(location.search).get("offer") === "tool";
+  if (toolOffer) {
     document.querySelectorAll("[data-offer]").forEach(function (el) { el.hidden = el.getAttribute("data-offer") !== "tool"; });
     form.subject.value = "Free custom tool call request from the Avello Labs website";
-    form.message.placeholder = "What task would you like to stop doing by hand?";
+    form.website.required = false;
+    form.message.required = true;
+    form.message.placeholder = "For example, booking jobs or tracking orders";
     document.getElementById("send-btn").firstChild.nodeValue = "Request my free call\n";
   }
   if (form) {
@@ -33,14 +37,15 @@
     function show(kind, html) { status.className = "form-status " + kind; status.innerHTML = html; }
     form.addEventListener("submit", function (e) {
       e.preventDefault();
-      var name = form.name.value.trim(), email = form.email.value.trim(), msg = form.message.value.trim();
+      var name = form.name.value.trim(), email = form.email.value.trim(), site = form.website.value.trim(), msg = form.message.value.trim();
       var errs = {
         name: name ? "" : "Please enter your name.",
         email: /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(email) ? "" : "Please enter a valid email address.",
-        message: msg ? "" : "Please add a short message."
+        website: toolOffer || /^\S+\.\S+$/.test(site) ? "" : "Please enter your website's address.",
+        message: !toolOffer || msg ? "" : "Please tell us about the task in a line."
       };
       Object.keys(errs).forEach(function (k) { document.getElementById("err-" + k).textContent = errs[k]; });
-      if (errs.name || errs.email || errs.message) return;
+      if (errs.name || errs.email || errs.website || errs.message) return;
 
       // Honeypot: real visitors never see or tick this box, so a ticked box means a bot. Pretend it worked.
       if (form.botcheck.checked) { form.reset(); show("ok", "Thanks! We'll email you within 1 business day to pick a time for your call."); return; }
