@@ -144,6 +144,7 @@ async function quiz(request: Request, env: Env, json: (body: unknown, status?: n
   const name = typeof body.name === "string" && body.name.length <= 80 ? body.name : "";
   const token = typeof body.turnstile === "string" && body.turnstile.length <= 2048 ? body.turnstile : "";
   const newsletter = body.newsletter === true;
+  const tips = body.tips === true;
   if (!answers || !EMAIL_RE.test(email) || !token) return json({ error: "bad_request" }, 400);
 
   const ip = request.headers.get("CF-Connecting-IP") ?? "unknown";
@@ -162,9 +163,9 @@ async function quiz(request: Request, env: Env, json: (body: unknown, status?: n
   }
 
   const guide = pickGuide(answers);
-  const sent = await sendEmail(env, { from: env.QUIZ_FROM, to: [email], reply_to: env.QUIZ_TO, ...visitorEmail(env.SITE_URL, guide) });
-  await sendEmail(env, { from: env.QUIZ_FROM, to: [env.QUIZ_TO], reply_to: email, ...ownerEmail({ answers, guide, name, email, newsletter }) });
-  await sendTelegram(env, quizAlert({ answers, guide, email, newsletter, sent }));
+  const sent = await sendEmail(env, { from: env.QUIZ_FROM, to: [email], reply_to: env.QUIZ_TO, ...visitorEmail(env.SITE_URL, guide, tips) });
+  await sendEmail(env, { from: env.QUIZ_FROM, to: [env.QUIZ_TO], reply_to: email, ...ownerEmail({ answers, guide, name, email, newsletter, tips }) });
+  await sendTelegram(env, quizAlert({ answers, guide, email, newsletter, tips, sent }));
   return json({ ok: sent, guide }, sent ? 200 : 502);
 }
 

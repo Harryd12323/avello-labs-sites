@@ -38,15 +38,20 @@ export function guideUrl(site: string, guide: Guide): string {
   return `${site}/resources/${guide}.pdf`;
 }
 
-export function visitorEmail(site: string, guide: Guide): { subject: string; text: string; html: string } {
+/** tips: they ticked the box for the 5 follow-up tip emails, so the footer says those are coming. */
+export function visitorEmail(site: string, guide: Guide, tips = false): { subject: string; text: string; html: string } {
   const title = GUIDES[guide], url = guideUrl(site, guide);
   const offer = guide === "custom-tools"
     ? { line: "Want to talk it through? We'll tell you honestly whether a custom tool is worth it for you, in a free 20-minute call. No obligation.",
         link: `${site}/?offer=tool#contact`, label: "Book a free 20-minute call" }
     : { line: "Want a hand? We'll walk you through the 3 fixes that would get you more calls, in a free 20-minute review. No obligation.",
         link: `${site}/#contact`, label: "Book a free 20-minute review" };
-  const footer = "You're getting this because this address was entered in the quiz at avellolabs.com. " +
-    "If that wasn't you, you can ignore this email. We won't send anything else.";
+  const footer = tips
+    ? "You're getting this because this address was entered in the quiz at avellolabs.com, with a request for 5 short " +
+      "website tips. We'll send those over the next few weeks, and each one has a link to unsubscribe. " +
+      "If that wasn't you, reply “unsubscribe” and we won't send anything else."
+    : "You're getting this because this address was entered in the quiz at avellolabs.com. " +
+      "If that wasn't you, you can ignore this email. We won't send anything else.";
   const text = [
     "Hi there,", "",
     `Thanks for taking the quiz. Your free guide is ready: ${title}`, "",
@@ -81,7 +86,7 @@ ${button(offer.link, offer.label, false)}
   return { subject: `Your guide: ${title}`, text, html };
 }
 
-export function ownerEmail(a: { answers: number[]; guide: Guide; name: string; email: string; newsletter: boolean }): { subject: string; text: string } {
+export function ownerEmail(a: { answers: number[]; guide: Guide; name: string; email: string; newsletter: boolean; tips: boolean }): { subject: string; text: string } {
   const email = clean(a.email, 120);
   return {
     subject: `Quiz: ${email} got “${GUIDES[a.guide]}”`,
@@ -89,6 +94,7 @@ export function ownerEmail(a: { answers: number[]; guide: Guide; name: string; e
       `Name: ${clean(a.name, 80) || "Not given"}`,
       `Email: ${email}`,
       `Newsletter: ${a.newsletter ? "yes, add them" : "no"}`,
+      `Tip emails: ${a.tips ? "yes, they asked for the 5 tips" : "no"}`,
       `Guide sent: ${GUIDES[a.guide]}`,
       "",
       ...QUESTIONS.map((q, i) => `${q.q}\n  ${q.a[a.answers[i]]}`),
@@ -98,13 +104,14 @@ export function ownerEmail(a: { answers: number[]; guide: Guide; name: string; e
   };
 }
 
-export function quizAlert(a: { answers: number[]; guide: Guide; email: string; newsletter: boolean; sent: boolean }): string {
+export function quizAlert(a: { answers: number[]; guide: Guide; email: string; newsletter: boolean; tips: boolean; sent: boolean }): string {
   return [
     "New quiz",
     `Email: ${clean(a.email, 120)}`,
     `When: ${QUESTIONS[4].a[a.answers[4]]}`,
     `Guide: ${GUIDES[a.guide]}`,
     `Newsletter: ${a.newsletter ? "yes" : "no"}`,
+    `Tips: ${a.tips ? "yes" : "no"}`,
     `Guide email: ${a.sent ? "sent" : "FAILED, check Resend"}`,
   ].join("\n");
 }
