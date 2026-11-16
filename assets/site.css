@@ -442,6 +442,24 @@ footer.site .nl-form a:hover { color: var(--text); }
 h3.also { margin-top: 3rem; color: var(--muted); font-size: .8rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
 .cards.support { margin-top: 1rem; }
 .price-band[hidden], .price-card[hidden] { display: none; }
+.price-line { padding: 1rem 1.25rem; border: 1px solid var(--line-bright); border-left: 2px solid var(--cyan); border-radius: 12px; background: var(--panel); }
+.price-line .price-amount { font-size: inherit; letter-spacing: 0; }
+.price-line[hidden] { display: none; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.care-plans { margin-top: 1rem; padding: 1.5rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-2); }
+.care-plans h3 { font-size: 1.15rem; font-weight: 600; }
+.care-scroll { margin-top: 1.25rem; overflow-x: auto; }
+.care-table { width: 100%; min-width: 34rem; border-collapse: collapse; font-size: .95rem; }
+.care-table th, .care-table td { padding: .8rem .75rem; border-bottom: 1px solid var(--line); text-align: center; vertical-align: middle; }
+.care-table thead th { font-weight: 600; font-size: 1rem; color: var(--text); }
+.care-table tbody th { text-align: left; font-weight: 600; color: var(--text); width: 46%; }
+.care-table tbody th small { display: block; margin-top: .2rem; font-weight: 400; color: var(--muted); font-size: .85rem; }
+.care-table td { color: var(--text); }
+.care-price { display: block; margin-top: .25rem; font-size: 1.35rem; font-weight: 700; letter-spacing: -.02em; }
+.care-price small { font-size: .85rem; font-weight: 500; color: var(--muted); }
+.care-table .yes { display: inline-grid; place-items: center; width: 1.4rem; height: 1.4rem; border-radius: 50%; background: var(--grad-btn); color: var(--btn-ink); font-size: .8rem; font-weight: 700; }
+.care-table .no { color: var(--muted); }
+.care-plans > .price-note:last-child { margin-top: 1rem; }
 .price-card .eyebrow { font-size: .75rem; color: var(--blue); margin-top: 0; }
 .price-card .price { margin-top: .4rem; font-size: .95rem; }
 .price-card .price-amount { display: block; font-size: 1.5rem; }

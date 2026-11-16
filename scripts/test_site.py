@@ -436,7 +436,7 @@ class NewsPosts(PostFormat):
 
 
 class PriceLine(unittest.TestCase):
-    PAGES = ["/", "/seo/", "/aeo/", "/website-care/", "/web-apps/"]
+    PAGES = ["/", "/seo/", "/aeo/", "/blog/how-much-does-a-small-business-website-cost/"]  # pages that show PRICE_FROM
 
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp())
@@ -460,13 +460,13 @@ class PriceLine(unittest.TestCase):
             self.assertTrue(tags, url)
             self.assertTrue(all(t.endswith(" hidden>") for t in tags), url)
             self.assertFalse("$___" in page, url)
-        self.assertFalse("Packages starting at" in (self.site / "worker" / "knowledge.txt").read_text())
+        self.assertFalse("Websites starting at" in (self.site / "worker" / "knowledge.txt").read_text())
 
     def test_set_price_shows_it_everywhere(self):
         for url, page in self.sync_with_price("$1,500").items():
             self.assertFalse(re.search(r"data-price[^>]*hidden", page), url)
             self.assertTrue('<span class="price-amount">$1,500</span>' in page, url)
-        self.assertTrue("Packages starting at $1,500" in (self.site / "worker" / "knowledge.txt").read_text())
+        self.assertTrue("Websites starting at $1,500" in (self.site / "worker" / "knowledge.txt").read_text())
 
 
 if __name__ == "__main__":
