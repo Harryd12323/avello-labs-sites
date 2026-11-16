@@ -65,3 +65,12 @@ export function quotaNote(monthCount: number): string {
     ? `\nHeads up: about ${monthCount} of the 250 free Web3Forms emails used this month (not counting the contact form).`
     : "";
 }
+
+/** "Hi Jane," from whatever they typed as their name, or "Hi there," if it doesn't look like a first name. Only a single
+ *  word of letters (20 at most) gets through, so a name field can't be used to put a message in someone's inbox. */
+export function greeting(name: string): string {
+  const first = clean(name, 80).split(" ")[0] ?? "";
+  // Letters (any alphabet), with an apostrophe or hyphen inside, like O'Neil or Anne-Marie.
+  if (first.length < 2 || first.length > 20 || !/^\p{L}+(?:['’-]\p{L}+)*$/u.test(first)) return "Hi there,";
+  return `Hi ${first[0].toLocaleUpperCase("en-US")}${first.slice(1)},`;
+}

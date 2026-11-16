@@ -6,7 +6,7 @@ import type { Env } from "./env";
 import type { Guide } from "./quiz";
 import { sendEmail, sendTelegram } from "./send";
 import type { StopReason } from "./tipslist";
-import { page, parseBackfill, renderConfirm, replyId, signLink, verifyLink, verifyWebhook } from "./tips";
+import { backfillKey, isAutoReply, page, parseBackfill, renderConfirm, replyId, signLink, verifyLink, verifyWebhook } from "./tips";
 
 const tips = (env: Env) => env.TIPS.get(env.TIPS.idFromName("global"));
 
@@ -45,18 +45,23 @@ export async function handleTips(request: Request, env: Env, url: URL, json: (bo
     if (!id) return page("This link doesn't work", "It may have been copied incompletely. If you still want the tips, take the quiz again and tick the box.");
     // Opening the link only shows a button: email security scanners open links on their own, and they
     // mustn't be able to confirm for someone.
-    if (!post) return page("One more tap", "Confirm and we'll send you 5 short website tips over the next few weeks. You can unsubscribe from any of them with one click.", { action: self, label: "Yes, send me the tips" });
+    if (!post) return page("One more tap", "Confirm and we'll send you 5 short website tips over the next few weeks. Every one has a link to unsubscribe.", { action: self, label: "Yes, send me the tips" });
     const r = await tips(env).confirm(id);
     if (r.result === "missing") return page("This link has expired", "Confirm links work for 7 days. If you still want the tips, take the quiz again and tick the box.");
-    if (r.result === "confirmed") await sendTelegram(env, `Tip emails: ${r.email} confirmed. The first tip goes out in about 2 days.`);
-    return page("You're in", "Your first tip arrives in a couple of days. Every email has a one-click unsubscribe link.");
+    if (r.result === "confirmed") {
+      const stop = `${env.WORKER_URL}/tips/stop-one?t=${await signLink(env.TIPS_SIGNING_KEY, "s", id)}`;
+      await sendTelegram(env, `Tip emails: ${r.email} confirmed. The first tip goes out in about 2 days.\nIf they get in touch another way, stop their tips: ${stop}`);
+    }
+    return page("You're in", "Your first tip arrives in a couple of days. Every email has a link to unsubscribe.");
   }
 
   if (path === "/tips/unsubscribe") {
-    // One click, no questions: opening the link unsubscribes, and so does the POST mail apps send for their
-    // own Unsubscribe button (RFC 8058).
+    // Opening the link shows one button, because email security scanners open links on their own and mustn't
+    // unsubscribe anyone. The POST from that button, or from a mail app's own Unsubscribe button (RFC 8058,
+    // List-Unsubscribe-Post), unsubscribes straight away.
     const id = await verifyLink(env.TIPS_SIGNING_KEY, "u", token);
     if (!id) return page("This link doesn't work", "It may have been copied incompletely. Reply “unsubscribe” to any tip email and we'll stop.");
+    if (!post) return page("Unsubscribe from the tips?", "We won't send you any more of the website tips.", { action: self, label: "Unsubscribe" });
     const email = await tips(env).stop({ id }, "unsubscribed");
     if (email) await sendTelegram(env, `Tip emails: ${email} unsubscribed.`);
     return page("You're unsubscribed", "We won't send you any more tips.");
@@ -75,6 +80,8 @@ export async function handleTips(request: Request, env: Env, url: URL, json: (bo
 
   if (path === "/tips/backfill" && post) {
     if (!env.TIPS_BACKFILL || !env.RESEND_API_KEY) return json({ error: "nothing_to_do" }, 404);
+    // Locked to whoever has the list: the key is the first 16 characters of the list's SHA-256 (see backfillKey).
+    if (url.searchParams.get("key") !== (await backfillKey(env.TIPS_BACKFILL))) return json({ error: "bad_key" }, 403);
     const added = await tips(env).backfill(parseBackfill(env.TIPS_BACKFILL));
     let sent = 0;
     for (const a of added) {
@@ -110,6 +117,11 @@ async function inbound(request: Request, env: Env): Promise<Response> {
   const id = replyId(to, env.TIPS_REPLY_LOCAL, env.TIPS_REPLY_DOMAIN);
   // Every receiving webhook gets every email to the domain, so mail for the other Worker (test or live) is skipped.
   if (!id) return new Response("Not ours");
+  // Out-of-office and other automatic replies aren't the person replying, so they don't stop the tips.
+  if (isAutoReply(event.data.from, event.data.subject)) {
+    console.log("tips_inbound", JSON.stringify({ id, ignored: "auto_reply" }));
+    return new Response("Ignored auto-reply");
+  }
   const unsubscribe = typeof event.data.subject === "string" && /\bunsubscribe\b/i.test(event.data.subject);
   const reason: StopReason = unsubscribe ? "unsubscribed" : "replied";
   let email = await tips(env).stop({ id }, reason);

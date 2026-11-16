@@ -19,7 +19,7 @@ Related: /blog/why-isnt-my-business-showing-up-on-google/ | Why isn't my busines
 Related: /blog/google-business-profile-matters/ | Why your Google Business Profile matters
 
 ## Why this happens
-Google says it ranks local results mainly on three things: how well a business matches the search, how far it is from the person searching, and how well known it is. Most businesses that don't show up are missing something in one of those.
+Google says it ranks local results mainly on three things: how well a business matches the search, how far it is from the person searching, and how well known it is. If you don't show up, those three are the place to start.
 
 - **Google can't tell exactly what you do or where.** If your site says “quality service” instead of “roof repair in Camden County”, Google has to guess.
 - **Your Google Business Profile is unfinished.** Missing hours, services, photos or an unverified listing all make you look less certain to Google.

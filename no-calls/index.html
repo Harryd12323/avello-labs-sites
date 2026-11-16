@@ -14,6 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
 <link rel="stylesheet" href="/assets/site.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "ProfessionalService", "@id": "https://avellolabs.com/#organization", "name": "Avello Labs LLC", "url": "https://avellolabs.com/", "logo": "https://avellolabs.com/brand/icon.svg", "email": "harris@avellolabs.com", "address": {"@type": "PostalAddress", "addressLocality": "Collingswood", "addressRegion": "NJ", "postalCode": "08108", "addressCountry": "US"}}, {"@type": "WebSite", "@id": "https://avellolabs.com/#website", "url": "https://avellolabs.com/", "name": "Avello Labs", "publisher": {"@id": "https://avellolabs.com/#organization"}}]}</script>
 <meta property="og:image" content="https://avellolabs.com/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -82,6 +83,7 @@
     <a class="brand" href="/" aria-label="Avello Labs, home">
       <img src="/brand/logo-horizontal-dark.svg" width="337" height="64" alt="Avello Labs">
     </a>
+    <!-- PHONE: set PHONE in scripts/site.py and run sync to show a tap-to-call number here (call-btn) -->
     <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
       <svg class="bars" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       <svg class="x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
@@ -93,6 +95,7 @@
       <a class="nav-link" href="/web-apps/">Web apps</a>
       <a class="nav-link" href="/#real-work">Our work</a>
       <a class="nav-link" href="/tools/">Free tools</a>
+      <!-- PHONE: set PHONE in scripts/site.py and run sync to show a tap-to-call number here (nav-phone) -->
       <a class="btn btn-small" href="/#contact">Free review</a>
     </nav>
   </div>
@@ -106,7 +109,7 @@
       <h1>Your website isn't bringing in calls? <span class="grad-text">Here's what's usually going on.</span></h1>
       <p class="lede">Maybe the site is old, maybe it's slow, or maybe people visit and leave without getting in touch. Either way, a website that doesn't lead to calls is costing you work you never hear about.</p>
       <!-- VIDEO SPOT: film the video, upload it to YouTube, then add its ID as Video: in scripts/problems/no-calls.txt
-           and a 1280x720 thumbnail at /assets/videos/no-calls.jpg. Script outline: docs/problem-videos.md -->
+           and a 1280x720 thumbnail at /assets/videos/no-calls.jpg. Script: docs/video-scripts.md -->
       <div class="video-spot" hidden><p><strong>Video spot</strong>: Why your website isn&#x27;t bringing in calls</p><p>Shows here once Video: is filled in. Only visible in previews with ?spots.</p></div>
     </div>
   </section>
@@ -115,7 +118,7 @@
     <div class="wrap page-grid">
       <article class="prose">
         <h2>Why this happens</h2>
-        <p>Most people who visit a small business website want one thing: to know if you can help, and how to reach you. When a site gets in the way of that, they go back and pick someone else.</p>
+        <p>People who visit a small business website usually want to know two things: whether you can help, and how to reach you. When a site gets in the way of that, they go back and pick someone else.</p>
         <ul>
           <li><strong>It's hard to call from a phone.</strong> The number is buried, or tapping it doesn't start a call.</li>
           <li><strong>It's slow, especially on phones.</strong> Google measures how real visitors experience loading and responsiveness with a set of metrics called Core Web Vitals. A slow site loses people before they see anything.</li>
@@ -197,7 +200,7 @@
     <div class="foot-grid">
       <div class="foot-brand">
         <img src="/brand/logo-horizontal-dark.svg" width="337" height="64" alt="Avello Labs">
-        <p>Custom websites for small local businesses, live in days, with monthly care, SEO and AEO.</p>
+        <p>Custom websites for small local businesses, with monthly care, SEO and AEO.</p>
       </div>
       <div>
         <h2>Services</h2>

@@ -16,7 +16,7 @@ Related: /web-apps/ | Custom web apps and tools
 Related: /web-apps/#custom-software | Custom software for your business
 
 ## Why this happens
-Most businesses don't plan to run on spreadsheets and copy and paste. It builds up one workaround at a time.
+Nobody plans to run a business on spreadsheets and copy and paste. It builds up one workaround at a time.
 
 - **Information lives in too many places.** Spreadsheets, email, paper, texts and a few different apps, none of which talk to each other.
 - **The same details get typed more than once.** A customer's name goes into the quote, then the invoice, then the schedule.

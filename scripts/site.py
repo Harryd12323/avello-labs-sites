@@ -59,6 +59,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 SITE = "https://avellolabs.com"
 EMAIL = "harris@avellolabs.com"
+# The business phone number as it should be shown, like "(856) 555-0123". Empty hides every phone spot: the
+# header's tap-to-call button, the footer, the homepage contact section and the structured data. Run sync after.
+PHONE = ""
 
 # Preview mode: every page carries noindex. Set to False and run `sync` to go live.
 NOINDEX = False
@@ -107,6 +110,8 @@ WELCOME_VIDEO_DESCRIPTION = ("If you run a business in South Jersey or Philly, i
 # related links, the list on /blog/, blog/feed.xml and the sitemap.
 BLOG_NAME = "Avello Labs blog"
 BLOG_AUTHOR = "Avello Labs"
+# The person who writes the posts, shown in the byline ("By Harris, Avello Labs") and as the article's author.
+BLOG_AUTHOR_PERSON = "Harris"
 BLOG_DESCRIPTION = "Practical website, search and AI answer tips for small local businesses."
 WORDS_PER_MINUTE = 230
 
@@ -159,7 +164,7 @@ NAV_ALSO = {"/tools/": ["/check/"]}
 OG_IMAGE = f"{SITE}/assets/og-image.png"
 OG_IMAGE_ALT = "Avello Labs logo on a dark navy background"
 HOME_TITLE = "Avello Labs | Fast Websites and Monthly Website Care"
-HOME_DESCRIPTION = "Custom websites for local businesses, live in days, with Google SEO, AI search optimization and monthly care built in."
+HOME_DESCRIPTION = "Custom websites for local businesses, with Google SEO, AI search optimization and monthly care built in. Live in about a week once we have your content."
 
 
 def social_tags(text, url):
@@ -190,8 +195,39 @@ def shared_head(text="", url="/"):
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
 <link rel="stylesheet" href="/assets/site.css">
+{business_schema()}
 {social_tags(text, url)}
 <!-- /shared:head -->"""
+
+
+def phone_tel():
+    """PHONE as a tel: link target, like +18565550123."""
+    digits = re.sub(r"\D", "", PHONE)
+    return "+" + (digits if len(digits) > 10 else "1" + digits)
+
+
+PHONE_ICON = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" '
+              'aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 '
+              '2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 '
+              '2.8.7a2 2 0 0 1 1.7 2Z"/></svg>')
+
+
+def phone_link(cls):
+    if not PHONE:
+        return f"<!-- PHONE: set PHONE in scripts/site.py and run sync to show a tap-to-call number here ({cls}) -->"
+    return f'<a class="{cls}" href="tel:{phone_tel()}">{PHONE_ICON}<span>{html.escape(PHONE)}</span></a>'
+
+
+def business_schema():
+    """The business and the website, described for search engines on every page. The homepage adds the full details
+    (services, area served) under the same @id."""
+    org = {"@type": "ProfessionalService", "@id": f"{SITE}/#organization", "name": "Avello Labs LLC", "url": f"{SITE}/",
+           "logo": f"{SITE}/brand/icon.svg", "email": EMAIL,
+           "address": {"@type": "PostalAddress", "addressLocality": "Collingswood", "addressRegion": "NJ", "postalCode": "08108", "addressCountry": "US"}}
+    if PHONE:
+        org["telephone"] = phone_tel()
+    site = {"@type": "WebSite", "@id": f"{SITE}/#website", "url": f"{SITE}/", "name": "Avello Labs", "publisher": {"@id": f"{SITE}/#organization"}}
+    return f'<script type="application/ld+json">{json.dumps({"@context": "https://schema.org", "@graph": [org, site]}, ensure_ascii=False)}</script>'
 
 
 def shared_header(current):
@@ -205,12 +241,14 @@ def shared_header(current):
     <a class="brand" href="/" aria-label="Avello Labs, home">
       <img src="/brand/logo-horizontal-dark.svg" width="337" height="64" alt="Avello Labs">
     </a>
+    {phone_link("call-btn")}
     <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
       <svg class="bars" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       <svg class="x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
     </button>
     <nav class="site-nav" id="site-nav" aria-label="Main">
 {links}
+      {phone_link("nav-phone")}
       <a class="btn btn-small" href="/#contact">Free review</a>
     </nav>
   </div>
@@ -226,7 +264,7 @@ def shared_footer(blog=False):
     <div class="foot-grid">
       <div class="foot-brand">
         <img src="/brand/logo-horizontal-dark.svg" width="337" height="64" alt="Avello Labs">
-        <p>Custom websites for small local businesses, live in days, with monthly care, SEO and AEO.</p>
+        <p>Custom websites for small local businesses, with monthly care, SEO and AEO.</p>
       </div>
       <div>
         <h2>Services</h2>
@@ -263,7 +301,7 @@ def shared_footer(blog=False):
       <div>
         <h2>Contact</h2>
         <address>
-          <a href="mailto:{EMAIL}">{EMAIL}</a><br>
+          <a href="mailto:{EMAIL}">{EMAIL}</a><br>{f'{chr(10)}          <a href="tel:{phone_tel()}">{html.escape(PHONE)}</a><br>' if PHONE else ""}
           Avello Labs LLC<br>
           PO Box 141<br>
           Collingswood, NJ 08108-9998
@@ -411,7 +449,7 @@ def blog_head(post, posts):
             "mainEntityOfPage": SITE + post["url"],
             "datePublished": post["published"],
             "dateModified": post["modified"],
-            "author": {"@type": "Organization", "name": BLOG_AUTHOR, "url": SITE + "/"},
+            "author": {"@type": "Person", "name": BLOG_AUTHOR_PERSON, "worksFor": {"@type": "Organization", "name": BLOG_AUTHOR, "url": SITE + "/"}},
             "publisher": {"@type": "Organization", "name": BLOG_AUTHOR, "url": SITE + "/",
                           "logo": {"@type": "ImageObject", "url": SITE + "/brand/icon.svg"}},
             "inLanguage": "en-US",
@@ -433,7 +471,7 @@ def byline(post):
     when = (f'<span class="draft-tag">Draft</span>' if post["draft"]
             else f'<time datetime="{post["published"]}">{nice_date(post["published"])}</time>')
     news = '<span class="news-tag">News</span> <span aria-hidden="true">·</span> ' if post.get("news") else ""
-    return f'{news}By {BLOG_AUTHOR} <span aria-hidden="true">·</span> {when} <span aria-hidden="true">·</span> {post["minutes"]} min read'
+    return f'{news}By {BLOG_AUTHOR_PERSON}, {BLOG_AUTHOR} <span aria-hidden="true">·</span> {when} <span aria-hidden="true">·</span> {post["minutes"]} min read'
 
 
 def post_meta(post):
@@ -464,7 +502,7 @@ def post_aside(post, posts):
     return f"""<!-- shared:post-aside -->
       <aside class="aside" aria-label="Related">
       <div class="aside-card">
-        <h2>See what's costing you calls</h2>
+        <h2>Free site check</h2>
         <p>The free site check scores 10 SEO and AEO basics on any page in a few seconds.</p>
         <a class="btn" href="/check/">Free site check</a>
       </div>
@@ -590,15 +628,43 @@ def knowledge():
     print(f"worker/knowledge.txt: {len(out.read_text())} characters from {len(parts)} pages")
 
 
+# A removed page keeps its URL as a small redirect page (GitHub Pages can't send real redirects), marked with
+# <meta name="redirect-to" content="/new/path/">. Sync leaves it alone, and it stays out of the sitemap, the
+# blog list and the feed. Write one with redirect_page().
+REDIRECT_MARK = '<meta name="redirect-to"'
+
+
+def redirect_page(target, title):
+    t, u = html.escape(title), html.escape(target)
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>{t} | Avello Labs</title>
+{REDIRECT_MARK} content="{u}">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="{SITE}{u}">
+<meta http-equiv="refresh" content="0; url={u}">
+</head>
+<body>
+<p>This page has moved. <a href="{u}">Go to the new page</a>.</p>
+</body>
+</html>
+"""
+
+
 def pages():
-    """Every index.html that belongs to the site, with its URL path."""
+    """Every index.html that belongs to the site, with its URL path (redirect pages left out)."""
     found = []
     for f in sorted(ROOT.rglob("index.html")):
         rel = f.relative_to(ROOT)
-        if rel.parts[0] in SKIP:
+        if rel.parts[0] in SKIP or REDIRECT_MARK in f.read_text():
             continue
         url = "/" + "/".join(rel.parts[:-1]) + ("/" if len(rel.parts) > 1 else "")
         found.append((url, f))
+    # GitHub Pages shows 404.html for any address that doesn't exist. It gets the shared blocks but no sitemap entry.
+    if (ROOT / "404.html").exists():
+        found.append(("/404.html", ROOT / "404.html"))
     return found
 
 
@@ -625,6 +691,9 @@ def sync():
         price = f'<!-- shared:price --><span class="price-amount">{html.escape(PRICE_FROM)}</span><!-- /shared:price -->'
         text = re.sub(r"<!-- shared:price -->.*?<!-- /shared:price -->", lambda _: price, text, flags=re.S)
         text = re.sub(r"<(\w+)([^>]*?) data-price(?: hidden)?>", lambda m: f"<{m.group(1)}{m.group(2)} data-price{'' if PRICE_FROM else ' hidden'}>", text)
+        if "<!-- shared:contact-phone -->" in text:
+            inner = phone_link("mail") if PHONE else "<!-- PHONE: set PHONE in scripts/site.py and run sync to show the number here -->"
+            text = replace_block(text, "contact-phone", f"<!-- shared:contact-phone -->{inner}<!-- /shared:contact-phone -->", f)
         if "<!-- shared:welcome-video -->" in text:
             text = replace_block(text, "welcome-video", welcome_video(), f)
         if "<!-- shared:problem-buttons -->" in text:
@@ -650,7 +719,7 @@ def sync():
 
     # Drafts, and /blog/ while nothing is published, carry noindex, so they stay out of the sitemap too.
     def listed(url):
-        return not (url in by_url and by_url[url]["draft"]) and not (url == "/blog/" and not live)
+        return url != "/404.html" and not (url in by_url and by_url[url]["draft"]) and not (url == "/blog/" and not live)
 
     def lastmod(url, f):
         return by_url[url]["modified"] if url in by_url else (committed(f) or date.fromtimestamp(f.stat().st_mtime).isoformat())

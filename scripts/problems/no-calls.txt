@@ -19,7 +19,7 @@ Related: /blog/new-website-or-fix-mine/ | Do I need a new website, or can mine b
 Related: /blog/how-often-should-i-update-my-website/ | How often should I update my website?
 
 ## Why this happens
-Most people who visit a small business website want one thing: to know if you can help, and how to reach you. When a site gets in the way of that, they go back and pick someone else.
+People who visit a small business website usually want to know two things: whether you can help, and how to reach you. When a site gets in the way of that, they go back and pick someone else.
 
 - **It's hard to call from a phone.** The number is buried, or tapping it doesn't start a call.
 - **It's slow, especially on phones.** Google measures how real visitors experience loading and responsiveness with a set of metrics called Core Web Vitals. A slow site loses people before they see anything.

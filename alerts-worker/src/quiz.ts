@@ -1,9 +1,10 @@
 // The website quiz on /tools/: which guide fits a visitor's answers, and the emails that go out. Pure
 // functions so the choice and the email text can be unit tested. assets/quiz.js shows the same questions
 // and makes the same choice for the instant download; change both together.
-// Nothing the visitor types goes into their own email, so the form can't be used to send someone a message.
+// The only thing the visitor types that goes into their own email is their first name, and only if it looks like one
+// (see greeting in message.ts), so the form can't be used to send someone a message.
 
-import { clean } from "./message.ts";
+import { clean, greeting } from "./message.ts";
 
 export const QUESTIONS = [
   { q: "Do you have a website now?", a: ["No", "Yes, but it's old or I don't like it", "Yes, and it works fine"] },
@@ -52,14 +53,15 @@ export function guideUrl(site: string, guide: Guide): string {
 
 /** confirmUrl: they ticked the box for the 5 tip emails, so the email has a "Yes, send me the tips" button.
  *  Nothing more is sent unless they tap it (double opt-in), and the footer says so. */
-export function visitorEmail(site: string, guide: Guide, confirmUrl?: string, source: "quiz" | "page" = "quiz"): { subject: string; text: string; html: string } {
+export function visitorEmail(site: string, guide: Guide, confirmUrl?: string, source: "quiz" | "page" = "quiz", name = ""): { subject: string; text: string; html: string } {
+  const hi = greeting(name);
   const thanks = source === "quiz" ? "Thanks for taking the quiz. Your free guide is ready:" : "Thanks for asking for our free guide. Here it is:";
   const where = source === "quiz" ? "in the quiz at avellolabs.com" : "on avellolabs.com";
   const title = GUIDES[guide], url = guideUrl(site, guide);
   const offer = guide === "custom-tools"
     ? { line: "Want to talk it through? We'll tell you honestly whether a custom tool is worth it for you, in a free 20-minute call. No obligation.",
         link: `${site}/?offer=tool#contact`, label: "Book a free 20-minute call" }
-    : { line: "Want a hand? We'll walk you through the 3 fixes that would get you more calls, in a free 20-minute review. No obligation.",
+    : { line: "Want a hand? We'll walk you through the 3 fixes we'd make first, in a free 20-minute review. No obligation.",
         link: `${site}/#contact`, label: "Book a free 20-minute review" };
   const tipsLine = "You also asked for 5 short website tips. Tap the button to confirm, and we'll send one every few days.";
   const footer = confirmUrl
@@ -68,7 +70,7 @@ export function visitorEmail(site: string, guide: Guide, confirmUrl?: string, so
     : `You're getting this because this address was entered ${where}. ` +
       "If that wasn't you, you can ignore this email. We won't send anything else.";
   const text = [
-    "Hi there,", "",
+    hi, "",
     `${thanks} ${title}`, "",
     "Open your free guide:", url, "",
     ...(confirmUrl ? [tipsLine, `Yes, send me the tips: ${confirmUrl}`, ""] : []),
@@ -80,7 +82,7 @@ export function visitorEmail(site: string, guide: Guide, confirmUrl?: string, so
   const html = `<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light only"></head>
 <body style="margin:0;padding:24px 16px;background:#ffffff">
 <div style="max-width:560px;margin:0 auto">
-<p ${p}>Hi there,</p>
+<p ${p}>${hi}</p>
 <p ${p}>${thanks}</p>
 <p style="margin:0 0 20px;font:bold 20px/1.35 ${FONT};color:#0A1022">${title}</p>
 ${emailButton(url, "Open your free guide", true)}
