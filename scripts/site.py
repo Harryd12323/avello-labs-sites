@@ -118,7 +118,7 @@ WORDS_PER_MINUTE = 230
 # Starting price, shown wherever a page has <!-- shared:price --> markers (the home page and the service
 # pages). Write it the way it should read, like "$1,500". While it's empty, every element marked data-price
 # is hidden, and the chat assistant doesn't see it either.
-PRICE_FROM = ""
+PRICE_FROM = "$2,500"
 
 # The search a page is written to rank for. Blog posts carry theirs in <meta name="blog:keyword">; these are the
 # other pages'. A new post's keyword must not compete with any of them (check-post).
@@ -578,7 +578,9 @@ class _Text(HTMLParser):
             if tag == self.hidden[0]:
                 self.hidden.append(tag)
             return
-        if self.in_main and any(name == "hidden" for name, _ in attrs):
+        # Hidden elements, and decoration marked aria-hidden (icons, the care table's check marks, whose words sit
+        # beside them for screen readers), are skipped.
+        if self.in_main and any(name == "hidden" or (name == "aria-hidden" and value == "true") for name, value in attrs):
             self.hidden = [tag]
             return
         if tag == "main":
@@ -590,6 +592,10 @@ class _Text(HTMLParser):
                 self.out.append("\n\n" + "#" * int(tag[1]) + " ")
             elif tag == "li":
                 self.out.append("\n- ")
+            elif tag in ("th", "td"):
+                self.out.append(" | ")
+            elif tag in ("small", "sup") or (tag == "span" and "price" in (dict(attrs).get("class") or "")):
+                self.out.append(" ")
             elif tag in self.BLOCK:
                 self.out.append("\n")
 
@@ -609,6 +615,7 @@ class _Text(HTMLParser):
 
     def text(self):
         t = "".join(self.out)
+        t = re.sub(r"[ \t]{2,}", " ", t)
         t = re.sub(r"[ \t]+\n", "\n", t)
         t = re.sub(r"\n[ \t]+", "\n", t)
         return re.sub(r"\n{3,}", "\n\n", t).strip()

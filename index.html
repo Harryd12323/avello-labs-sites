@@ -67,7 +67,12 @@
           "@type": "Service",
           "name": "Website builds",
           "url": "https://avellolabs.com/#how",
-          "description": "Custom websites for local businesses that can be live in about a week once we have your content, with SEO and AI search basics built in."
+          "description": "Custom 5 to 7 page websites for local businesses that can be live in about a week once we have your content, with SEO and AI search basics built in."
+        },
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "minPrice": 2500,
+          "priceCurrency": "USD"
         }
       },
       {
@@ -76,7 +81,7 @@
           "@type": "Service",
           "name": "SEO",
           "url": "https://avellolabs.com/seo/",
-          "description": "Local search engine optimization for small businesses."
+          "description": "Local search engine optimization for small businesses. Quoted per project."
         }
       },
       {
@@ -85,7 +90,7 @@
           "@type": "Service",
           "name": "AEO",
           "url": "https://avellolabs.com/aeo/",
-          "description": "Answer engine optimization, so AI tools like ChatGPT and Google's AI answers can find and recommend a business."
+          "description": "Answer engine optimization, so AI tools like ChatGPT and Google's AI answers can find and recommend a business. Quoted per project."
         }
       },
       {
@@ -99,11 +104,68 @@
       },
       {
         "@type": "Offer",
+        "name": "Website care: Basic",
+        "price": "99",
+        "priceCurrency": "USD",
+        "priceSpecification": {
+          "@type": "UnitPriceSpecification",
+          "price": 99,
+          "priceCurrency": "USD",
+          "unitCode": "MON",
+          "unitText": "month"
+        },
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Website care: Basic plan",
+          "url": "https://avellolabs.com/#pricing",
+          "description": "Hosting, uptime and SSL monitoring, and backups."
+        }
+      },
+      {
+        "@type": "Offer",
+        "name": "Website care: Pro",
+        "price": "149",
+        "priceCurrency": "USD",
+        "priceSpecification": {
+          "@type": "UnitPriceSpecification",
+          "price": 149,
+          "priceCurrency": "USD",
+          "unitCode": "MON",
+          "unitText": "month"
+        },
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Website care: Pro plan",
+          "url": "https://avellolabs.com/#pricing",
+          "description": "Everything in Basic, plus SEO and AI-search upkeep, 1 hour of edits a month and a monthly report."
+        }
+      },
+      {
+        "@type": "Offer",
+        "name": "Website care: Premium",
+        "price": "249",
+        "priceCurrency": "USD",
+        "priceSpecification": {
+          "@type": "UnitPriceSpecification",
+          "price": 249,
+          "priceCurrency": "USD",
+          "unitCode": "MON",
+          "unitText": "month"
+        },
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Website care: Premium plan",
+          "url": "https://avellolabs.com/#pricing",
+          "description": "Everything in Pro, with 3 hours of edits a month and faster support."
+        }
+      },
+      {
+        "@type": "Offer",
         "itemOffered": {
           "@type": "Service",
           "name": "Custom web apps",
           "url": "https://avellolabs.com/web-apps/",
-          "description": "Simple custom tools like customer portals, status trackers and intake forms."
+          "description": "Simple custom tools like customer portals, status trackers and intake forms. Quoted per project."
         }
       }
     ]
@@ -217,7 +279,7 @@
         <li>
           <span class="when">Every month after</span>
           <h3>It keeps working, every month</h3>
-          <p>We keep your site updated, backed up and monitored, and make the changes you ask for.</p>
+          <p>Your care plan keeps the site hosted, backed up and monitored, with search upkeep and monthly edits on Pro and Premium.</p>
         </li>
       </ol>
       <p class="proof">
@@ -237,7 +299,7 @@
           <ul>
             <li class="yes"><b>Live in about a week</b> once we have your content</li>
             <li class="yes"><b>Monthly care</b> keeps your site updated, backed up and monitored</li>
-            <li class="yes"><b>Changes when you ask</b>, like new hours, services or photos, without you touching the site</li>
+            <li class="yes"><b>Changes when you ask</b>, like new hours, services or photos, on the Pro and Premium care plans</li>
           </ul>
         </div>
       </div>
@@ -261,17 +323,38 @@
         <article class="card">
           <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg></div>
           <h3>Ongoing site care</h3>
-          <span class="tag">Updates, monitoring, backups and fixes</span>
-          <p>Your site stays updated, backed up and working, and changes get made when you ask.</p>
-          <a class="more" href="/website-care/"><span>What site care covers</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <span class="tag">From $99 a month</span>
+          <p>Your site stays hosted, backed up and monitored, with SEO and AI-search upkeep and monthly edits on Pro and Premium.</p>
+          <a class="more" href="#pricing"><span>Compare the care plans</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </article>
       </div>
-      <div class="price-band" data-price hidden>
+      <div class="price-band" data-price>
         <div>
-          <p class="price"><span>Packages starting at</span> <!-- shared:price --><span class="price-amount"></span><!-- /shared:price --></p>
-          <p class="price-note">Every build includes Google SEO and AI search basics. Monthly care starts at launch.</p>
+          <p class="price"><span>Websites starting at</span> <!-- shared:price --><span class="price-amount">$2,500</span><!-- /shared:price --></p>
+          <p class="price-note">5 to 7 pages, live in about a week once we have your content, with Google SEO and AI search basics built in.</p>
         </div>
         <a class="btn" href="#contact">Get a price for your site <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="care-plans" id="pricing">
+        <h3>Monthly care plans</h3>
+        <p class="price-note">Pick the level of care you want after launch.</p>
+        <div class="care-scroll">
+          <table class="care-table">
+            <thead>
+              <tr><th scope="col"><span class="sr">What's included</span></th><th scope="col">Basic<span class="care-price">$99<small>/mo</small></span></th><th scope="col">Pro<span class="care-price">$149<small>/mo</small></span></th><th scope="col">Premium<span class="care-price">$249<small>/mo</small></span></th></tr>
+            </thead>
+            <tbody>
+            <tr><th scope="row">Hosting<small>Your site served fast, on secure hosting</small></th><td><span class="yes" aria-hidden="true">✓</span><span class="sr">Included</span></td><td><span class="yes" aria-hidden="true">✓</span><span class="sr">Included</span></td><td><span class="yes" aria-hidden="true">✓</span><span class="sr">Included</span></td></tr>
+            <tr><th scope="row">Uptime and SSL monitoring<small>We hear about it if your site goes down or its security certificate is about to run out</small></th><td><span class="yes" aria-hidden="true">✓</span><span class="sr">Included</span></td><td><span class="yes" aria-hidden="true">✓</span><span class="sr">Included</span></td><td><span class="yes" aria-hidden="true">✓</span><span class="sr">Included</span></td></tr>
+            <tr><th scope="row">Backups<small>Copies of your site we can restore if something goes wrong</small></th><td><span class="yes" aria-hidden="true">✓</span><span class="sr">Included</span></td><td><span class="yes" aria-hidden="true">✓</span><span class="sr">Included</span></td><td><span class="yes" aria-hidden="true">✓</span><span class="sr">Included</span></td></tr>
+            <tr><th scope="row">SEO and AI-search upkeep<small>Page titles, business details and structured data kept current for Google and AI tools</small></th><td><span class="no" aria-hidden="true">–</span><span class="sr">Not included</span></td><td><span class="yes" aria-hidden="true">✓</span><span class="sr">Included</span></td><td><span class="yes" aria-hidden="true">✓</span><span class="sr">Included</span></td></tr>
+            <tr><th scope="row">Monthly edits<small>Changes you ask for, like new hours, services or photos</small></th><td><span class="no" aria-hidden="true">–</span><span class="sr">Not included</span></td><td>1 hour</td><td>3 hours</td></tr>
+            <tr><th scope="row">Monthly report<small>What we checked and changed, and how your site is doing</small></th><td><span class="no" aria-hidden="true">–</span><span class="sr">Not included</span></td><td><span class="yes" aria-hidden="true">✓</span><span class="sr">Included</span></td><td><span class="yes" aria-hidden="true">✓</span><span class="sr">Included</span></td></tr>
+            <tr><th scope="row">Faster support<small>Your requests handled first</small></th><td><span class="no" aria-hidden="true">–</span><span class="sr">Not included</span></td><td><span class="no" aria-hidden="true">–</span><span class="sr">Not included</span></td><td><span class="yes" aria-hidden="true">✓</span><span class="sr">Included</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="price-note">Local SEO, AEO and custom tools are quoted per project.</p>
       </div>
       <h3 class="also">Also from us</h3>
       <div class="cards support">

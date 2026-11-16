@@ -2,7 +2,7 @@
 Website builds · Monthly care · SEO and AEO
 
 # Get found on Google and in AI answers. Get more calls from your website.
-We build fast websites for local businesses that show up when customers search, then keep them working every month.    Is your website bringing you calls? The video loads from YouTube when you press play.
+We build fast websites for local businesses that show up when customers search, then keep them working every month. Is your website bringing you calls? The video loads from YouTube when you press play.
 Read the transcript
 Your website should be bringing you calls. Is it?
 If you run a business in South Jersey or Philly, it usually comes down to one of three things.
@@ -12,7 +12,7 @@ Three: you're buried in admin that eats your evenings.
 We fix the one that's holding you back, fast. Then we keep your site healthy every month, so it keeps working.
 Which one sounds like you? Pick it below, and we'll show you why it happens and what to do next.
 If you're here, you're probably dealing with one of these 3 situations:
-Customers can't find us on Google or in AI answers  Our website doesn't bring in calls  We spend too much time on admin by hand
+Customers can't find us on Google or in AI answers Our website doesn't bring in calls We spend too much time on admin by hand
 Ready to talk? Free 20-minute review: the 3 fixes we'd make first.
 Get my free review
 
@@ -20,26 +20,26 @@ How it works
 
 ## Your new site can be live in about a week once we have your content.
 Here's what happens from the moment you get in touch.
--  Right after you reach out
+- Right after you reach out
 
 ### We get back to you
 We reply personally, ask a few quick questions about your business and set up a time for a kickoff call.
--  Day 1
+- Day 1
 
 ### Kickoff call
 We talk through your business, your customers and what the site needs to do. You send your logo, photos and anything you already have.
--  Days 2 to 5
+- Days 2 to 5
 
 ### Build and review
 We build your site and send you a preview link. You tell us what to change, and we change it.
--  Launch
+- Launch
 
 ### Customers can find you
 We put it live on your domain, with titles, descriptions and business details set up for Google and AI search from day one.
--  Every month after
+- Every month after
 
 ### It keeps working, every month
-We keep your site updated, backed up and monitored, and make the changes you ask for.
+Your care plan keeps the site hosted, backed up and monitored, with search upkeep and monthly edits on Pro and Premium.
 Our own home page scores 100/100 on our free site check. Check your site free
 
 What you get
@@ -48,7 +48,7 @@ What you get
 
 - Live in about a week once we have your content
 - Monthly care keeps your site updated, backed up and monitored
-- Changes when you ask, like new hours, services or photos, without you touching the site
+- Changes when you ask, like new hours, services or photos, on the Pro and Premium care plans
 
 What we do
 
@@ -58,8 +58,24 @@ We mainly do two things: build fast, custom websites, and look after them every 
 ### Websites Built to bring in calls
 A fast, custom site that can be live in about a week once we have your content, with Google SEO and AI search basics set up from the start. See the timeline
 
-### Ongoing site care Updates, monitoring, backups and fixes
-Your site stays updated, backed up and working, and changes get made when you ask. What site care covers
+### Ongoing site care From $99 a month
+Your site stays hosted, backed up and monitored, with SEO and AI-search upkeep and monthly edits on Pro and Premium. Compare the care plans
+
+Websites starting at $2,500
+5 to 7 pages, live in about a week once we have your content, with Google SEO and AI search basics built in. Get a price for your site
+
+### Monthly care plans
+Pick the level of care you want after launch.
+
+| What's included | Basic $99 /mo | Pro $149 /mo | Premium $249 /mo
+| Hosting Your site served fast, on secure hosting | Included | Included | Included
+| Uptime and SSL monitoring We hear about it if your site goes down or its security certificate is about to run out | Included | Included | Included
+| Backups Copies of your site we can restore if something goes wrong | Included | Included | Included
+| SEO and AI-search upkeep Page titles, business details and structured data kept current for Google and AI tools | Not included | Included | Included
+| Monthly edits Changes you ask for, like new hours, services or photos | Not included | 1 hour | 3 hours
+| Monthly report What we checked and changed, and how your site is doing | Not included | Included | Included
+| Faster support Your requests handled first | Not included | Not included | Included
+Local SEO, AEO and custom tools are quoted per project.
 
 ### Also from us
 
@@ -76,16 +92,15 @@ Real work
 
 ## Real businesses we've worked with.
 Earlier client sites, plus SEO and AEO work that's underway now.
--     Earlier client site
+- Earlier client site
 
 ### Emerald Express
 Door-to-door vehicle transport, from personal car shipping to dealership and auction deliveries, with free quotes online. emeraldexpress.us
--     Earlier client site
+- Earlier client site
 
 ### Goldbridge Systems
 ATM placement for hospitality and retail businesses, with revenue sharing and fully insured equipment. goldbridgesystems.com
--
-SEO and AEO rework in progress  SEO/AEO rework in progress
+- SEO/AEO rework in progress
 
 ### Margie Cedrone Artisan Jeweler
 An artisan jeweler's online store. We're working on its SEO and AEO so more people find it on Google and in AI answers. cgjfjewelry.com
@@ -157,7 +172,7 @@ A 20-minute phone call about your business. We look at your website, your Google
 ### What happens next
 - Fill in your name, email and website.
 - We email you within 1 business day to pick a time.
-- We talk for 20 minutes and you leave with your 3 fixes.       harris@avellolabs.com
+- We talk for 20 minutes and you leave with your 3 fixes. harris@avellolabs.com
 
 === https://avellolabs.com/seo/ (Why SEO Matters for Local Businesses | Avello Labs) ===
 Home / SEO
@@ -291,7 +306,7 @@ In short
 
 ## What goes wrong when nobody's watching
 - Contact forms stop working, often without any error, so messages simply never arrive.
-- Software and plugins fall out of date and become security risks.
+- The code and services your site runs on fall out of date and become security risks.
 - The security certificate or domain name lapses, and browsers warn visitors away.
 - Pages break, or links point nowhere, after small changes.
 - The site slows down as images and add-ons pile up.
@@ -301,7 +316,7 @@ None of these announce themselves. You usually find out when a customer mentions
 ## What ongoing care includes
 
 ### Technical health
-- Software, theme and plugin updates
+- Updates to the code and services your site runs on
 - Uptime monitoring, so outages are caught fast
 - Regular backups that can be restored
 - Speed, especially on phones
