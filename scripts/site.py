@@ -32,6 +32,10 @@ Commands (run from the repo root, Python 3 only, nothing to install):
     python3 scripts/site.py import-post post.txt
         Builds a draft post page from that text format (it must pass check-post first), then runs sync.
 
+    python3 scripts/site.py problems
+        Checks every problem page text file in scripts/problems/ (format: scripts/problems.py), builds each page,
+        then runs sync (which also refreshes the homepage's problem buttons). Exits 1 if a file breaks a rule.
+
     python3 scripts/site.py keywords
         Prints, as JSON, the target keyword each page owns, so new posts don't compete with existing pages.
 
@@ -84,6 +88,18 @@ CF_ANALYTICS_TOKEN = "c13465b4292f4925a76c38488a1eff2e"
 # nothing is emailed, and the security policy doesn't list Turnstile.
 TURNSTILE_SITE_KEY = "0x4AAAAAAF_2AgkJbluDNPxk"
 QUIZ_ENDPOINT = ALERTS_ENDPOINT.rsplit("/", 1)[0] + "/quiz"
+# The free guide form on each problem page posts here (same Worker, same Turnstile widget).
+GUIDE_ENDPOINT = ALERTS_ENDPOINT.rsplit("/", 1)[0] + "/guide"
+# Problem page videos play from YouTube's no-cookie player, loaded only when someone presses play.
+VIDEO_FRAME = "https://www.youtube-nocookie.com"
+PROBLEMS_DIR = ROOT / "scripts" / "problems"
+# The homepage welcome video: its YouTube ID (empty shows nothing), the day it went up, a 1280x720 thumbnail at
+# /assets/videos/welcome.jpg, and its transcript (paragraphs) in scripts/videos/welcome-transcript.txt.
+WELCOME_VIDEO = "ftNlVSYWDOI"
+WELCOME_VIDEO_DATE = "2026-11-15"
+WELCOME_VIDEO_TITLE = "Is your website bringing you calls?"
+WELCOME_VIDEO_DESCRIPTION = ("If you run a business in South Jersey or Philly, it usually comes down to one of three things: customers "
+                             "can't find you, visitors don't call, or admin eats your evenings. Pick the one that sounds like you.")
 
 # Blog (see blog/). Each post is a hand-written page at /blog/<slug>/. Its head says whether it's a draft
 # (<meta name="blog:status">) and when it was published and updated (article:published_time and
@@ -126,7 +142,7 @@ CF_SCRIPT, CF_CONNECT = ("https://static.cloudflareinsights.com", "https://cloud
 CONNECT = " ".join(o for o in [CONNECT, CF_CONNECT] if o)
 TURNSTILE = "https://challenges.cloudflare.com" if TURNSTILE_SITE_KEY else ""
 SCRIPT_SRC = " ".join(o for o in ["'self'", CF_SCRIPT, TURNSTILE] if o)
-FRAME_SRC = f"frame-src {TURNSTILE}; " if TURNSTILE else ""
+FRAME_SRC = "frame-src " + " ".join(o for o in [TURNSTILE, VIDEO_FRAME] if o) + "; "
 CSP = (f"default-src 'self'; script-src {SCRIPT_SRC}; style-src 'self' https://fonts.googleapis.com; "
        f"font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src {CONNECT}; {FRAME_SRC}"
        "form-action https://api.web3forms.com; base-uri 'self'; object-src 'none'")
@@ -221,6 +237,10 @@ def shared_footer(blog=False):
           <li><a href="/web-apps/">Web apps</a></li>
           <li><a href="/web-apps/#custom-software">Custom software</a></li>
         </ul>
+        <h2 class="foot-sub">Common problems</h2>
+        <ul>
+{problem_links()}
+        </ul>
       </div>
       <div>
         <h2>Free tools</h2>
@@ -292,6 +312,7 @@ TOOL_BLOCKS = {
     "tool-preview": ("/assets/tools.css", "/assets/preview.js", f'data-endpoint="{CHECK_BASE}/preview"'),
     "tool-crawlers": ("/assets/tools.css", "/assets/crawlers.js", f'data-endpoint="{CHECK_BASE}/crawlers"'),
     "tool-schema": ("/assets/tools.css", "/assets/schema-gen.js", ""),
+    "problem": ("/assets/problem.css", "/assets/problem.js", f'data-endpoint="{GUIDE_ENDPOINT}" data-sitekey="{TURNSTILE_SITE_KEY}"'),
 }
 
 
@@ -604,6 +625,10 @@ def sync():
         price = f'<!-- shared:price --><span class="price-amount">{html.escape(PRICE_FROM)}</span><!-- /shared:price -->'
         text = re.sub(r"<!-- shared:price -->.*?<!-- /shared:price -->", lambda _: price, text, flags=re.S)
         text = re.sub(r"<(\w+)([^>]*?) data-price(?: hidden)?>", lambda m: f"<{m.group(1)}{m.group(2)} data-price{'' if PRICE_FROM else ' hidden'}>", text)
+        if "<!-- shared:welcome-video -->" in text:
+            text = replace_block(text, "welcome-video", welcome_video(), f)
+        if "<!-- shared:problem-buttons -->" in text:
+            text = replace_block(text, "problem-buttons", problem_buttons(), f)
         if url == "/blog/":
             text = replace_block(text, "blog-head", blog_head(None, posts), f)
             text = replace_block(text, "blog-list", blog_list(posts), f)
@@ -636,6 +661,30 @@ def sync():
                                       '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + rows + "</urlset>\n")
     print(f"sitemap.xml: {rows.count('<url>')} pages")
     knowledge()
+
+
+def problem_buttons():
+    """The homepage's "one of these 3 situations" buttons, one per problem page."""
+    links = "\n".join(f'        <a class="problem-btn" href="{html.escape(f["URL"])}"><span>{html.escape(f["Button"])}</span> {ARROW}</a>'
+                      for f in problem_fields())
+    return f'<!-- shared:problem-buttons -->\n      <div class="problem-btns">\n{links}\n      </div>\n      <!-- /shared:problem-buttons -->'
+
+
+def welcome_video():
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import problems
+    fields = {"Video": WELCOME_VIDEO, "Video-date": WELCOME_VIDEO_DATE, "Video-title": WELCOME_VIDEO_TITLE, "Headline": WELCOME_VIDEO_TITLE}
+    t = ROOT / "scripts" / "videos" / "welcome-transcript.txt"
+    transcript = t.read_text().splitlines() if WELCOME_VIDEO and t.exists() else []
+    inner = problems.video_html("welcome", fields, transcript, "      ", SITE, lazy=False).replace("scripts/problems/welcome.txt", "WELCOME_VIDEO in scripts/site.py")
+    if WELCOME_VIDEO:
+        video = {"@context": "https://schema.org", "@type": "VideoObject", "name": WELCOME_VIDEO_TITLE, "description": WELCOME_VIDEO_DESCRIPTION,
+                 "thumbnailUrl": f"{SITE}/assets/videos/welcome.jpg", "uploadDate": WELCOME_VIDEO_DATE,
+                 "embedUrl": f"https://www.youtube-nocookie.com/embed/{WELCOME_VIDEO}", "publisher": {"@id": f"{SITE}/#organization"}}
+        if transcript:
+            video["transcript"] = " ".join(line.strip() for line in transcript if line.strip())
+        inner += f'\n      <script type="application/ld+json">{json.dumps(video, ensure_ascii=False)}</script>'
+    return f"<!-- shared:welcome-video -->\n{inner}\n      <!-- /shared:welcome-video -->"
 
 
 def committed(f):
@@ -777,10 +826,58 @@ def post(url, headline, desc):
     sync()
 
 
+def problem_files():
+    return sorted(PROBLEMS_DIR.glob("*.txt")) if PROBLEMS_DIR.is_dir() else []
+
+
+def problem_fields():
+    """The fields of every problem page text file, in homepage button order."""
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import problems
+    found = [problems.parse(f.read_text())["fields"] for f in problem_files()]
+    return sorted(found, key=lambda f: int(f.get("Order", "9")))
+
+
+def problem_links():
+    return "\n".join(f'          <li><a href="{html.escape(f["URL"])}">{html.escape(f["Crumb"])}</a></li>' for f in problem_fields())
+
+
+def build_problems():
+    """Checks and builds every problem page from scripts/problems/, then runs sync."""
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import problems
+    found = {url for url, _ in pages()} | {problems.parse(f.read_text())["fields"].get("URL") for f in problem_files()}
+    anchors = set(re.findall(r'\bid="([^"]+)"', (ROOT / "index.html").read_text()))
+    guides = guide_titles()
+    failed = False
+    for f in problem_files():
+        text = f.read_text()
+        bad = problems.check(text, found, anchors, taken_keywords(), guides)
+        if bad:
+            failed = True
+            print(f"{f.relative_to(ROOT)} isn't ready:\n  " + "\n  ".join(bad))
+            continue
+        url = problems.parse(text)["fields"]["URL"]
+        out = ROOT / url.strip("/") / "index.html"
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(problems.page_html(text, SITE, "Avello Labs", guides, tool_block("problem")))
+        print("built", url)
+    sync()
+    if failed:
+        sys.exit(1)
+
+
+def guide_titles():
+    """{key: title} of the free guides, read from the quiz script so there's one list."""
+    js = (ROOT / "assets" / "quiz.js").read_text()
+    block = js[js.index("var GUIDES = {"):js.index("};", js.index("var GUIDES = {"))]
+    return dict(re.findall(r'"([a-z-]+)": "([^"]+)"', block))
+
+
 def taken_keywords():
     """[(url, keyword)] for every page that owns a target keyword: the main pages and every regular blog post. News
     posts own none (owner, 2026-11-02), so they never block a later regular post."""
-    out = list(PAGE_KEYWORDS.items())
+    out = list(PAGE_KEYWORDS.items()) + [(f["URL"], f["Keyword"].lower()) for f in problem_fields() if f.get("Keyword")]
     for p in blog_posts():
         if not p["news"]:
             out.append((p["url"], p["keyword"] or p["headline"].lower()))
@@ -856,6 +953,8 @@ if __name__ == "__main__":
     elif len(sys.argv) == 3 and sys.argv[1] == "check-keyword":
         blogpost = post_rules()[0]
         print(json.dumps([{"url": u, "keyword": k} for u, k in taken_keywords() if blogpost.too_close(sys.argv[2], k)]))
+    elif len(sys.argv) == 2 and sys.argv[1] == "problems":
+        build_problems()
     elif len(sys.argv) == 2 and sys.argv[1] == "keywords":
         print(json.dumps([{"url": u, "keyword": k} for u, k in taken_keywords()], indent=2))
     else:

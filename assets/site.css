@@ -325,6 +325,7 @@ footer.site::before { content: ""; position: absolute; left: 0; right: 0; top: -
 .foot-brand img { display: block; height: 30px; width: auto; }
 .foot-brand p { margin-top: .9rem; max-width: 22rem; }
 footer.site h2 { margin: 0 0 .6rem; font-size: .78rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--text); max-width: none; }
+footer.site h2.foot-sub { margin-top: 1.5rem; }
 footer.site ul { list-style: none; display: grid; gap: .1rem; }
 footer.site li a { display: inline-block; padding: .3rem 0; }
 footer.site a { color: var(--muted); text-decoration: none; transition: color .15s; }

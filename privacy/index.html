@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!-- shared:head -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com https://challenges.cloudflare.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://api.web3forms.com https://avello-chat.avellolabs.workers.dev https://avello-check.avellolabs.workers.dev https://avello-alerts.avellolabs.workers.dev https://cloudflareinsights.com; frame-src https://challenges.cloudflare.com; form-action https://api.web3forms.com; base-uri 'self'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com https://challenges.cloudflare.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://api.web3forms.com https://avello-chat.avellolabs.workers.dev https://avello-check.avellolabs.workers.dev https://avello-alerts.avellolabs.workers.dev https://cloudflareinsights.com; frame-src https://challenges.cloudflare.com https://www.youtube-nocookie.com; form-action https://api.web3forms.com; base-uri 'self'; object-src 'none'">
 <link rel="icon" type="image/png" sizes="48x48" href="/brand/favicon-48.png">
 <link rel="icon" type="image/png" sizes="96x96" href="/brand/favicon-96.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/brand/favicon-192.png">
@@ -108,10 +108,12 @@
           <li><strong>Loading a page into the search preview, and the AI crawler check:</strong> these work like the website check above. A small service we run on Cloudflare loads the page or its robots.txt and checks it against fixed rules, with no AI involved. We don't store or log the addresses you enter, and keep only the same short-lived, scrambled counts to prevent abuse.</li>
         </ul>
 
-        <h2 id="quiz">The website quiz</h2>
+        <h2 id="quiz">The website quiz and free guides</h2>
         <ul>
           <li><strong>What it collects:</strong> your answers to the five questions, your email address, your name if you give it, and whether you ticked the tips box and the newsletter box.</li>
-          <li><strong>What happens to it:</strong> a small service we run on Cloudflare emails you the guide that fits your answers and emails us a copy of your answers, both through <a href="https://resend.com">Resend</a>, an email delivery service (see the <a href="https://resend.com/legal/privacy-policy">Resend privacy policy</a>). We also get a short alert on Telegram. We email you the guide once. If you tick the tips box, we also send you up to 5 short website tips over the next few weeks, and each one has a link to unsubscribe. We only add you to the newsletter if you tick that box.</li>
+          <li><strong>What happens to it:</strong> a small service we run on Cloudflare emails you the guide that fits your answers and emails us a copy of your answers, both through <a href="https://resend.com">Resend</a>, an email delivery service (see the <a href="https://resend.com/legal/privacy-policy">Resend privacy policy</a>). We also get a short alert on Telegram. We email you the guide once. We only add you to the newsletter if you tick that box.</li>
+          <li><strong>The 5 tip emails:</strong> if you tick the tips box, the guide email has a “Yes, send me the tips” button, and we send nothing more unless you tap it. Then we send 5 short tips over about three weeks, through Resend. Every one has a one-click unsubscribe link. The tips stop if you unsubscribe, reply to one, or ask us for a call. To send them, our service on Cloudflare keeps your email address, your name if you gave it, which guide you got and which tips you've had. We delete that 30 days after your last tip or after the tips stop, and unconfirmed requests after 7 days. When you reply to a tip email, your reply comes to us, and a copy goes to Resend only so our service knows to stop the tips.</li>
+          <li><strong>Free guides on other pages:</strong> the free guide forms on pages like “Customers can't find us online” work the same way, without the questions. We receive your email address, your name if you give it, which guide you asked for and from which page, and whether you ticked the tips box and the newsletter box.</li>
           <li><strong>Bot check:</strong> the quiz uses <a href="https://www.cloudflare.com/products/turnstile/">Cloudflare Turnstile</a> to tell people from bots. Cloudflare says it doesn't use Turnstile data to track you for advertising. To prevent abuse, we keep short-lived, scrambled counts of quiz requests, never your answers.</li>
         </ul>
 
@@ -127,12 +129,15 @@
         <h2 id="analytics">Analytics</h2>
         <p>We use <a href="https://www.cloudflare.com/web-analytics/">Cloudflare Web Analytics</a> to see how many people visit, which pages they read and how fast the pages load. Cloudflare says it doesn't use cookies or local storage for this and doesn't fingerprint visitors to track them across sites. We only see totals, never a profile of you. See <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare's privacy policy</a>.</p>
 
+        <h2 id="videos">Videos</h2>
+        <p>Some pages have short videos hosted on <a href="https://www.youtube.com/">YouTube</a>. Until you press play, the page only shows a picture and nothing loads from YouTube. When you press play, the video loads from YouTube's privacy-enhanced mode (youtube-nocookie.com), and YouTube may then store information on your device and collect information about how you watch, as described in <a href="https://policies.google.com/privacy">Google's privacy policy</a>.</p>
+
         <h2>What we don't do</h2>
         <ul>
-          <li>We don't use cookies, advertising pixels or tracking that follows you across sites.</li>
+          <li>We don't use cookies, advertising pixels or tracking that follows you across sites. (YouTube's player may, but only once you choose to play a video.)</li>
           <li>We don't sell, rent or trade your personal information.</li>
-          <li>We don't add you to a mailing list or send marketing emails unless you sign up for the newsletter yourself.</li>
-          <li>We don't share your information, except with the services needed to run this site and deliver your messages (Web3Forms, our email provider, Cloudflare, which runs the chat assistant, the website check, the quiz and our visit statistics, Resend, which delivers the quiz emails, Anthropic, for the chat assistant, and Telegram, for our lead alerts), or if we're required to by law.</li>
+          <li>We don't add you to a mailing list or send marketing emails unless you sign up for the newsletter or confirm the tip emails yourself.</li>
+          <li>We don't share your information, except with the services needed to run this site and deliver your messages (Web3Forms, our email provider, Cloudflare, which runs the chat assistant, the website check, the quiz and our visit statistics, Resend, which delivers the quiz emails and tip emails, Anthropic, for the chat assistant, and Telegram, for our lead alerts, and YouTube, if you play a video), or if we're required to by law.</li>
         </ul>
 
         <h2>Technical information</h2>
@@ -176,6 +181,12 @@
           <li><a href="/website-care/">Website care</a></li>
           <li><a href="/web-apps/">Web apps</a></li>
           <li><a href="/web-apps/#custom-software">Custom software</a></li>
+        </ul>
+        <h2 class="foot-sub">Common problems</h2>
+        <ul>
+          <li><a href="/cant-find-us/">Can&#x27;t find us online</a></li>
+          <li><a href="/no-calls/">Website not bringing in calls</a></li>
+          <li><a href="/too-much-admin/">Too much admin by hand</a></li>
         </ul>
       </div>
       <div>

@@ -6,17 +6,23 @@
   //   LEAD_SIGNING_KEY    shared with the chat and check Workers, to verify lead tickets
   //   RESEND_API_KEY      Resend API key (sending access only) for the quiz emails from send.avellolabs.com
   //   TURNSTILE_SECRET    secret key of the "Avello quiz" Turnstile widget
+  //   TIPS_SIGNING_KEY    signs the confirm, unsubscribe and stop links in the tip emails
+  //   RESEND_WEBHOOK_SECRET  signing secret of the Resend webhook for replies (email.received)
+  //   TIPS_BACKFILL       one-off, then delete: people who ticked the tips box before launch
+  // The "test" environment (`npx wrangler deploy --env test`) is the separate avello-alerts-test Worker for
+  // the tip emails test run: a "day" is a minute, and it has its own secrets, list and reply address.
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "avello-alerts",
   "main": "src/index.ts",
   "compatibility_date": "2026-10-01",
   "workers_dev": true,
 
-  // Used ticket IDs (until they expire), salted hashes and counts. No lead details are stored.
+  // GATE: used ticket IDs (until they expire), salted hashes and counts. No lead details are stored.
+  // TIPS: the tip emails list (email, first name, guide, progress), deleted 30 days after the last tip.
   "durable_objects": {
-    "bindings": [{ "name": "GATE", "class_name": "AlertGate" }]
+    "bindings": [{ "name": "GATE", "class_name": "AlertGate" }, { "name": "TIPS", "class_name": "TipsList" }]
   },
-  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["AlertGate"] }],
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["AlertGate"] }, { "tag": "v2", "new_sqlite_classes": ["TipsList"] }],
 
   "vars": {
     "ALLOWED_ORIGINS": "https://avellolabs.com,http://localhost:8000,http://127.0.0.1:8000",
@@ -29,6 +35,41 @@
     "QUIZ_FROM": "Avello Labs <guides@send.avellolabs.com>",
     "QUIZ_TO": "harris@avellolabs.com",
     "QUIZ_PER_IP_PER_HOUR": "3",
-    "QUIZ_PER_DAY": "40"
+    "QUIZ_PER_DAY": "40",
+    "WORKER_URL": "https://avello-alerts.avellolabs.workers.dev",
+    "TIPS_FROM": "Harris at Avello Labs <tips@send.avellolabs.com>",
+    "TIPS_REPLY_LOCAL": "replies",
+    "TIPS_REPLY_DOMAIN": "send.avellolabs.com",
+    "TIPS_DAY_SECONDS": "86400",
+    "TIPS_SEND_HOUR": "10",
+    "TIPS_PER_DAY": "40"
+  },
+
+  "env": {
+    "test": {
+      "durable_objects": {
+        "bindings": [{ "name": "GATE", "class_name": "AlertGate" }, { "name": "TIPS", "class_name": "TipsList" }]
+      },
+      "vars": {
+        "ALLOWED_ORIGINS": "https://avellolabs.com,http://localhost:8000,http://localhost:8001",
+        "PER_IP_PER_HOUR": "3",
+        "PER_HOUR": "20",
+        "PER_DAY": "50",
+        "NEWSLETTER_PER_IP_PER_HOUR": "3",
+        "NEWSLETTER_PER_DAY": "15",
+        "SITE_URL": "https://avellolabs.com",
+        "QUIZ_FROM": "Avello Labs <guides@send.avellolabs.com>",
+        "QUIZ_TO": "harris@avellolabs.com",
+        "QUIZ_PER_IP_PER_HOUR": "20",
+        "QUIZ_PER_DAY": "40",
+        "WORKER_URL": "https://avello-alerts-test.avellolabs.workers.dev",
+        "TIPS_FROM": "Harris at Avello Labs <tips@send.avellolabs.com>",
+        "TIPS_REPLY_LOCAL": "replies-test",
+        "TIPS_REPLY_DOMAIN": "send.avellolabs.com",
+        "TIPS_DAY_SECONDS": "60",
+        "TIPS_SEND_HOUR": "",
+        "TIPS_PER_DAY": "40"
+      }
+    }
   }
 }

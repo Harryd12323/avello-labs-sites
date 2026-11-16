@@ -2,38 +2,23 @@ import { AlertGate } from "./gate";
 import { formatAlert, formatNewsletter, quotaNote, clean, PAUSED_NOTICE, NEWSLETTER_PAUSED_NOTICE, type AlertInput } from "./message";
 import type { Limits } from "./gate";
 import { verifyTicket, leadHash } from "../../workers-shared/ticket";
-import { parseAnswers, pickGuide, visitorEmail, ownerEmail, quizAlert, QUIZ_PAUSED_NOTICE } from "./quiz";
+import { parseAnswers, pickGuide, visitorEmail, ownerEmail, quizAlert, guideOwnerEmail, guideAlert, GUIDES, type Guide, QUIZ_PAUSED_NOTICE } from "./quiz";
+import { TipsList } from "./tipslist";
+import type { Env } from "./env";
+import { sendEmail, sendTelegram } from "./send";
+import { handleTips, tipsSignup, stopTipsFor } from "./tipsroutes";
 
 export { AlertGate };
+export { TipsList };
 
 // Avello Labs lead alerts. After a visitor sends a lead (by email, through Web3Forms), their browser also
 // posts it here, and this Worker sends Harris a short Telegram message. It only does that for a valid,
 // unused signed ticket from the chat or check Worker, within the rate limits. The bot token and chat ID
 // are wrangler secrets; the browser never sees them. Nothing is logged except error types.
-// It also runs the quiz on /tools/ (POST /quiz): after a Turnstile check and the rate limits, it emails the
-// visitor the guide that fits their answers and emails Harris their answers, both through Resend.
+// It also runs the quiz on /tools/ (POST /quiz) and the free guide form on the problem pages (POST /guide): after
+// a Turnstile check and the rate limits, it emails the visitor the guide and emails Harris a copy, through Resend.
+// And it sends the 5 tip emails to signups who confirm (tips.ts, tipslist.ts, tipsroutes.ts).
 
-export interface Env {
-  GATE: DurableObjectNamespace<AlertGate>;
-  ALLOWED_ORIGINS: string;
-  PER_IP_PER_HOUR: string;
-  PER_HOUR: string;
-  PER_DAY: string;
-  NEWSLETTER_PER_IP_PER_HOUR: string;
-  NEWSLETTER_PER_DAY: string;
-  LEAD_SIGNING_KEY?: string;
-  TELEGRAM_BOT_TOKEN?: string;
-  TELEGRAM_CHAT_ID?: string;
-  TELEGRAM_API_BASE?: string; // local testing only: points at a fake Telegram
-  SITE_URL: string;
-  QUIZ_FROM: string;
-  QUIZ_TO: string;
-  QUIZ_PER_IP_PER_HOUR: string;
-  QUIZ_PER_DAY: string;
-  RESEND_API_KEY?: string;
-  TURNSTILE_SECRET?: string;
-  RESEND_API_BASE?: string; // local testing only: points at a fake Resend
-}
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
 const HOUR = 3600_000;
@@ -42,6 +27,13 @@ const MIN_FORM_SECONDS = 3;
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
+    const url = new URL(request.url);
+    // Links in tip emails, mail apps' unsubscribe button and Resend's webhook come without an Origin.
+    if (url.pathname !== "/tips/stop") {
+      const res = await handleTips(request, env, url, (body, status = 200) =>
+        new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json", "Cache-Control": "no-store" } }));
+      if (res) return res;
+    }
     const origin = request.headers.get("Origin") ?? "";
     if (!env.ALLOWED_ORIGINS.split(",").map((s) => s.trim()).includes(origin)) return new Response("Forbidden", { status: 403 });
     const cors = {
@@ -55,10 +47,12 @@ export default {
       new Response(JSON.stringify(body), { status, headers: { ...cors, "Content-Type": "application/json", "Cache-Control": "no-store" } });
 
     if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
-    const path = new URL(request.url).pathname;
-    if (path !== "/lead" && path !== "/quiz") return json({ error: "not_found" }, 404);
+    const path = url.pathname;
+    if (path !== "/lead" && path !== "/quiz" && path !== "/guide" && path !== "/tips/stop") return json({ error: "not_found" }, 404);
     if (request.method !== "POST") return json({ error: "method_not_allowed" }, 405);
     if (path === "/quiz") return quiz(request, env, json);
+    if (path === "/guide") return guideRequest(request, env, json);
+    if (path === "/tips/stop") return bookedStop(request, env, json);
     if (!env.LEAD_SIGNING_KEY || !env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) return json({ error: "not_configured" }, 503);
 
     const raw = await request.text();
@@ -125,12 +119,14 @@ export default {
     }
 
     const sent = await sendTelegram(env, formatAlert(alert) + quotaNote(verdict.monthCount));
+    // They've asked us to get in touch, so the quiz tips (if they're getting them) stop.
+    await stopTipsFor(env, email.trim(), "booked");
     return json({ ok: sent }, sent ? 200 : 502);
   },
 };
 
 async function quiz(request: Request, env: Env, json: (body: unknown, status?: number) => Response): Promise<Response> {
-  if (!env.RESEND_API_KEY || !env.TURNSTILE_SECRET || !env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) return json({ error: "not_configured" }, 503);
+  if (!env.RESEND_API_KEY || !env.TURNSTILE_SECRET) return json({ error: "not_configured" }, 503);
   const raw = await request.text();
   if (raw.length > 4096) return json({ error: "too_large" }, 413);
   let body: Record<string, unknown>;
@@ -148,7 +144,7 @@ async function quiz(request: Request, env: Env, json: (body: unknown, status?: n
   if (!answers || !EMAIL_RE.test(email) || !token) return json({ error: "bad_request" }, 400);
 
   const ip = request.headers.get("CF-Connecting-IP") ?? "unknown";
-  if (!(await turnstileOk(env, token, ip))) return json({ ok: false, reason: "turnstile" }, 403);
+  if (!(await turnstileOk(env, token, ip, "quiz"))) return json({ ok: false, reason: "turnstile" }, 403);
 
   // Each address gets one guide a day, and each visitor and the whole quiz have caps, so bots can't use the
   // quiz to flood someone's inbox or wear down the sending domain's reputation.
@@ -163,13 +159,77 @@ async function quiz(request: Request, env: Env, json: (body: unknown, status?: n
   }
 
   const guide = pickGuide(answers);
-  const sent = await sendEmail(env, { from: env.QUIZ_FROM, to: [email], reply_to: env.QUIZ_TO, ...visitorEmail(env.SITE_URL, guide, tips) });
-  await sendEmail(env, { from: env.QUIZ_FROM, to: [env.QUIZ_TO], reply_to: email, ...ownerEmail({ answers, guide, name, email, newsletter, tips }) });
+  // Ticking the box only adds them as pending: the guide email asks them to confirm (double opt-in).
+  const links = tips ? await tipsSignup(env, email, clean(name, 80), guide) : null;
+  const sent = await sendEmail(env, { from: env.QUIZ_FROM, to: [email], reply_to: env.QUIZ_TO, ...visitorEmail(env.SITE_URL, guide, links?.confirmUrl) });
+  await sendEmail(env, { from: env.QUIZ_FROM, to: [env.QUIZ_TO], reply_to: email, ...ownerEmail({ answers, guide, name, email, newsletter, tips, stopUrl: links?.stopUrl }) });
   await sendTelegram(env, quizAlert({ answers, guide, email, newsletter, tips, sent }));
   return json({ ok: sent, guide }, sent ? 200 : 502);
 }
 
-async function turnstileOk(env: Env, token: string, ip: string): Promise<boolean> {
+/** The free guide form on a problem page: like the quiz without the questions. It shares the quiz's rate limits
+ *  (one counter for both), so the two together can't send more than the quiz alone could. */
+async function guideRequest(request: Request, env: Env, json: (body: unknown, status?: number) => Response): Promise<Response> {
+  if (!env.RESEND_API_KEY || !env.TURNSTILE_SECRET) return json({ error: "not_configured" }, 503);
+  const raw = await request.text();
+  if (raw.length > 4096) return json({ error: "too_large" }, 413);
+  let body: Record<string, unknown>;
+  try {
+    body = JSON.parse(raw);
+  } catch {
+    return json({ error: "bad_request" }, 400);
+  }
+  const guide = typeof body.guide === "string" && Object.hasOwn(GUIDES, body.guide) ? (body.guide as Guide) : null;
+  const page = typeof body.page === "string" && /^\/[a-z0-9-]{1,60}\/$/.test(body.page) ? body.page : "";
+  const email = typeof body.email === "string" && body.email.length <= 120 ? body.email.trim() : "";
+  const name = typeof body.name === "string" && body.name.length <= 80 ? body.name : "";
+  const token = typeof body.turnstile === "string" && body.turnstile.length <= 2048 ? body.turnstile : "";
+  const newsletter = body.newsletter === true, tips = body.tips === true;
+  if (!guide || !EMAIL_RE.test(email) || !token) return json({ error: "bad_request" }, 400);
+
+  const ip = request.headers.get("CF-Connecting-IP") ?? "unknown";
+  if (!(await turnstileOk(env, token, ip, "guide"))) return json({ ok: false, reason: "turnstile" }, 403);
+  const gate = env.GATE.get(env.GATE.idFromName("global"));
+  const v = await gate.consume("quiz", crypto.randomUUID(), Math.floor(Date.now() / 1000) + 600, ip, `${email.toLowerCase()}|${guide}`, false, {
+    perIpPerHour: Number(env.QUIZ_PER_IP_PER_HOUR), perHour: Number(env.QUIZ_PER_DAY), perDay: Number(env.QUIZ_PER_DAY),
+    dedupeMs: 24 * HOUR, pauseFor: "day",
+  });
+  if (!v.ok) {
+    if (v.notifyPause) await sendTelegram(env, QUIZ_PAUSED_NOTICE);
+    return json({ ok: false, reason: v.reason }, 429);
+  }
+
+  const links = tips ? await tipsSignup(env, email, clean(name, 80), guide) : null;
+  const sent = await sendEmail(env, { from: env.QUIZ_FROM, to: [email], reply_to: env.QUIZ_TO, ...visitorEmail(env.SITE_URL, guide, links?.confirmUrl, "page") });
+  await sendEmail(env, { from: env.QUIZ_FROM, to: [env.QUIZ_TO], reply_to: email, ...guideOwnerEmail({ guide, page, name, email, newsletter, tips, stopUrl: links?.stopUrl }) });
+  await sendTelegram(env, guideAlert({ guide, page, email, newsletter, tips, sent }));
+  return json({ ok: sent, guide }, sent ? 200 : 502);
+}
+
+/** The site's contact form was sent (a review or tool call request): stop that person's quiz tips. Anyone could
+ *  call this with any address, but all it can do is stop tips early, so it's rate limited and nothing more. */
+async function bookedStop(request: Request, env: Env, json: (body: unknown, status?: number) => Response): Promise<Response> {
+  const raw = await request.text();
+  if (raw.length > 1024) return json({ error: "too_large" }, 413);
+  let email = "";
+  try {
+    const body = JSON.parse(raw);
+    email = typeof body.email === "string" && body.email.length <= 120 ? body.email.trim() : "";
+  } catch {
+    return json({ error: "bad_request" }, 400);
+  }
+  if (!EMAIL_RE.test(email)) return json({ error: "bad_request" }, 400);
+  const ip = request.headers.get("CF-Connecting-IP") ?? "unknown";
+  const gate = env.GATE.get(env.GATE.idFromName("global"));
+  const v = await gate.consume("booked", crypto.randomUUID(), Math.floor(Date.now() / 1000) + 600, ip, email.toLowerCase(), false, {
+    perIpPerHour: 5, perHour: 30, perDay: 100, dedupeMs: HOUR, pauseFor: "hour",
+  });
+  if (!v.ok) return json({ ok: false, reason: v.reason }, 429);
+  await stopTipsFor(env, email, "booked");
+  return json({ ok: true });
+}
+
+async function turnstileOk(env: Env, token: string, ip: string, action: "quiz" | "guide"): Promise<boolean> {
   try {
     const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
       method: "POST",
@@ -178,43 +238,9 @@ async function turnstileOk(env: Env, token: string, ip: string): Promise<boolean
     });
     const data = (await res.json()) as { success?: boolean; action?: string; metadata?: { result_with_testing_key?: boolean } };
     // Cloudflare's test secret (local testing only) answers without an action.
-    return data.success === true && (data.action === "quiz" || data.metadata?.result_with_testing_key === true);
+    return data.success === true && (data.action === action || data.metadata?.result_with_testing_key === true);
   } catch (e) {
     console.error("turnstile_error", e instanceof Error ? e.constructor.name : "unknown");
-    return false;
-  }
-}
-
-async function sendEmail(env: Env, message: Record<string, unknown>): Promise<boolean> {
-  const base = env.RESEND_API_BASE || "https://api.resend.com";
-  try {
-    const res = await fetch(`${base}/emails`, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, "Content-Type": "application/json" },
-      body: JSON.stringify(message),
-      signal: AbortSignal.timeout(8000),
-    });
-    if (!res.ok) console.error("resend_error", res.status);
-    return res.ok;
-  } catch (e) {
-    console.error("resend_error", e instanceof Error ? e.constructor.name : "unknown");
-    return false;
-  }
-}
-
-async function sendTelegram(env: Env, text: string): Promise<boolean> {
-  const base = env.TELEGRAM_API_BASE || "https://api.telegram.org";
-  try {
-    const res = await fetch(`${base}/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chat_id: env.TELEGRAM_CHAT_ID, text, disable_web_page_preview: true }),
-      signal: AbortSignal.timeout(8000),
-    });
-    if (!res.ok) console.error("telegram_error", res.status);
-    return res.ok;
-  } catch (e) {
-    console.error("telegram_error", e instanceof Error ? e.constructor.name : "unknown");
     return false;
   }
 }
