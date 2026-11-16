@@ -1,0 +1,50 @@
+/* Problem pages and the homepage welcome video: click-to-load video, video spots, the free guide box. */
+.video, .video-spot { margin: 2rem 0 0; max-width: 46rem; }
+.hero .video, .hero .video-spot, .hero .transcript { margin-left: auto; margin-right: auto; }
+.hero .transcript { text-align: left; }
+.video-facade, .video-frame { display: block; position: relative; width: 100%; aspect-ratio: 16 / 9; border: 1px solid var(--line-bright);
+  border-radius: var(--radius); overflow: hidden; background: var(--bg-2); }
+.video-facade { padding: 0; cursor: pointer; }
+.video-facade img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.video-play { position: absolute; inset: 0; margin: auto; width: 4.5rem; height: 4.5rem; display: grid; place-items: center; border-radius: 50%;
+  background: var(--grad-btn); color: var(--btn-ink); box-shadow: 0 8px 30px rgba(0, 0, 0, .45); transition: transform .15s; }
+.video-play svg { width: 2rem; height: 2rem; margin-left: .2rem; }
+.video-facade:hover .video-play, .video-facade:focus-visible .video-play { transform: scale(1.06); }
+.video-facade:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+.video figcaption { margin-top: .6rem; color: var(--muted); font-size: .88rem; }
+.video-spot { display: grid; place-items: center; align-content: center; gap: .3rem; aspect-ratio: 16 / 9; padding: 1rem; text-align: center;
+  border: 2px dashed var(--line-bright); border-radius: var(--radius); color: var(--muted); font-size: .95rem; }
+.video-spot[hidden] { display: none; }
+.video-spot strong { color: var(--text); }
+.transcript { margin-top: 1rem; max-width: 46rem; border: 1px solid var(--line); border-radius: 12px; padding: .9rem 1.1rem; }
+.transcript summary { cursor: pointer; font-weight: 600; }
+.transcript p { margin-top: .75rem; color: var(--muted); }
+
+.guide-box { margin-top: 2.5rem; padding: 1.75rem; border: 1px solid var(--line-bright); border-radius: var(--radius);
+  background: linear-gradient(180deg, var(--panel), var(--bg-2)); }
+.guide-box h2 { margin-top: .4rem; }
+.guide-box > p { color: var(--muted); }
+.guide-form { margin-top: 1.25rem; }
+.guide-form .btn { margin-top: 1.25rem; }
+.guide-form .tool-error { margin-top: .75rem; color: var(--error); font-size: .92rem; }
+.guide-form .tool-error:empty { display: none; }
+.guide-form .tool-hint { margin-top: .9rem; color: var(--muted); font-size: .85rem; }
+.guide-done { margin-top: 1.25rem; outline: none; }
+.guide-done .btn { margin-top: .9rem; }
+.guide-note { font-weight: 600; }
+.guide-also { margin-top: 1.25rem; font-size: .95rem; color: var(--muted); }
+
+/* Homepage: "one of these 3 situations" */
+.situations { margin: 2.25rem auto 0; max-width: 40rem; font-weight: 600; font-size: 1.1rem; }
+.problem-btns { margin: 1.1rem auto 0; display: grid; gap: .75rem; max-width: 40rem; }
+.problem-btn { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 64px; padding: 1rem 1.25rem;
+  border: 1px solid var(--line-bright); border-radius: var(--radius); background: var(--panel); color: var(--text); text-decoration: none;
+  text-align: left; font-weight: 600; font-size: 1.02rem; transition: border-color .15s, background .15s, transform .15s; }
+.problem-btn svg { flex: none; width: 20px; height: 20px; color: var(--cyan); transition: transform .15s; }
+.problem-btn:hover { border-color: var(--blue); background: var(--panel-hover); transform: translateY(-1px); }
+.problem-btn:hover svg { transform: translateX(3px); }
+.problem-btn:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) {
+  .problem-btn, .problem-btn svg, .video-play { transition: none; }
+  .problem-btn:hover, .problem-btn:hover svg { transform: none; }
+}

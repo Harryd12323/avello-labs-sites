@@ -1,0 +1,36 @@
+URL: /too-much-admin/
+Order: 3
+Title: Too Much Admin Done by Hand?
+Description: Why small businesses end up doing so much admin by hand, what you may not have considered, and what to think about before paying for software or a custom tool.
+Keyword: automate small business admin
+Button: We spend too much time on admin by hand
+Crumb: Too much admin by hand
+Headline: Spending your evenings on admin? *There may be a simpler way.*
+Lede: Copying numbers between spreadsheets, retyping the same details, building the same report every week. It's work that has to get done, but it doesn't have to take this long.
+Video:
+Video-date:
+Video-title: When admin by hand is costing you time
+Resource: custom-tools | Stop doing it by hand | A short, plain guide to spotting which tasks are worth automating, and the options from simplest to custom.
+Offer: tool
+Related: /web-apps/ | Custom web apps and tools
+Related: /web-apps/#custom-software | Custom software for your business
+
+## Why this happens
+Most businesses don't plan to run on spreadsheets and copy and paste. It builds up one workaround at a time.
+
+- **Information lives in too many places.** Spreadsheets, email, paper, texts and a few different apps, none of which talk to each other.
+- **The same details get typed more than once.** A customer's name goes into the quote, then the invoice, then the schedule.
+- **Off-the-shelf software almost fits.** It does most of the job, so people fill the gaps by hand.
+- **Reports get built from scratch.** Someone pulls numbers together every week because no system does it for them.
+
+## Something you may not have considered
+You may not need custom software at all. Often the tools you already pay for can do more than you're using: a setting, a built-in report or a connection between two apps can remove a whole step.
+
+When nothing off the shelf fits, a small custom tool can be simpler than people expect. For example, we built a Windows desktop app for a field sales company that turns their GPS data exports into weekly tech logs, a job that had been done by hand every week.
+
+## Before you decide
+1. **Write down the steps.** List exactly what happens, in order, and who does each part. It's the fastest way to see which step is the real time sink.
+2. **Check what you already pay for.** Look for features, reports or connections you haven't switched on before buying anything new.
+3. **Think about who will use it, and on what.** A tool for the office computer is different from one people use on their phones in the field. And decide who looks after it once it's built.
+
+## Video transcript

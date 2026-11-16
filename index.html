@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!-- shared:head -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com https://challenges.cloudflare.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://api.web3forms.com https://avello-chat.avellolabs.workers.dev https://avello-check.avellolabs.workers.dev https://avello-alerts.avellolabs.workers.dev https://cloudflareinsights.com; frame-src https://challenges.cloudflare.com; form-action https://api.web3forms.com; base-uri 'self'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com https://challenges.cloudflare.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://api.web3forms.com https://avello-chat.avellolabs.workers.dev https://avello-check.avellolabs.workers.dev https://avello-alerts.avellolabs.workers.dev https://cloudflareinsights.com; frame-src https://challenges.cloudflare.com https://www.youtube-nocookie.com; form-action https://api.web3forms.com; base-uri 'self'; object-src 'none'">
 <link rel="icon" type="image/png" sizes="48x48" href="/brand/favicon-48.png">
 <link rel="icon" type="image/png" sizes="96x96" href="/brand/favicon-96.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/brand/favicon-192.png">
@@ -109,6 +109,10 @@
   "sameAs": []
 }
 </script>
+<!-- shared:problem -->
+<link rel="stylesheet" href="/assets/problem.css">
+<script src="/assets/problem.js" data-endpoint="https://avello-alerts.avellolabs.workers.dev/guide" data-sitekey="0x4AAAAAAF_2AgkJbluDNPxk" defer></script>
+<!-- /shared:problem -->
 </head>
 <body>
 <!-- shared:header -->
@@ -157,7 +161,35 @@
       <span class="pill"><i></i>Website builds · Monthly care · SEO and AEO</span>
       <h1>Get found on Google and in AI answers. <span class="grad-text">Get more calls from your website.</span></h1>
       <p class="sub">We build fast websites for local businesses that show up when customers search, then keep them working every month.</p>
-      <p class="hero-offer">Free 20-minute review: the 3 fixes that would get you more calls.</p>
+      <!-- shared:welcome-video -->
+      <figure class="video">
+        <button class="video-facade" type="button" data-video="ftNlVSYWDOI" aria-label="Play the video: Is your website bringing you calls?">
+          <img src="/assets/videos/welcome.jpg" width="1280" height="720" alt="" decoding="async">
+          <span class="video-play"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8 5.5v13a1 1 0 0 0 1.5.87l11-6.5a1 1 0 0 0 0-1.74l-11-6.5A1 1 0 0 0 8 5.5Z"/></svg></span>
+        </button>
+        <figcaption>Is your website bringing you calls? The video loads from YouTube when you press play.</figcaption>
+      </figure>
+      <details class="transcript">
+        <summary>Read the transcript</summary>
+        <p>Your website should be bringing you calls. Is it?</p>
+        <p>If you run a business in South Jersey or Philly, it usually comes down to one of three things.</p>
+        <p>One: customers can't find you on Google, or in AI answers like ChatGPT.</p>
+        <p>Two: they find your website, but they don't call.</p>
+        <p>Three: you're buried in admin that eats your evenings.</p>
+        <p>We fix the one that's holding you back, fast. Then we keep your site healthy every month, so it keeps working.</p>
+        <p>Which one sounds like you? Pick it below, and we'll show you why it happens and what to do next.</p>
+      </details>
+      <script type="application/ld+json">{"@context": "https://schema.org", "@type": "VideoObject", "name": "Is your website bringing you calls?", "description": "If you run a business in South Jersey or Philly, it usually comes down to one of three things: customers can't find you, visitors don't call, or admin eats your evenings. Pick the one that sounds like you.", "thumbnailUrl": "https://avellolabs.com/assets/videos/welcome.jpg", "uploadDate": "2026-11-15", "embedUrl": "https://www.youtube-nocookie.com/embed/ftNlVSYWDOI", "publisher": {"@id": "https://avellolabs.com/#organization"}, "transcript": "Your website should be bringing you calls. Is it? If you run a business in South Jersey or Philly, it usually comes down to one of three things. One: customers can't find you on Google, or in AI answers like ChatGPT. Two: they find your website, but they don't call. Three: you're buried in admin that eats your evenings. We fix the one that's holding you back, fast. Then we keep your site healthy every month, so it keeps working. Which one sounds like you? Pick it below, and we'll show you why it happens and what to do next."}</script>
+      <!-- /shared:welcome-video -->
+      <p class="situations">If you're here, you're probably dealing with one of these 3 situations:</p>
+      <!-- shared:problem-buttons -->
+      <div class="problem-btns">
+        <a class="problem-btn" href="/cant-find-us/"><span>Customers can&#x27;t find us on Google or in AI answers</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="problem-btn" href="/no-calls/"><span>Our website doesn&#x27;t bring in calls</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="problem-btn" href="/too-much-admin/"><span>We spend too much time on admin by hand</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <!-- /shared:problem-buttons -->
+      <p class="hero-offer">Ready to talk? Free 20-minute review: the 3 fixes that would get you more calls.</p>
       <div class="hero-ctas">
         <a class="btn" href="#contact">Get my free review
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -526,7 +558,7 @@
         CONTACT FORM: sends through Web3Forms (https://web3forms.com), which emails each message to the
         address the access key was created with (harris@avellolabs.com).
       -->
-      <form class="contact-form" id="contact-form" action="https://api.web3forms.com/submit" method="POST" novalidate>
+      <form class="contact-form" id="contact-form" action="https://api.web3forms.com/submit" method="POST" data-tips-stop="https://avello-alerts.avellolabs.workers.dev/tips/stop" novalidate>
         <!-- Web3Forms access key (public by design). Replace it here if the key ever changes. -->
         <input type="hidden" name="access_key" value="a6955225-5ff5-4562-ae2d-dfda9193580a">
         <input type="hidden" name="subject" value="Free 20-minute review request from the Avello Labs website">
@@ -586,6 +618,12 @@
           <li><a href="/website-care/">Website care</a></li>
           <li><a href="/web-apps/">Web apps</a></li>
           <li><a href="/web-apps/#custom-software">Custom software</a></li>
+        </ul>
+        <h2 class="foot-sub">Common problems</h2>
+        <ul>
+          <li><a href="/cant-find-us/">Can&#x27;t find us online</a></li>
+          <li><a href="/no-calls/">Website not bringing in calls</a></li>
+          <li><a href="/too-much-admin/">Too much admin by hand</a></li>
         </ul>
       </div>
       <div>

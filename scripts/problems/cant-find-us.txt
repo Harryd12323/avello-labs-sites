@@ -1,0 +1,40 @@
+URL: /cant-find-us/
+Order: 1
+Title: Customers Can't Find Your Business Online?
+Description: Why customers can't find your business on Google or in AI answers like ChatGPT, what you may not have considered, and what to think about before you fix it.
+Keyword: customers can't find my business online
+Button: Customers can't find us on Google or in AI answers
+Crumb: Can't find us online
+Headline: Customers can't find you on Google or in AI answers? *Here's why.*
+Lede: You know you're good at what you do. But when someone nearby searches for it, or asks an AI tool for a recommendation, another business comes up instead. That usually has a few fixable causes.
+Video:
+Video-date:
+Video-title: Why customers can't find you online
+Resource: get-found | Get found on Google and in AI answers | A short, plain guide to the checks that matter most for a local business.
+Also: /tools/ai-crawler-check/ | Check if AI tools can read your site
+Offer: review
+Related: /seo/ | Why SEO matters for local businesses
+Related: /aeo/ | What is AEO, and why it matters
+Related: /blog/why-isnt-my-business-showing-up-on-google/ | Why isn't my business showing up on Google?
+Related: /blog/google-business-profile-matters/ | Why your Google Business Profile matters
+
+## Why this happens
+Google says it ranks local results mainly on three things: how well a business matches the search, how far it is from the person searching, and how well known it is. Most businesses that don't show up are missing something in one of those.
+
+- **Google can't tell exactly what you do or where.** If your site says “quality service” instead of “roof repair in Camden County”, Google has to guess.
+- **Your Google Business Profile is unfinished.** Missing hours, services, photos or an unverified listing all make you look less certain to Google.
+- **Your site is slow, broken or hard to read for search engines.** Pages that load slowly on phones, or that hide text inside images, give Google less to work with.
+- **AI tools can't read your site.** Tools like ChatGPT and Perplexity can only recommend you if their bots are allowed in.
+- **Other businesses have more reviews and mentions.** Google says reviews and how often a business is mentioned around the web help show how well known it is.
+
+## Something you may not have considered
+Showing up when someone searches your business name isn't the same as being found. Almost anyone can find you by name. The customers you're missing search for what you do, like “emergency plumber near me”, and never type your name at all.
+
+The same goes for AI answers. A setting in a file called robots.txt, or a security setting at your web host, can block AI search bots without anyone meaning to. Your site can look fine in Google and still be invisible to ChatGPT. You can check that in under a minute with our [free AI crawler check](/tools/ai-crawler-check/).
+
+## Before you decide
+1. **Search for what you do, not who you are.** Try the searches a new customer would use, on your phone, and see who comes up. That tells you where you really stand.
+2. **Make sure your Google listing is finished, and in your name.** If someone else set it up and left, get access back first. Everything else builds on it.
+3. **Think about who will keep it up.** Search isn't a one-time job. Hours change, reviews need replies, and new pages help. Decide whether that's you, someone on staff, or a service like [website care](/website-care/).
+
+## Video transcript

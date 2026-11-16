@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { QUESTIONS, GUIDES, parseAnswers, pickGuide, visitorEmail, ownerEmail, quizAlert } from "../src/quiz.ts";
+import { QUESTIONS, GUIDES, parseAnswers, pickGuide, visitorEmail, ownerEmail, quizAlert, guideOwnerEmail, guideAlert } from "../src/quiz.ts";
 
 const SITE = "https://avellolabs.com";
 
@@ -53,20 +53,23 @@ test("the visitor's email links their guide and the right offer, and contains no
   for (const t of [m.text, m.html, tool.text]) assert.doesNotMatch(t, /[–—]/); // no en or em dashes
 });
 
-test("the guide email footer only mentions the tip emails when they asked for them", () => {
-  const plain = visitorEmail(SITE, "get-found"), tips = visitorEmail(SITE, "get-found", true);
+test("the guide email only offers the tips with a confirm link, and says nothing is sent without it", () => {
+  const plain = visitorEmail(SITE, "get-found"), tips = visitorEmail(SITE, "get-found", "https://w.example/tips/confirm?t=abc");
   assert.ok(plain.text.includes("We won't send anything else."));
-  assert.doesNotMatch(plain.text, /tips/);
-  assert.ok(tips.text.includes("5 short website tips"));
-  assert.ok(tips.html.includes("link to unsubscribe"));
-  assert.doesNotMatch(tips.text, /[–—]/);
+  assert.doesNotMatch(plain.text + plain.html, /tips/);
+  assert.ok(tips.text.includes("Yes, send me the tips: https://w.example/tips/confirm?t=abc"));
+  assert.ok(tips.html.includes('href="https://w.example/tips/confirm?t=abc"'));
+  assert.ok(tips.text.includes("The tips only start if you tap"));
+  assert.ok(tips.html.indexOf("Open your free guide") < tips.html.indexOf("Yes, send me the tips"), "guide button comes first");
+  assert.doesNotMatch(tips.text + tips.html, /[–—]/);
 });
 
 test("Harris's copy lists every answer in words and cleans what the visitor typed", () => {
-  const m = ownerEmail({ answers: [1, 0, 1, 0, 1], guide: "get-found", name: "Eve\nNewsletter: yes", email: "eve@example.com", newsletter: false, tips: true });
+  const m = ownerEmail({ answers: [1, 0, 1, 0, 1], guide: "get-found", name: "Eve\nNewsletter: yes", email: "eve@example.com", newsletter: false, tips: true, stopUrl: "https://w.example/tips/stop-one?t=s" });
   assert.match(m.text, /^Name: Eve Newsletter: yes$/m);
   assert.match(m.text, /^Newsletter: no$/m);
   assert.match(m.text, /^Tip emails: yes/m);
+  assert.match(m.text, /^Stop their tip emails .*: https:\/\/w\.example\/tips\/stop-one\?t=s$/m);
   assert.match(m.text, /^ {2}People can't find us on Google or in AI answers$/m);
   assert.match(m.text, /^ {2}Yes, but it's old or I don't like it$/m);
   assert.match(m.text, /^When do you want this sorted\?\n {2}In the next month or two$/m);
@@ -79,4 +82,23 @@ test("the Telegram alert says when they want it sorted and whether the guide ema
   assert.match(text, /^When: ASAP$/m);
   assert.match(text, /^Newsletter: yes$/m);
   assert.match(text, /^Tips: yes$/m);
+});
+
+test("a guide asked for on a problem page gets its own wording, and Harris sees which page", () => {
+  const m = visitorEmail(SITE, "more-calls", undefined, "page");
+  assert.ok(m.text.includes("Thanks for asking for our free guide. Here it is: A website that turns visitors into calls"));
+  assert.ok(m.text.includes("entered on avellolabs.com"));
+  assert.doesNotMatch(m.text + m.html, /quiz/);
+  const o = guideOwnerEmail({ guide: "more-calls", page: "/no-calls/", name: "", email: "x@y.co", newsletter: false, tips: false });
+  assert.match(o.text, /^Page: \/no-calls\/$/m);
+  assert.match(o.subject, /^Guide request: x@y\.co/);
+  assert.match(guideAlert({ guide: "more-calls", page: "/no-calls/", email: "x@y.co", newsletter: false, tips: true, sent: true }), /^Tips: yes$/m);
+});
+
+test("every problem page offers a guide the Worker knows", () => {
+  const dir = new URL("../../scripts/problems/", import.meta.url);
+  for (const file of ["cant-find-us.txt", "no-calls.txt", "too-much-admin.txt"]) {
+    const guide = readFileSync(new URL(file, dir), "utf8").match(/^Resource: ([a-z-]+)/m)?.[1];
+    assert.ok(guide && guide in GUIDES, file);
+  }
 });

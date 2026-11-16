@@ -1,0 +1,40 @@
+URL: /no-calls/
+Order: 2
+Title: Website Not Bringing In Customers?
+Description: Why your website isn't bringing in calls even when people visit, what you may not have considered, and what to think about before you fix or rebuild it.
+Keyword: website not bringing in customers
+Button: Our website doesn't bring in calls
+Crumb: Website not bringing in calls
+Headline: Your website isn't bringing in calls? *Here's what's usually going on.*
+Lede: Maybe the site is old, maybe it's slow, or maybe people visit and leave without getting in touch. Either way, a website that doesn't lead to calls is costing you work you never hear about.
+Video:
+Video-date:
+Video-title: Why your website isn't bringing in calls
+Resource: more-calls | A website that turns visitors into calls | A short, plain guide to what makes visitors pick up the phone, and how to check your own site.
+Also: /resources/site-health.pdf | Keep your website healthy (PDF guide)
+Offer: review
+Related: /website-care/ | Keep your site bringing in calls
+Related: /blog/website-getting-traffic-but-no-calls/ | Website getting traffic but no calls?
+Related: /blog/new-website-or-fix-mine/ | Do I need a new website, or can mine be fixed?
+Related: /blog/how-often-should-i-update-my-website/ | How often should I update my website?
+
+## Why this happens
+Most people who visit a small business website want one thing: to know if you can help, and how to reach you. When a site gets in the way of that, they go back and pick someone else.
+
+- **It's hard to call from a phone.** The number is buried, or tapping it doesn't start a call.
+- **It's slow, especially on phones.** Google measures how real visitors experience loading and responsiveness with a set of metrics called Core Web Vitals. A slow site loses people before they see anything.
+- **It doesn't say clearly what you do and where.** Visitors should know in a few seconds whether you're the right fit.
+- **It looks out of date.** Old photos, last year's hours or a copyright from years ago make people wonder if you're still in business.
+- **The contact form quietly stopped working.** Forms can break without any error, so messages never arrive.
+
+## Something you may not have considered
+More visitors won't fix a site that doesn't turn visitors into calls. Many businesses spend money getting more people to their site, when the real leak is what happens after they arrive.
+
+And a site can stop working without anyone noticing. Try your own site on your phone today: tap the phone number, send yourself a message through the form, and check that your hours are right. Our [free site check](/check/) looks at the technical side for you.
+
+## Before you decide
+1. **Fix it, or start over?** If the site is fairly new and mostly works, targeted fixes may be enough. If it's hard to change or very out of date, a rebuild can cost less in the long run. Our post on [whether to fix or replace a website](/blog/new-website-or-fix-mine/) walks through it.
+2. **Pick the one thing you want visitors to do.** Call, book or request a quote. A site that asks for one clear action usually works better than one that asks for five.
+3. **Decide who keeps it working after launch.** Even a great site drifts out of date. Decide whether that's you, someone on staff, or a service like [website care](/website-care/).
+
+## Video transcript

@@ -67,6 +67,8 @@
         .then(function (r) { return r.json().then(function (d) { return r.ok && d.success; }); })
         .then(function (ok) {
           if (!ok) throw new Error("not sent");
+          // They've asked for a call, so stop the quiz tip emails if they're getting them.
+          if (form.dataset.tipsStop) fetch(form.dataset.tipsStop, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: email }) }).catch(function () {});
           form.reset();
           show("ok", "Thanks! We'll email you within 1 business day to pick a time for your call.");
         })
