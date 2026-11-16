@@ -131,6 +131,18 @@ class BlogBuild(unittest.TestCase):
         self.assertIn("3 min read", self.read("/blog/test-post/"))  # 461 words at 230 a minute, rounded up
         self.assertEqual(self.schema("/blog/test-post/")["wordCount"], 461)
 
+    def test_preferred_source_badge_on_posts_and_the_blog_list(self):
+        self.run_site("post", "/blog/test-post/", "Test post", "A test.")
+        f = self.page("/blog/test-post/")
+        f.write_text(f.read_text().replace("<!-- shared:post-follow --><!-- /shared:post-follow -->", ""))  # an older post
+        self.run_site("publish", "/blog/test-post/")
+        link = "https://www.google.com/preferences/source?q=avellolabs.com"
+        for url in [*POSTS, "/blog/test-post/"]:
+            article = re.search(r'<article class="prose">.*?</article>', self.read(url), re.S).group(0)
+            self.assertIn(link, article, url)
+        self.assertIn(link, self.read("/blog/"))
+        self.assertNotIn("news.google.com", self.read(POSTS[0]), "the deeplink loads nothing from Google")
+
     def test_bad_input_is_refused(self):
         self.assertNotEqual(self.run_site("post", "/blog/Bad Slug/", "x", "y", ok=False).returncode, 0)
         self.assertNotEqual(self.run_site("post", POSTS[0], "x", "y", ok=False).returncode, 0, "existing post")
