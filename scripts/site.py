@@ -519,6 +519,21 @@ def post_aside(post, posts):
       <!-- /shared:post-aside -->"""
 
 
+# Google's Preferred Sources badge, using the deeplink method and the official graphic from Google's guide:
+# https://developers.google.com/search/docs/appearance/preferred-sources
+# The deeplink loads nothing from Google until the visitor clicks, unlike the JavaScript button.
+PREFERRED_SOURCE_URL = f"https://www.google.com/preferences/source?q={SITE.split('//')[1]}"
+
+
+def preferred_source(name):
+    return f"""<!-- shared:{name} -->
+      <div class="pref-source">
+        <p>Want more of our posts in your Google results? Google says it shows more from the sources you pick in Top Stories.</p>
+        <a href="{PREFERRED_SOURCE_URL}" rel="noopener"><img src="/assets/google-preferred-source.png" width="169" height="54" alt="Add Avello Labs as a preferred source on Google"></a>
+      </div>
+      <!-- /shared:{name} -->"""
+
+
 def blog_list(posts):
     """The post list on /blog/. Once anything is published it lists published posts only; until then /blog/
     carries noindex and lists the drafts, so they can be reviewed in place."""
@@ -531,7 +546,7 @@ def blog_list(posts):
           <p>{html.escape(p["description"])}</p>
           <span class="post-go" aria-hidden="true">Read the post {ARROW}</span>
         </li>""" for p in posts)
-    return f'<!-- shared:blog-list -->\n      <ul class="post-list">\n{cards}\n      </ul>\n      <!-- /shared:blog-list -->'
+    return f'<!-- shared:blog-list -->\n      <ul class="post-list">\n{cards}\n      </ul>\n      {preferred_source("blog-follow")}\n      <!-- /shared:blog-list -->'
 
 
 def blog_feed(posts):
@@ -713,6 +728,9 @@ def sync():
             text = replace_block(text, "blog-head", blog_head(post, posts), f)
             text = replace_block(text, "post-meta", post_meta(post), f)
             text = replace_block(text, "post-aside", post_aside(post, posts), f)
+            if "<!-- shared:post-follow -->" not in text:
+                text = re.sub(r"(\s*)</article>", r"\1<!-- shared:post-follow --><!-- /shared:post-follow -->\1</article>", text, count=1)
+            text = replace_block(text, "post-follow", preferred_source("post-follow"), f)
         f.write_text(text)
         print("synced", url)
     # Links written into a published post's text are the author's, so they're only flagged, never changed.
@@ -869,6 +887,7 @@ def post_page(url, title, headline, desc, lede, article, keyword="", news=False)
     <div class="wrap page-grid">
       <article class="prose">
 {article}
+      <!-- shared:post-follow --><!-- /shared:post-follow -->
       </article>
       <!-- shared:post-aside --><!-- /shared:post-aside -->
     </div>
