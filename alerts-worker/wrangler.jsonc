@@ -17,6 +17,11 @@
   "compatibility_date": "2026-10-01",
   "workers_dev": true,
 
+  // Cloudflare's request logs (Workers Logs): each request's address, time, result and the visitor's IP address,
+  // plus this Worker's own log lines (error types and tip subscriber IDs only, never emails or form contents).
+  // Kept by Cloudflare for a few days. Search them in the Cloudflare dashboard under Workers, avello-alerts, Logs.
+  "observability": { "enabled": true },
+
   // GATE: used ticket IDs (until they expire), salted hashes and counts. No lead details are stored.
   // TIPS: the tip emails list (email, first name, guide, progress), deleted 30 days after the last tip.
   "durable_objects": {

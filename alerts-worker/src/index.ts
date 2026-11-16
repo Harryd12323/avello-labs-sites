@@ -14,7 +14,8 @@ export { TipsList };
 // Avello Labs lead alerts. After a visitor sends a lead (by email, through Web3Forms), their browser also
 // posts it here, and this Worker sends Harris a short Telegram message. It only does that for a valid,
 // unused signed ticket from the chat or check Worker, within the rate limits. The bot token and chat ID
-// are wrangler secrets; the browser never sees them. Nothing is logged except error types.
+// are wrangler secrets; the browser never sees them. Our own log lines hold only error types and tip subscriber IDs;
+// Cloudflare's request logs are on (see wrangler.jsonc).
 // It also runs the quiz on /tools/ (POST /quiz) and the free guide form on the problem pages (POST /guide): after
 // a Turnstile check and the rate limits, it emails the visitor the guide and emails Harris a copy, through Resend.
 // And it sends the 5 tip emails to signups who confirm (tips.ts, tipslist.ts, tipsroutes.ts).
