@@ -61,7 +61,7 @@ SITE = "https://avellolabs.com"
 EMAIL = "harris@avellolabs.com"
 # The business phone number as it should be shown, like "(856) 555-0123". Empty hides every phone spot: the
 # header's tap-to-call button, the footer, the homepage contact section and the structured data. Run sync after.
-PHONE = ""
+PHONE = "856-470-6300"
 
 # Preview mode: every page carries noindex. Set to False and run `sync` to go live.
 NOINDEX = False
