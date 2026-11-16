@@ -13,3 +13,4 @@ exclude:
   - brand/README.md
   - concepts/
   - business-cards/
+  - docs/

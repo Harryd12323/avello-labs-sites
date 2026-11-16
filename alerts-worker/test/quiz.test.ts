@@ -53,10 +53,20 @@ test("the visitor's email links their guide and the right offer, and contains no
   for (const t of [m.text, m.html, tool.text]) assert.doesNotMatch(t, /[–—]/); // no en or em dashes
 });
 
+test("the guide email footer only mentions the tip emails when they asked for them", () => {
+  const plain = visitorEmail(SITE, "get-found"), tips = visitorEmail(SITE, "get-found", true);
+  assert.ok(plain.text.includes("We won't send anything else."));
+  assert.doesNotMatch(plain.text, /tips/);
+  assert.ok(tips.text.includes("5 short website tips"));
+  assert.ok(tips.html.includes("link to unsubscribe"));
+  assert.doesNotMatch(tips.text, /[–—]/);
+});
+
 test("Harris's copy lists every answer in words and cleans what the visitor typed", () => {
-  const m = ownerEmail({ answers: [1, 0, 1, 0, 1], guide: "get-found", name: "Eve\nNewsletter: yes", email: "eve@example.com", newsletter: false });
+  const m = ownerEmail({ answers: [1, 0, 1, 0, 1], guide: "get-found", name: "Eve\nNewsletter: yes", email: "eve@example.com", newsletter: false, tips: true });
   assert.match(m.text, /^Name: Eve Newsletter: yes$/m);
   assert.match(m.text, /^Newsletter: no$/m);
+  assert.match(m.text, /^Tip emails: yes/m);
   assert.match(m.text, /^ {2}People can't find us on Google or in AI answers$/m);
   assert.match(m.text, /^ {2}Yes, but it's old or I don't like it$/m);
   assert.match(m.text, /^When do you want this sorted\?\n {2}In the next month or two$/m);
@@ -64,8 +74,9 @@ test("Harris's copy lists every answer in words and cleans what the visitor type
 });
 
 test("the Telegram alert says when they want it sorted and whether the guide email went out", () => {
-  assert.match(quizAlert({ answers: [1, 2, 1, 0, 0], guide: "site-health", email: "a@b.co", newsletter: true, sent: false }), /^Guide email: FAILED/m);
-  const text = quizAlert({ answers: [1, 2, 1, 0, 0], guide: "site-health", email: "a@b.co", newsletter: true, sent: true });
+  assert.match(quizAlert({ answers: [1, 2, 1, 0, 0], guide: "site-health", email: "a@b.co", newsletter: true, tips: false, sent: false }), /^Guide email: FAILED/m);
+  const text = quizAlert({ answers: [1, 2, 1, 0, 0], guide: "site-health", email: "a@b.co", newsletter: true, tips: true, sent: true });
   assert.match(text, /^When: ASAP$/m);
   assert.match(text, /^Newsletter: yes$/m);
+  assert.match(text, /^Tips: yes$/m);
 });

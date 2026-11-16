@@ -147,7 +147,7 @@
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ answers: answers, email: email, name: form.elements.name.value.trim(),
-                             newsletter: form.elements.newsletter.checked, turnstile: token })
+                             newsletter: form.elements.newsletter.checked, tips: form.elements.tips.checked, turnstile: token })
     })
       .then(function (r) { return r.json().catch(function () { return {}; }); })
       .then(function (d) {
