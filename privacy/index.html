@@ -13,6 +13,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
 <link rel="stylesheet" href="/assets/site.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "ProfessionalService", "@id": "https://avellolabs.com/#organization", "name": "Avello Labs LLC", "url": "https://avellolabs.com/", "logo": "https://avellolabs.com/brand/icon.svg", "email": "harris@avellolabs.com", "address": {"@type": "PostalAddress", "addressLocality": "Collingswood", "addressRegion": "NJ", "postalCode": "08108", "addressCountry": "US"}}, {"@type": "WebSite", "@id": "https://avellolabs.com/#website", "url": "https://avellolabs.com/", "name": "Avello Labs", "publisher": {"@id": "https://avellolabs.com/#organization"}}]}</script>
 <meta property="og:image" content="https://avellolabs.com/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -39,6 +40,7 @@
     <a class="brand" href="/" aria-label="Avello Labs, home">
       <img src="/brand/logo-horizontal-dark.svg" width="337" height="64" alt="Avello Labs">
     </a>
+    <!-- PHONE: set PHONE in scripts/site.py and run sync to show a tap-to-call number here (call-btn) -->
     <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
       <svg class="bars" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       <svg class="x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
@@ -50,6 +52,7 @@
       <a class="nav-link" href="/web-apps/">Web apps</a>
       <a class="nav-link" href="/#real-work">Our work</a>
       <a class="nav-link" href="/tools/">Free tools</a>
+      <!-- PHONE: set PHONE in scripts/site.py and run sync to show a tap-to-call number here (nav-phone) -->
       <a class="btn btn-small" href="/#contact">Free review</a>
     </nav>
   </div>
@@ -112,7 +115,7 @@
         <ul>
           <li><strong>What it collects:</strong> your answers to the five questions, your email address, your name if you give it, and whether you ticked the tips box and the newsletter box.</li>
           <li><strong>What happens to it:</strong> a small service we run on Cloudflare emails you the guide that fits your answers and emails us a copy of your answers, both through <a href="https://resend.com">Resend</a>, an email delivery service (see the <a href="https://resend.com/legal/privacy-policy">Resend privacy policy</a>). We also get a short alert on Telegram. We email you the guide once. We only add you to the newsletter if you tick that box.</li>
-          <li><strong>The 5 tip emails:</strong> if you tick the tips box, the guide email has a “Yes, send me the tips” button, and we send nothing more unless you tap it. Then we send 5 short tips over about three weeks, through Resend. Every one has a one-click unsubscribe link. The tips stop if you unsubscribe, reply to one, or ask us for a call. To send them, our service on Cloudflare keeps your email address, your name if you gave it, which guide you got and which tips you've had. We delete that 30 days after your last tip or after the tips stop, and unconfirmed requests after 7 days. When you reply to a tip email, your reply comes to us, and a copy goes to Resend only so our service knows to stop the tips.</li>
+          <li><strong>The 5 tip emails:</strong> if you tick the tips box, the guide email has a “Yes, send me the tips” button, and we send nothing more unless you tap it. Then we send 5 short tips over about three weeks, through Resend. Every one has a link to unsubscribe. The tips stop if you unsubscribe, reply to one, or ask us for a call. To send them, our service on Cloudflare keeps your email address, your name if you gave it, which guide you got and which tips you've had. We delete that 30 days after your last tip or after the tips stop, and unconfirmed requests after 7 days. When you reply to a tip email, your reply comes to us, and a copy goes to Resend only so our service knows to stop the tips.</li>
           <li><strong>Free guides on other pages:</strong> the free guide forms on pages like “Customers can't find us online” work the same way, without the questions. We receive your email address, your name if you give it, which guide you asked for and from which page, and whether you ticked the tips box and the newsletter box.</li>
           <li><strong>Bot check:</strong> the quiz uses <a href="https://www.cloudflare.com/products/turnstile/">Cloudflare Turnstile</a> to tell people from bots. Cloudflare says it doesn't use Turnstile data to track you for advertising. To prevent abuse, we keep short-lived, scrambled counts of quiz requests, never your answers.</li>
         </ul>
@@ -171,7 +174,7 @@
     <div class="foot-grid">
       <div class="foot-brand">
         <img src="/brand/logo-horizontal-dark.svg" width="337" height="64" alt="Avello Labs">
-        <p>Custom websites for small local businesses, live in days, with monthly care, SEO and AEO.</p>
+        <p>Custom websites for small local businesses, with monthly care, SEO and AEO.</p>
       </div>
       <div>
         <h2>Services</h2>

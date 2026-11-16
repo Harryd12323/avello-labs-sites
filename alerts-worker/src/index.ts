@@ -161,7 +161,7 @@ async function quiz(request: Request, env: Env, json: (body: unknown, status?: n
   const guide = pickGuide(answers);
   // Ticking the box only adds them as pending: the guide email asks them to confirm (double opt-in).
   const links = tips ? await tipsSignup(env, email, clean(name, 80), guide) : null;
-  const sent = await sendEmail(env, { from: env.QUIZ_FROM, to: [email], reply_to: env.QUIZ_TO, ...visitorEmail(env.SITE_URL, guide, links?.confirmUrl) });
+  const sent = await sendEmail(env, { from: env.QUIZ_FROM, to: [email], reply_to: env.QUIZ_TO, ...visitorEmail(env.SITE_URL, guide, links?.confirmUrl, "quiz", name) });
   await sendEmail(env, { from: env.QUIZ_FROM, to: [env.QUIZ_TO], reply_to: email, ...ownerEmail({ answers, guide, name, email, newsletter, tips, stopUrl: links?.stopUrl }) });
   await sendTelegram(env, quizAlert({ answers, guide, email, newsletter, tips, sent }));
   return json({ ok: sent, guide }, sent ? 200 : 502);
@@ -200,7 +200,7 @@ async function guideRequest(request: Request, env: Env, json: (body: unknown, st
   }
 
   const links = tips ? await tipsSignup(env, email, clean(name, 80), guide) : null;
-  const sent = await sendEmail(env, { from: env.QUIZ_FROM, to: [email], reply_to: env.QUIZ_TO, ...visitorEmail(env.SITE_URL, guide, links?.confirmUrl, "page") });
+  const sent = await sendEmail(env, { from: env.QUIZ_FROM, to: [email], reply_to: env.QUIZ_TO, ...visitorEmail(env.SITE_URL, guide, links?.confirmUrl, "page", name) });
   await sendEmail(env, { from: env.QUIZ_FROM, to: [env.QUIZ_TO], reply_to: email, ...guideOwnerEmail({ guide, page, name, email, newsletter, tips, stopUrl: links?.stopUrl }) });
   await sendTelegram(env, guideAlert({ guide, page, email, newsletter, tips, sent }));
   return json({ ok: sent, guide }, sent ? 200 : 502);

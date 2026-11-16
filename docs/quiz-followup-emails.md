@@ -12,7 +12,7 @@ The guide email footer and the privacy policy say the same thing. The quiz worke
 
 Every email needs (US CAN-SPAM rules, and simple courtesy):
 
-- A real one-click unsubscribe link in the footer (see below), plus the matching `List-Unsubscribe` and `List-Unsubscribe-Post: List-Unsubscribe=One-Click` headers so Gmail and Apple Mail show their own unsubscribe button. Replying “unsubscribe” should work too.
+- An unsubscribe link in the footer (see below), plus the matching `List-Unsubscribe` and `List-Unsubscribe-Post: List-Unsubscribe=One-Click` headers so Gmail and Apple Mail show their own unsubscribe button. Replying “unsubscribe” should work too.
 - The business mailing address: Avello Labs, PO Box 141, Collingswood, NJ.
 - An honest subject line and the real sender (Harris at Avello Labs).
 
@@ -20,11 +20,12 @@ Every email needs (US CAN-SPAM rules, and simple courtesy):
 
 Every email opens with “Hi {first name},”: the first word of the name they typed in the quiz, with a capital first letter. If they left the name blank, or it doesn't look like a name (numbers, symbols, a web address, too long), use “Hi there,” instead.
 
-## Unsubscribe link (plan, not built)
+## Unsubscribe link (as built)
 
-- Each email gets its own link, like `https://avello-alerts.avellolabs.workers.dev/unsubscribe?t={token}`, where the token is signed by the worker (same idea as the signed lead tickets in `workers-shared/`) so nobody can unsubscribe someone else by guessing.
-- Opening the link shows a short page: “You're unsubscribed. We won't send you any more tips.” One click is enough: no login, no “are you sure”, no form.
-- The same address handles the one-click `POST` that mail apps send from their own unsubscribe button.
+- Each email gets its own link, like `https://avello-alerts.avellolabs.workers.dev/tips/unsubscribe?t={token}`, signed by the worker so nobody can unsubscribe someone else by guessing.
+- Opening the link shows one **Unsubscribe** button, then “You're unsubscribed. We won't send you any more tips.” No login and no form. The button is there because email security scanners open links on their own, and they mustn't unsubscribe anyone.
+- The same address handles the one-click `POST` that mail apps send from their own Unsubscribe button, so that one stays one click.
+- Out-of-office notes and bounces sent to the reply address are ignored; a real reply stops the tips.
 - Unsubscribing stops the rest of the sequence right away and is remembered, so a later quiz signup doesn't restart it without a new tick in the box.
 
 ## Timing and variants
@@ -42,7 +43,7 @@ Every email opens with “Hi {first name},”: the first word of the name they t
 
 Footer for every email:
 
-> You're getting this because you took the website quiz at avellolabs.com and asked for 5 short tips. [Unsubscribe]({unsubscribe link}) with one click, or reply “unsubscribe”.
+> You're getting this because you took the website quiz at avellolabs.com and asked for 5 short tips. [Unsubscribe]({unsubscribe link}) anytime, or reply “unsubscribe”.
 > Avello Labs, PO Box 141, Collingswood, NJ
 
 ---

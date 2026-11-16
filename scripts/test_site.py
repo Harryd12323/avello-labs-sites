@@ -95,7 +95,8 @@ class BlogBuild(unittest.TestCase):
         for url in POSTS:
             s = self.schema(url)
             self.assertEqual(s["@type"], "Article")
-            self.assertEqual(s["author"], {"@type": "Organization", "name": "Avello Labs", "url": "https://avellolabs.com/"})
+            self.assertEqual(s["author"], {"@type": "Person", "name": "Harris",
+                                       "worksFor": {"@type": "Organization", "name": "Avello Labs", "url": "https://avellolabs.com/"}})
             self.assertEqual((s["datePublished"], s["dateModified"]), (today, today))
             self.assertEqual(s["url"], "https://avellolabs.com" + url)
             self.assertLessEqual(len(s["headline"]), 110, "Google truncates longer headlines")

@@ -3,7 +3,9 @@
 // tipslist.ts stores the list and sends on schedule, tipsroutes.ts handles the links and the webhook.
 // The copy matches docs/quiz-followup-emails.md (Harris approved it on Nov 15, 2026); change both together.
 
-import { clean } from "./message.ts";
+import { greeting } from "./message.ts";
+
+export { greeting };
 import { emailButton, GUIDES, type Guide } from "./quiz.ts";
 
 const FONT = "Arial,Helvetica,sans-serif";
@@ -110,13 +112,6 @@ Or just reply to this email. We'll get back to you within 1 business day to pick
 
 export const TIP_COUNT = TIPS.length;
 
-/** "Hi Jane," from whatever they typed as their name, or "Hi there," if it doesn't look like a first name. */
-export function greeting(name: string): string {
-  const first = clean(name, 80).split(" ")[0] ?? "";
-  // Letters (any alphabet), with an apostrophe or hyphen inside, like O'Neil or Anne-Marie.
-  if (first.length < 2 || first.length > 20 || !/^\p{L}+(?:['’-]\p{L}+)*$/u.test(first)) return "Hi there,";
-  return `Hi ${first[0].toLocaleUpperCase("en-US")}${first.slice(1)},`;
-}
 
 const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
@@ -160,12 +155,12 @@ export function renderTip(step: number, a: { site: string; name: string; guide: 
   const cta = tip.cta && { label: tip.cta.label, href: a.site + tip.cta.path };
   const hi = greeting(a.name);
   const footerText = "You're getting this because you took the website quiz at avellolabs.com and asked for 5 short tips. " +
-    `Unsubscribe with one click: ${a.unsubscribeUrl}\nOr reply “unsubscribe”.\n${ADDRESS}`;
+    `Unsubscribe: ${a.unsubscribeUrl}\nOr reply “unsubscribe”.\n${ADDRESS}`;
   const text = [hi, "", bodyText(tip.body, cta), "", step === 4 ? "Thanks for reading,\nHarris\nAvello Labs" : "Harris\nAvello Labs", "", footerText].join("\n");
   const html = shell(tip.preview, `<p style="margin:0 0 16px;font:16px/1.6 ${FONT};color:#1b2236">${esc(hi)}</p>
 ${bodyHtml(tip.body, cta)}
 <p style="margin:16px 0 0;font:16px/1.6 ${FONT};color:#1b2236">${step === 4 ? "Thanks for reading,<br>" : ""}Harris<br>Avello Labs</p>
-<p style="margin:32px 0 0;font:13px/1.5 ${FONT};color:#55607a">You're getting this because you took the website quiz at avellolabs.com and asked for 5 short tips. <a href="${esc(a.unsubscribeUrl)}" style="color:#4D74F2">Unsubscribe</a> with one click, or reply “unsubscribe”.<br>${ADDRESS}</p>`);
+<p style="margin:32px 0 0;font:13px/1.5 ${FONT};color:#55607a">You're getting this because you took the website quiz at avellolabs.com and asked for 5 short tips. <a href="${esc(a.unsubscribeUrl)}" style="color:#4D74F2">Unsubscribe</a> anytime, or reply “unsubscribe”.<br>${ADDRESS}</p>`);
   return { subject: tip.subject, text, html };
 }
 
@@ -304,7 +299,21 @@ export function replyAddress(local: string, domain: string, id: string): string 
   return `${local}+${id}@${domain}`;
 }
 
+/** True for out-of-office notes, bounces and other automatic replies (the webhook gives only the sender and subject). */
+export function isAutoReply(from: unknown, subject: unknown): boolean {
+  const f = typeof from === "string" ? from.toLowerCase() : "";
+  const s = typeof subject === "string" ? subject.toLowerCase() : "";
+  if (/\b(mailer-daemon|postmaster|no-?reply|do-?not-?reply|bounce)[^@]*@/.test(f)) return true;
+  return /\b(auto(matic)?[ -]?(reply|response|answer)|out of (the )?office|away from (the )?office|on (vacation|holiday|leave)|undeliverable|delivery (status notification|failure|has failed)|mail delivery failed|returned mail|abwesenheit|absence|réponse automatique)\b/.test(s);
+}
+
 // ---------- Backfill ----------
+
+/** The key that unlocks the one-off backfill: the first 16 hex characters of the SHA-256 of the list (trimmed). */
+export async function backfillKey(list: string): Promise<string> {
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(list.trim()));
+  return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, "0")).join("").slice(0, 16);
+}
 
 /** Lines of "email | name | guide" (name and guide optional; guide as its key or title). Skips bad lines. */
 export function parseBackfill(raw: string): Array<{ email: string; name: string; guide: Guide }> {

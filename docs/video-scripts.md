@@ -2,7 +2,21 @@
 
 Four short explainer videos for the site: the homepage welcome and one for each problem page. Animated, with an AI voiceover, in the same look as Vid's explainer reels. Nothing is rendered yet.
 
-These replace the talking-head outlines in `docs/problem-videos.md` if you go with explainers instead. The upload steps there still apply: YouTube ID, thumbnail, date, then `site.py problems`.
+The homepage welcome video is done and live (YouTube ID ftNlVSYWDOI). The three problem page videos are still to make.
+
+## Putting a video on the site
+
+1. Upload to YouTube. Public or Unlisted both work; Public also helps people find you on YouTube.
+2. Copy the video ID: the 11 characters after `watch?v=` in the address.
+3. Make a 1280x720 JPG thumbnail (a clear frame from the video, plus a few words of text if it needs them) and save it as:
+   - welcome video: `assets/videos/welcome.jpg`
+   - problem pages: `assets/videos/cant-find-us.jpg`, `assets/videos/no-calls.jpg`, `assets/videos/too-much-admin.jpg`
+4. Fill in the ID and the day it went up:
+   - welcome video: `WELCOME_VIDEO` and `WELCOME_VIDEO_DATE` in `scripts/site.py`
+   - problem pages: `Video:` and `Video-date:` in `scripts/problems/<page>.txt`, and paste the corrected captions under `## Video transcript` as plain paragraphs
+5. Run `/opt/homebrew/bin/python3.12 scripts/site.py problems`, preview, then push. Or send me the ID and I'll do steps 3 to 5.
+
+Until then, each page has a marked, hidden video spot. Add `?spots` to a page address in a preview (for example http://localhost:8001/no-calls/?spots) to see where the video goes.
 
 ## Ground rules for all four
 

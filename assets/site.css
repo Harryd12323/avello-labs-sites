@@ -51,6 +51,12 @@ header.site .wrap { display: flex; align-items: center; justify-content: space-b
 .menu-btn { display: inline-grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--line-bright); border-radius: 10px;
             background: var(--panel); cursor: pointer; }
 .menu-btn svg { width: 20px; height: 20px; }
+/* Tap-to-call: an icon button beside the menu on phones; the number itself in the nav on wide screens. */
+.call-btn { display: inline-grid; place-items: center; width: 44px; height: 44px; margin-left: auto; border: 1px solid var(--line-bright);
+  border-radius: 10px; color: var(--text); }
+.call-btn span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.call-btn svg, .nav-phone svg { width: 18px; height: 18px; flex: none; }
+.nav-phone { display: inline-flex; align-items: center; gap: .45rem; color: var(--text); text-decoration: none; padding: .85rem .25rem; font-weight: 500; }
 .menu-btn .x { display: none; }
 header.site.open .menu-btn .x { display: block; }
 /* The open menu sits above the chat button. */
@@ -104,10 +110,6 @@ h2 { margin-top: .75rem; font-size: clamp(1.8rem, 5vw, 2.6rem); line-height: 1.1
               radial-gradient(closest-side at 65% 55%, color-mix(in srgb, var(--cyan) 14%, transparent), transparent); }
 .hero .wrap { position: relative; z-index: 1; text-align: center; }
 .hero h1 { margin: 1.5rem auto 0; max-width: 18ch; }
-.hero-logo { display: block; width: min(26rem, 88%); height: auto; margin: 0 auto 2rem; }
-/* Only the ring turns, around the ring's center; the wordmark stays still. */
-.ring-spin { transform-box: view-box; transform-origin: 240.26px 164.5px; animation: ring-spin 20s linear infinite; }
-@keyframes ring-spin { to { transform: rotate(360deg); } }
 .pill { display: inline-flex; align-items: center; gap: .5rem; padding: .35rem .85rem; border: 1px solid var(--line-bright);
         border-radius: 999px; background: color-mix(in srgb, var(--panel) 70%, transparent); color: var(--muted);
         font-size: .85rem; font-weight: 500; }
@@ -366,8 +368,13 @@ footer.site .nl-form a:hover { color: var(--text); }
   .cta-band { padding: 2.75rem 2rem; }
 }
 /* The full nav needs about 1050px; below that it lives behind the menu button. */
+@media (min-width: 66rem) and (max-width: 77.99rem) {
+  .nav-phone span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+}
 @media (min-width: 66rem) {
   .menu-btn { display: none; }
+  .call-btn { display: none; }
+  .nav-phone { padding: .5rem .7rem; font-size: .93rem; white-space: nowrap; }
   .site-nav, header.site.open .site-nav { display: flex; flex-direction: row; align-items: center; gap: .15rem; position: static;
                                           padding: 0; background: none; border: 0; box-shadow: none; }
   .nav-link { font-size: .93rem; padding: .5rem .7rem; border: 0; border-radius: 8px; white-space: nowrap; }
@@ -387,7 +394,6 @@ footer.site .nl-form a:hover { color: var(--text); }
   html { scroll-behavior: auto; }
   .btn, .card, .btn svg, .card .more svg { transition: none; }
   .btn:hover, .card:hover { transform: none; }
-  .ring-spin { animation: none; }
   .track { scroll-behavior: auto; }
 }
 
@@ -412,6 +418,7 @@ footer.site .nl-form a:hover { color: var(--text); }
 
 /* Home page: agency comparison */
 .compare { margin-top: 2.5rem; display: grid; gap: 1rem; }
+.compare.compare-single { max-width: 48rem; }
 .compare-col { padding: 1.5rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-2); }
 .compare-col.us { border-color: color-mix(in srgb, var(--blue-2) 60%, var(--line));
                   background: linear-gradient(135deg, color-mix(in srgb, var(--blue-2) 16%, var(--panel)), var(--panel)); }
@@ -461,6 +468,14 @@ h3.also { margin-top: 3rem; color: var(--muted); font-size: .8rem; font-weight: 
 .testimonial { margin: 2.5rem 0 0; max-width: 46rem; padding: 1.5rem 1.75rem; border: 1px solid var(--line-bright); border-left: 2px solid var(--cyan);
                border-radius: var(--radius); background: var(--panel); }
 .testimonial[hidden] { display: none; }
+.testimonials { margin-top: 2rem; display: grid; gap: 1rem; }
+.testimonials .testimonial { margin: 0; max-width: none; }
+.who { display: grid; gap: 1.75rem; align-items: center; }
+.who-photo { width: min(16rem, 60vw); height: auto; aspect-ratio: 1; object-fit: cover; border-radius: 50%; border: 2px solid var(--line-bright); }
+@media (min-width: 56rem) {
+  .testimonials { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .who { grid-template-columns: auto 1fr; gap: 3rem; }
+}
 .testimonial blockquote p { font-size: 1.1rem; line-height: 1.55; }
 .testimonial blockquote p::before { content: "\201C"; }
 .testimonial blockquote p::after { content: "\201D"; }
@@ -470,6 +485,7 @@ h3.also { margin-top: 3rem; color: var(--muted); font-size: .8rem; font-weight: 
 @media (min-width: 40rem) {
   .price-band { flex-direction: row; align-items: center; justify-content: space-between; padding: 1.5rem 1.75rem; }
   .compare { grid-template-columns: 1fr 1fr; }
+  .compare.compare-single { grid-template-columns: 1fr; }
 }
 @media (min-width: 56rem) {
   .timeline { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 1.25rem; }

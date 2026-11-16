@@ -55,6 +55,36 @@ Page content, titles, meta descriptions, og tags and JSON-LD sit outside the mar
 
 To go live, set `NOINDEX = False` in `scripts/site.py` and run `sync`.
 
+## Problem pages and the homepage video
+
+`/cant-find-us/`, `/no-calls/` and `/too-much-admin/` are built from the text files in `scripts/problems/` (format
+in `scripts/problems.py`). Never edit their HTML. The homepage's three buttons and the footer's "Common problems"
+links come from the same files.
+
+```sh
+python3 scripts/site.py problems    # check the copy rules, build the three pages, then sync
+```
+
+Videos play from YouTube's no-cookie player only after a click. Add a video with `Video:` and `Video-date:` in the
+page's text file (or `WELCOME_VIDEO` in `scripts/site.py` for the homepage) and a 1280x720 thumbnail in
+`assets/videos/`. Steps and scripts: `docs/video-scripts.md` (local only).
+
+## Settings in scripts/site.py
+
+- `PHONE`: the business phone number. Empty hides the header's tap-to-call button, the footer and contact
+  section number and the phone in the structured data. Set it and run `sync`.
+- `PRICE_FROM`: the starting price. Empty hides every "Packages starting at" line.
+- `BLOG_AUTHOR_PERSON`: the name in post bylines.
+- Homepage sections waiting for content (client quotes, "Who you'll work with") are in `index.html`, hidden, with
+  instructions in the comment above each one.
+
+## Removed pages and the not-found page
+
+A removed page keeps its address as a small redirect page, so links to it still work: write one with
+`redirect_page()` in `scripts/site.py` (see `blog/google-search-off-schools-ai/`). Redirect pages are skipped by
+`sync` and left out of the sitemap, the blog list and the feed. `404.html` is the branded page GitHub Pages
+shows for addresses that don't exist; `sync` keeps its header and footer current.
+
 ## Preview locally
 
 ```sh

@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { TIPS, TIP5_TOOL, greeting, renderTip, renderConfirm, atLocalHour, dueAt, OFFSET_DAYS, signLink, verifyLink, newId,
-  verifyWebhook, replyId, replyAddress, parseBackfill } from "../src/tips.ts";
+  verifyWebhook, replyId, replyAddress, parseBackfill, isAutoReply, backfillKey } from "../src/tips.ts";
 import { BANNED } from "./banned.ts";
 
 const DAY = 86_400_000;
@@ -139,4 +139,21 @@ test("backfill lines are email | name | guide, with bad lines skipped", () => {
     { email: "c@d.co", name: "", guide: "custom-tools" },
     { email: "e@f.co", name: "", guide: "more-calls" },
   ]);
+});
+
+test("out-of-office notes and bounces don't count as replies, but real replies and unsubscribes do", () => {
+  for (const [from, subject] of [["a@b.co", "Automatic reply: One quick fix"], ["a@b.co", "Out of Office: back Monday"], ["a@b.co", "Auto-Reply: thanks"],
+    ["MAILER-DAEMON@mx.example.com", "Re: tip"], ["no-reply@b.co", "Re: tip"], ["a@b.co", "Undeliverable: One quick fix"], ["a@b.co", "I'm on vacation"]]) {
+    assert.equal(isAutoReply(from, subject), true, subject);
+  }
+  for (const [from, subject] of [["a@b.co", "Re: One quick fix: can people call you in one tap?"], ["a@b.co", "unsubscribe"], ["Jane <jane@b.co>", "Question about tip 3"]]) {
+    assert.equal(isAutoReply(from, subject), false, subject);
+  }
+});
+
+test("the backfill key is the start of the list's hash, ignoring surrounding whitespace", async () => {
+  const k = await backfillKey("a@b.co | Ann | get-found");
+  assert.match(k, /^[0-9a-f]{16}$/);
+  assert.equal(await backfillKey("  a@b.co | Ann | get-found\n"), k);
+  assert.notEqual(await backfillKey("a@b.co | Ann | more-calls"), k);
 });

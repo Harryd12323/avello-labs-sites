@@ -174,7 +174,7 @@ def video_html(slug, f, transcript, indent, site, lazy=True):
     vid = f.get("Video", "")
     if not vid:
         return (f'{indent}<!-- VIDEO SPOT: film the video, upload it to YouTube, then add its ID as Video: in scripts/problems/{slug}.txt\n'
-                f'{indent}     and a 1280x720 thumbnail at /assets/videos/{slug}.jpg. Script outline: docs/problem-videos.md -->\n'
+                f'{indent}     and a 1280x720 thumbnail at /assets/videos/{slug}.jpg. Script: docs/video-scripts.md -->\n'
                 f'{indent}<div class="video-spot" hidden><p><strong>Video spot</strong>: {html.escape(f.get("Video-title") or "Video")}</p>'
                 f'<p>Shows here once Video: is filled in. Only visible in previews with ?spots.</p></div>')
     title = html.escape(f.get("Video-title") or plain(f["Headline"]))

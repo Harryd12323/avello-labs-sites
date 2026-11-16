@@ -125,7 +125,7 @@
     offer.textContent = tool ? "Get my free call" : "Get my free review";
     result.querySelector(".quiz-offer-text").textContent = tool
       ? "Want to talk it through? Book a free 20-minute call and we'll tell you honestly whether a custom tool is worth it. No obligation."
-      : "Want a hand? Book a free 20-minute review and we'll walk you through the 3 fixes that would get you more calls. No obligation.";
+      : "Want a hand? Book a free 20-minute review and we'll walk you through the 3 fixes we'd make first. No obligation.";
     form.hidden = true;
     result.hidden = false;
     result.focus();

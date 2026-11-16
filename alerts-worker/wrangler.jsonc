@@ -42,7 +42,7 @@
     "TIPS_REPLY_DOMAIN": "send.avellolabs.com",
     "TIPS_DAY_SECONDS": "86400",
     "TIPS_SEND_HOUR": "10",
-    "TIPS_PER_DAY": "40"
+    "TIPS_PER_DAY": "15"
   },
 
   "env": {
@@ -68,7 +68,7 @@
         "TIPS_REPLY_DOMAIN": "send.avellolabs.com",
         "TIPS_DAY_SECONDS": "60",
         "TIPS_SEND_HOUR": "",
-        "TIPS_PER_DAY": "40"
+        "TIPS_PER_DAY": "15"
       }
     }
   }

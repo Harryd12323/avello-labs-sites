@@ -13,6 +13,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
 <link rel="stylesheet" href="/assets/site.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "ProfessionalService", "@id": "https://avellolabs.com/#organization", "name": "Avello Labs LLC", "url": "https://avellolabs.com/", "logo": "https://avellolabs.com/brand/icon.svg", "email": "harris@avellolabs.com", "address": {"@type": "PostalAddress", "addressLocality": "Collingswood", "addressRegion": "NJ", "postalCode": "08108", "addressCountry": "US"}}, {"@type": "WebSite", "@id": "https://avellolabs.com/#website", "url": "https://avellolabs.com/", "name": "Avello Labs", "publisher": {"@id": "https://avellolabs.com/#organization"}}]}</script>
 <meta property="og:image" content="https://avellolabs.com/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -48,9 +49,13 @@
   "datePublished": "2026-10-28",
   "dateModified": "2026-10-28",
   "author": {
-    "@type": "Organization",
-    "name": "Avello Labs",
-    "url": "https://avellolabs.com/"
+    "@type": "Person",
+    "name": "Harris",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Avello Labs",
+      "url": "https://avellolabs.com/"
+    }
   },
   "publisher": {
     "@type": "Organization",
@@ -62,7 +67,7 @@
     }
   },
   "inLanguage": "en-US",
-  "wordCount": 1470,
+  "wordCount": 1484,
   "timeRequired": "PT7M",
   "isPartOf": {
     "@type": "Blog",
@@ -81,7 +86,7 @@
       "name": "Can you tell me what a website will cost in this post?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. A number without your pages, features, and needs behind it would be a guess. We would rather give you a written quote that lists exactly what is included. The free site check is a good first step."
+        "text": "Not exactly. A number without your pages, features, and needs behind it would be a guess, so we give a written quote that lists exactly what is included. The free site check is a good first step."
       }
     },
     {
@@ -113,7 +118,7 @@
       "name": "How long does it take to build a small business website?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "It depends on the scope and how quickly you can send content. Most of our sites go live within a week."
+        "text": "It depends on the scope and how quickly you can send content. A small site can be live in about a week once we have your content."
       }
     }
   ]
@@ -129,6 +134,7 @@
     <a class="brand" href="/" aria-label="Avello Labs, home">
       <img src="/brand/logo-horizontal-dark.svg" width="337" height="64" alt="Avello Labs">
     </a>
+    <!-- PHONE: set PHONE in scripts/site.py and run sync to show a tap-to-call number here (call-btn) -->
     <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
       <svg class="bars" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       <svg class="x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
@@ -140,6 +146,7 @@
       <a class="nav-link" href="/web-apps/">Web apps</a>
       <a class="nav-link" href="/#real-work">Our work</a>
       <a class="nav-link" href="/tools/">Free tools</a>
+      <!-- PHONE: set PHONE in scripts/site.py and run sync to show a tap-to-call number here (nav-phone) -->
       <a class="btn btn-small" href="/#contact">Free review</a>
     </nav>
   </div>
@@ -151,9 +158,9 @@
     <div class="wrap">
       <p class="crumbs"><a href="/">Home</a> / <a href="/blog/">Blog</a></p>
       <h1>How much does a small business website cost?</h1>
-      <p class="lede">How much does a small business website cost? It depends on a handful of things you can understand before you talk to anyone, and we'll walk through them here.</p>
+      <p class="lede">What a small business website costs depends on a handful of things you can understand before you talk to anyone. Here they are.</p>
       <!-- shared:post-meta -->
-<p class="post-meta">By Avello Labs <span aria-hidden="true">·</span> <time datetime="2026-10-28">October 28, 2026</time> <span aria-hidden="true">·</span> 7 min read</p>
+<p class="post-meta">By Harris, Avello Labs <span aria-hidden="true">·</span> <time datetime="2026-10-28">October 28, 2026</time> <span aria-hidden="true">·</span> 7 min read</p>
 <!-- /shared:post-meta -->
     </div>
   </section>
@@ -166,9 +173,11 @@
             <li>The price comes down to how much custom work is needed, how many pages you have, what the site has to do, and who writes the words and photos.</li>
             <li>Separate one-time costs (design and build) from monthly costs (hosting, updates, security, support) so quotes can be compared fairly.</li>
             <li>Ask what you own at the end, what happens if you leave, and what is included each month before you say yes.</li>
-            <li>We don't quote prices in a blog post, because a number without context isn't useful. Ask for a written quote that lists everything.</li>
+            <li>A price without context isn't very useful, so ask for a written quote that lists everything.</li>
           </ul>
         </div>
+
+        <p class="price-line" data-price hidden>Our own packages start at <!-- shared:price --><span class="price-amount"></span><!-- /shared:price -->, with the exact price depending on the things below.</p>
 
         <h2>Why there isn't one simple answer</h2>
         <p>You will see wildly different numbers if you ask around. That's normal. Two businesses can both say "I need a website" and mean completely different things.</p>
@@ -193,7 +202,7 @@
         <h3>Who creates the content</h3>
         <p>Words, photos, and logos are part of a website. If you already have good photos and know what you want to say, the build is faster. If someone has to write every page, shoot photos, or design a logo, that is more work and it shows up in the quote. Real photos of your own crew, shop, or dining room almost always beat stock images, so it is worth planning for.</p>
         <h3>How fast you need it</h3>
-        <p>Rushed projects and long, drawn-out ones both cost more in their own way. Our sites usually go live within a week because we keep the scope clear and the process simple. A clear scope is the biggest reason a project stays quick.</p>
+        <p>Rushed projects and long, drawn-out ones both cost more in their own way. A small site can be live in about a week once we have your content, because we keep the scope clear and the process simple. A clear scope is the biggest reason a project stays quick.</p>
         <h3>Search and AI visibility</h3>
         <p>A site that looks nice but that nobody can find is not doing its job. Some quotes include basic search setup, and some leave it out. Ask which it is. If you want to understand what that work involves, see <a href="/seo/">why SEO matters for local businesses</a> and <a href="/aeo/">what AEO is</a>. AEO means getting recommended by AI tools like ChatGPT and Google's AI answers.</p>
 
@@ -228,7 +237,7 @@
           <li><strong>What happens if I want to leave?</strong> Can you take your site and domain with you? Is there a fee?</li>
           <li><strong>Who makes changes, and how fast?</strong> A site that takes weeks to update a phone number is a problem.</li>
           <li><strong>Is search setup included?</strong> Ask what is done so people can find you on Google and in AI tools.</li>
-          <li><strong>Will it work well on a phone?</strong> Most local customers look you up on their phone, often while standing in a parking lot deciding who to call.</li>
+          <li><strong>Will it work well on a phone?</strong> Many local customers look you up on their phone, sometimes while standing in a parking lot deciding who to call.</li>
           <li><strong>How long until it's live?</strong> Get a real date, not "soon."</li>
           <li><strong>Who do I talk to when something breaks?</strong> A name and a way to reach them.</li>
         </ol>
@@ -246,7 +255,7 @@
         <div class="faq">
           <details>
             <summary>Can you tell me what a website will cost in this post?</summary>
-            <p>No. A number without your pages, features, and needs behind it would be a guess. We would rather give you a written quote that lists exactly what is included. <a href="/check/">The free site check</a> is a good first step.</p>
+            <p>Not exactly. A number without your pages, features, and needs behind it would be a guess, so we give a written quote that lists exactly what is included. <a href="/check/">The free site check</a> is a good first step.</p>
           </details>
           <details>
             <summary>Is a cheaper website always a worse one?</summary>
@@ -262,20 +271,20 @@
           </details>
           <details>
             <summary>How long does it take to build a small business website?</summary>
-            <p>It depends on the scope and how quickly you can send content. Most of our sites go live within a week.</p>
+            <p>It depends on the scope and how quickly you can send content. A small site can be live in about a week once we have your content.</p>
           </details>
         </div>
 
         <div class="cta-band">
           <h2>Want a clear quote with nothing hidden?</h2>
-          <p>See what's costing you calls. Run the free site check and we'll show you what your site needs, then talk through options in writing. No pressure.</p>
+          <p>Run the free site check and we'll show you what your site needs, then talk through options in writing. No pressure.</p>
           <a class="btn" href="/check/">Free site check <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
       </article>
       <!-- shared:post-aside -->
       <aside class="aside" aria-label="Related">
       <div class="aside-card">
-        <h2>See what's costing you calls</h2>
+        <h2>Free site check</h2>
         <p>The free site check scores 10 SEO and AEO basics on any page in a few seconds.</p>
         <a class="btn" href="/check/">Free site check</a>
       </div>
@@ -308,7 +317,7 @@
     <div class="foot-grid">
       <div class="foot-brand">
         <img src="/brand/logo-horizontal-dark.svg" width="337" height="64" alt="Avello Labs">
-        <p>Custom websites for small local businesses, live in days, with monthly care, SEO and AEO.</p>
+        <p>Custom websites for small local businesses, with monthly care, SEO and AEO.</p>
       </div>
       <div>
         <h2>Services</h2>

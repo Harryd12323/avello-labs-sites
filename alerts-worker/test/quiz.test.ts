@@ -40,7 +40,7 @@ test("the site's quiz script asks the same questions and picks the same way", ()
   assert.match(js, /\["get-found", "more-calls", "site-health", "custom-tools"\]/);
 });
 
-test("the visitor's email links their guide and the right offer, and contains nothing they typed", () => {
+test("the visitor's email links their guide and the right offer", () => {
   const m = visitorEmail(SITE, "get-found");
   assert.equal(m.subject, "Your guide: Get found on Google and in AI answers");
   assert.ok(m.text.includes("https://avellolabs.com/resources/get-found.pdf"));
@@ -100,5 +100,13 @@ test("every problem page offers a guide the Worker knows", () => {
   for (const file of ["cant-find-us.txt", "no-calls.txt", "too-much-admin.txt"]) {
     const guide = readFileSync(new URL(file, dir), "utf8").match(/^Resource: ([a-z-]+)/m)?.[1];
     assert.ok(guide && guide in GUIDES, file);
+  }
+});
+
+test("the guide email greets them by first name, but only a real-looking one", () => {
+  assert.ok(visitorEmail(SITE, "get-found", undefined, "quiz", "jane doe").text.startsWith("Hi Jane,\n"));
+  assert.ok(visitorEmail(SITE, "get-found", undefined, "page", "Anne-Marie").html.includes("<p style=\"margin:0 0 16px;font:16px/1.6 Arial,Helvetica,sans-serif;color:#1b2236\">Hi Anne-Marie,</p>"));
+  for (const bad of ["", "bob@example.com", "www.spam.com Bob", "<script>", "x"]) {
+    assert.ok(visitorEmail(SITE, "get-found", undefined, "quiz", bad).text.startsWith("Hi there,\n"), bad);
   }
 });
