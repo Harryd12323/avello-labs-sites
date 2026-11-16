@@ -491,6 +491,7 @@ h3.also { margin-top: 3rem; color: var(--muted); font-size: .8rem; font-weight: 
 .testimonials { margin-top: 2rem; display: grid; gap: 1rem; }
 .testimonials .testimonial { margin: 0; max-width: none; }
 .who { display: grid; gap: 1.75rem; align-items: center; }
+.who-bg { margin-top: .9rem; color: var(--text); font-size: 1.075rem; max-width: 40rem; }
 .who-photo { width: min(16rem, 60vw); height: auto; aspect-ratio: 1; object-fit: cover; border-radius: 50%; border: 2px solid var(--line-bright); }
 @media (min-width: 56rem) {
   .testimonials { grid-template-columns: repeat(3, minmax(0, 1fr)); }
