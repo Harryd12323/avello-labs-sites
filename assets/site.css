@@ -221,6 +221,8 @@ section.block { padding: 5rem 0; border-top: 1px solid var(--line); }
 .contact-aside a.mail { display: inline-flex; align-items: center; gap: .5rem; margin-top: 1.5rem; color: var(--text);
                         text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--cyan) 70%, transparent);
                         text-underline-offset: 4px; font-weight: 600; min-height: 44px; }
+.contact-aside a.mail { width: fit-content; }
+.contact-aside a.mail + a.mail { display: flex; margin-top: .75rem; }
 .contact-aside a.mail:hover { text-decoration-color: var(--cyan); }
 .contact-aside svg { width: 18px; height: 18px; color: var(--cyan); }
 .contact-aside .next-h { margin-top: 1.75rem; font-size: 1rem; }
