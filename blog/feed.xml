@@ -6,7 +6,15 @@
     <description>Practical website, search and AI answer tips for small local businesses.</description>
     <language>en-us</language>
     <atom:link href="https://avellolabs.com/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Mon, 16 Nov 2026 12:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 17 Nov 2026 12:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Google adds branded and image search data to the Search Console API</title>
+      <link>https://avellolabs.com/blog/search-console-api-branded-data/</link>
+      <guid isPermaLink="true">https://avellolabs.com/blog/search-console-api-branded-data/</guid>
+      <pubDate>Tue, 17 Nov 2026 12:00:00 +0000</pubDate>
+      <category>News</category>
+      <description>Google added branded search and image search data to the Search Console API. Here is what that means for your local business website.</description>
+    </item>
     <item>
       <title>A website maintenance checklist for small business owners</title>
       <link>https://avellolabs.com/blog/website-maintenance-checklist-small-business/</link>
