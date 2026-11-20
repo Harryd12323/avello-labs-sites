@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- shared:head -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com https://challenges.cloudflare.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://api.web3forms.com https://avello-chat.avellolabs.workers.dev https://avello-check.avellolabs.workers.dev https://avello-alerts.avellolabs.workers.dev https://cloudflareinsights.com; frame-src https://challenges.cloudflare.com https://www.youtube-nocookie.com; form-action https://api.web3forms.com; base-uri 'self'; object-src 'none'">
+<link rel="icon" type="image/png" sizes="48x48" href="/brand/favicon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/brand/favicon-96.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/favicon-192.png">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<link rel="stylesheet" href="/assets/site.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "ProfessionalService", "@id": "https://avellolabs.com/#organization", "name": "Avello Labs LLC", "url": "https://avellolabs.com/", "logo": "https://avellolabs.com/brand/icon.svg", "email": "harris@avellolabs.com", "address": {"@type": "PostalAddress", "addressLocality": "Collingswood", "addressRegion": "NJ", "postalCode": "08108", "addressCountry": "US"}, "telephone": "+18564706300"}, {"@type": "WebSite", "@id": "https://avellolabs.com/#website", "url": "https://avellolabs.com/", "name": "Avello Labs", "publisher": {"@id": "https://avellolabs.com/#organization"}}]}</script>
+<meta property="og:image" content="https://avellolabs.com/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Avello Labs logo on a dark navy background">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How to back up a small business website (and know it will actually restore)">
+<meta name="twitter:description" content="How to back up a small business website: what to save, how often to do it, and a simple way to test that a restore really works.">
+<meta name="twitter:image" content="https://avellolabs.com/assets/og-image.png">
+<!-- /shared:head -->
+<title>How to Back Up a Small Business Website | Avello Labs</title>
+<meta name="description" content="How to back up a small business website: what to save, how often to do it, and a simple way to test that a restore really works.">
+<link rel="canonical" href="https://avellolabs.com/blog/back-up-small-business-website/">
+<meta name="blog:status" content="published">
+<meta name="blog:keyword" content="how to back up a small business website">
+<meta property="article:published_time" content="2026-11-20">
+<meta property="article:modified_time" content="2026-11-20">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Avello Labs">
+<meta property="og:title" content="How to back up a small business website (and know it will actually restore)">
+<meta property="og:description" content="How to back up a small business website: what to save, how often to do it, and a simple way to test that a restore really works.">
+<meta property="og:url" content="https://avellolabs.com/blog/back-up-small-business-website/">
+<!-- shared:blog-head -->
+<link rel="stylesheet" href="/assets/blog.css">
+<link rel="alternate" type="application/rss+xml" title="Avello Labs blog" href="https://avellolabs.com/blog/feed.xml">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "How to back up a small business website (and know it will actually restore)",
+  "description": "How to back up a small business website: what to save, how often to do it, and a simple way to test that a restore really works.",
+  "url": "https://avellolabs.com/blog/back-up-small-business-website/",
+  "mainEntityOfPage": "https://avellolabs.com/blog/back-up-small-business-website/",
+  "datePublished": "2026-11-20",
+  "dateModified": "2026-11-20",
+  "author": {
+    "@type": "Person",
+    "name": "Harris",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Avello Labs",
+      "url": "https://avellolabs.com/"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Avello Labs",
+    "url": "https://avellolabs.com/",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://avellolabs.com/brand/icon.svg"
+    }
+  },
+  "inLanguage": "en-US",
+  "wordCount": 1362,
+  "timeRequired": "PT6M",
+  "isPartOf": {
+    "@type": "Blog",
+    "name": "Avello Labs blog",
+    "url": "https://avellolabs.com/blog/"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is my web host's backup enough?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It is a good first layer, but not enough alone. If the backup lives only on your host's server, a host problem or locked account can take both away. Keep a second copy somewhere separate that you control."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need to back up a simple five-page brochure site?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. It may change rarely, but rebuilding the text, photos and settings from scratch takes real time. A backup before each change and a regular automatic copy is usually enough."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between a backup and a restore?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A backup is the saved copy. A restore is the act of putting that copy back to bring your site back. You need both to work, which is why testing a restore matters."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can a backup bring back a hacked site?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It can, if you restore a copy from before the problem began. You also need to fix how the attacker got in, such as an outdated plugin or a weak password, or it can happen again."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Who should have access to the backups?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You should, as the business owner, even if someone else manages them. Keep the logins in a password manager and share access only with people you trust."
+      }
+    }
+  ]
+}
+</script>
+<!-- /shared:blog-head -->
+</head>
+<body>
+<!-- shared:header -->
+<a class="skip" href="#main">Skip to content</a>
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="Avello Labs, home">
+      <img src="/brand/logo-horizontal-dark.svg" width="337" height="64" alt="Avello Labs">
+    </a>
+    <a class="call-btn" href="tel:+18564706300"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg><span>856-470-6300</span></a>
+    <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+      <svg class="bars" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      <svg class="x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <a class="nav-link" href="/seo/">SEO</a>
+      <a class="nav-link" href="/aeo/">AEO</a>
+      <a class="nav-link" href="/website-care/">Website care</a>
+      <a class="nav-link" href="/web-apps/">Web apps</a>
+      <a class="nav-link" href="/#real-work">Our work</a>
+      <a class="nav-link" href="/tools/">Free tools</a>
+      <a class="nav-phone" href="tel:+18564706300"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg><span>856-470-6300</span></a>
+      <a class="btn btn-small" href="/#contact">Free review</a>
+    </nav>
+  </div>
+</header>
+<!-- /shared:header -->
+
+<main id="main">
+  <section class="page-hero">
+    <div class="wrap">
+      <p class="crumbs"><a href="/">Home</a> / <a href="/blog/">Blog</a></p>
+      <h1>How to back up a small business website (and know it will actually restore)</h1>
+      <p class="lede">Knowing how to back up a small business website means knowing three things: what to save, how often to save it, and how to prove you can get it back. Here is each one, in order.</p>
+      <!-- shared:post-meta -->
+<p class="post-meta">By Harris, Avello Labs <span aria-hidden="true">·</span> <time datetime="2026-11-20">November 20, 2026</time> <span aria-hidden="true">·</span> 6 min read</p>
+<!-- /shared:post-meta -->
+    </div>
+  </section>
+  <div class="page-body">
+    <div class="wrap page-grid">
+      <article class="prose">
+        <div class="summary">
+          <p class="eyebrow">In short</p>
+          <ul>
+            <li>Back up two things: your site's files and its database (the part that stores your pages, forms and orders).</li>
+            <li>Back up as often as your site changes. A site that rarely changes needs fewer backups than one that takes orders or bookings.</li>
+            <li>Keep copies somewhere other than your web host, and test a restore. A backup you have never restored is a guess.</li>
+          </ul>
+        </div>
+
+        <h2>Why a backup matters more than you think</h2>
+        <p>Most small business sites run fine for years. Then one day an update breaks something, a plugin (an add-on that gives your site extra features) conflicts with another, someone's login gets stolen, or a host has an outage. If you have a good backup, that is a bad afternoon. If you don't, it can mean rebuilding pages from memory.</p>
+        <p>Picture a plumber in Camden County whose contact form stops working after an update. Or a salon in Burlington County whose booking page gets overwritten by mistake. In both cases the fix is the same: roll the site back to the last good copy. That only works if the copy exists and is recent.</p>
+
+        <h2>What to back up</h2>
+        <p>A website is usually made of two parts. You need both.</p>
+        <ul>
+          <li><strong>Files.</strong> Your theme or design, uploaded photos, PDFs, plugins, and settings files. These are the pieces you can see and click on.</li>
+          <li><strong>The database.</strong> This is where your text, page content, blog posts, form entries, customer accounts and orders live. If your site is built on a system like WordPress, almost everything you have typed into it sits here.</li>
+        </ul>
+        <p>Many people back up only the files, or only the database, and find out too late. A files-only copy gives you a site with no content. A database-only copy gives you content with no design.</p>
+        <p>Also write down the things that are not part of the site itself but that you will need to bring it back:</p>
+        <ul>
+          <li>Your domain name registrar login (the company where you bought your web address).</li>
+          <li>Your DNS settings. DNS is the address book that tells the internet where your site lives.</li>
+          <li>Your hosting login.</li>
+          <li>Any email service tied to your domain.</li>
+          <li>Logins for tools connected to the site, such as booking, payments or your email list.</li>
+        </ul>
+        <p>Keep these in a password manager or a locked note, not in a sticky note on the monitor.</p>
+
+        <h2>How often to back up</h2>
+        <p>The rule is simple: <strong>back up as often as you can afford to lose work.</strong></p>
+        <p>Ask yourself what you would lose if the site went back to its last backup. Then pick a schedule that matches.</p>
+        <ul>
+          <li><strong>A mostly static site</strong> (a brochure site for a law firm or HVAC company that changes a few times a year): a regular automatic backup plus one before every change is plenty.</li>
+          <li><strong>A site that changes often</strong> (a restaurant that updates menus, a contractor posting new projects): backups should run on a regular schedule, and you should take one right before any edit.</li>
+          <li><strong>A site that takes orders, bookings or form leads:</strong> this is where you want the most frequent backups. New data arrives all day. If the site goes back to last night's copy, today's orders are gone.</li>
+        </ul>
+        <p>Always take a fresh backup before you do any of these:</p>
+        <ol>
+          <li>Update the site's software or plugins.</li>
+          <li>Change the design or theme.</li>
+          <li>Move to a new host.</li>
+          <li>Let someone new, such as a freelancer, make changes.</li>
+        </ol>
+        <p>Many hosts include automatic backups. That is a good start, but read what they cover and how long they keep copies. Hosts differ, and a plan's terms can change, so check your own account instead of assuming.</p>
+
+        <h2>Where to keep your backups</h2>
+        <p>Do not keep your only backup in the same place as your site. If the host has a problem, or your account is locked or hacked, both the site and the backup can disappear together.</p>
+        <p>A sensible setup:</p>
+        <ul>
+          <li>One copy with your host, so a quick restore is easy.</li>
+          <li>One copy somewhere separate, such as a cloud storage account you control.</li>
+          <li>Access protected with a strong, unique password and two-step login.</li>
+        </ul>
+        <p>Make sure the backup is stored under your account, not only your web person's. If the relationship ends, you should still be able to reach your own files.</p>
+
+        <h2>How to test that a restore works</h2>
+        <p>This is the step almost everyone skips. A backup that cannot be restored is only a folder of files that makes you feel safe.</p>
+        <p>Test it like this:</p>
+        <ol>
+          <li><strong>Make a test copy of your site.</strong> Ask your host or web person for a staging site. That is a private duplicate of your site where you can experiment without touching the live one.</li>
+          <li><strong>Restore your latest backup onto the test copy.</strong> Do not restore over your live site for a test.</li>
+          <li><strong>Click through it.</strong> Open the home page, a few service pages, and your contact form. Send a test message and check that it arrives.</li>
+          <li><strong>Check the newest content.</strong> Look for something you added recently, like a new blog post or a changed phone number. If it is missing, your backup is older than you think.</li>
+          <li><strong>Check the extras.</strong> Make sure images load, the booking tool works, and the address and hours are right.</li>
+          <li><strong>Write down how long it took and who did it.</strong> If the answer is "nobody knows how," you have found a gap worth fixing now.</li>
+        </ol>
+        <p>Do this at least a couple of times a year, and again after any big change to your site or hosting. Set a calendar reminder so it does not slip.</p>
+
+        <h2>Signs your backup plan has a hole</h2>
+        <ul>
+          <li>You cannot say where your backups are stored.</li>
+          <li>Nobody has ever restored one.</li>
+          <li>The only copy is on your host's server.</li>
+          <li>The backup was set up years ago and nobody has looked at it since.</li>
+          <li>Your site collects form leads or orders, but backups run rarely.</li>
+        </ul>
+        <p>If two or more of those sound familiar, fix that first. Backups also fit into a bigger routine. Our <a href="/blog/website-maintenance-checklist-small-business/">website maintenance checklist</a> shows where they sit alongside updates, security and content checks, and our post on <a href="/blog/how-often-should-i-update-my-website/">how often to update your website</a> explains why updates are the moment you most need a fresh copy.</p>
+
+        <h2>Doing it yourself or having someone handle it</h2>
+        <p>You can set up backups yourself if your host offers a simple tool and you are comfortable following steps. The hard part is not the setup. It is remembering to check it and test it.</p>
+        <p>That is why many owners hand it off. Backups, updates and restore tests are part of what we do in <a href="/website-care/">our monthly website care</a>. If you are not sure what you have today, <a href="/check/">the free site check</a> is a good place to start.</p>
+
+        <h2 id="faq">Common questions</h2>
+        <div class="faq">
+          <details>
+            <summary>Is my web host's backup enough?</summary>
+            <p>It is a good first layer, but not enough alone. If the backup lives only on your host's server, a host problem or locked account can take both away. Keep a second copy somewhere separate that you control.</p>
+          </details>
+          <details>
+            <summary>Do I need to back up a simple five-page brochure site?</summary>
+            <p>Yes. It may change rarely, but rebuilding the text, photos and settings from scratch takes real time. A backup before each change and a regular automatic copy is usually enough.</p>
+          </details>
+          <details>
+            <summary>What is the difference between a backup and a restore?</summary>
+            <p>A backup is the saved copy. A restore is the act of putting that copy back to bring your site back. You need both to work, which is why testing a restore matters.</p>
+          </details>
+          <details>
+            <summary>Can a backup bring back a hacked site?</summary>
+            <p>It can, if you restore a copy from before the problem began. You also need to fix how the attacker got in, such as an outdated plugin or a weak password, or it can happen again.</p>
+          </details>
+          <details>
+            <summary>Who should have access to the backups?</summary>
+            <p>You should, as the business owner, even if someone else manages them. Keep the logins in a password manager and share access only with people you trust.</p>
+          </details>
+        </div>
+
+        <div class="cta-band">
+          <h2>Not sure your backups would actually work?</h2>
+          <p>We can look at your site and tell you where you stand, with no pressure and no jargon. Start with the free check.</p>
+          <a class="btn" href="/check/">Get my free site check <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      <!-- shared:post-follow -->
+      <div class="pref-source">
+        <p>Want more of our posts in your Google results? Google says it shows more from the sources you pick in Top Stories.</p>
+        <a href="https://www.google.com/preferences/source?q=avellolabs.com" rel="noopener"><img src="/assets/google-preferred-source.png" width="169" height="54" alt="Add Avello Labs as a preferred source on Google"></a>
+      </div>
+      <!-- /shared:post-follow -->
+      </article>
+      <!-- shared:post-aside -->
+      <aside class="aside" aria-label="Related">
+      <div class="aside-card">
+        <h2>Free site check</h2>
+        <p>The free site check scores 10 SEO and AEO basics on any page in a few seconds.</p>
+        <a class="btn" href="/check/">Free site check</a>
+      </div>
+      <div class="aside-card">
+        <h2>Free tools</h2>
+        <ul>
+          <li><a href="/tools/ai-crawler-check/">AI crawler check</a></li>
+          <li><a href="/tools/search-preview/">Search preview</a></li>
+          <li><a href="/tools/schema-generator/">Business schema generator</a></li>
+          <li><a href="/tools/">See all free tools</a></li>
+        </ul>
+      </div>
+      <div class="aside-card">
+        <h2>More from the blog</h2>
+        <ul>
+          <li><a href="/blog/south-jersey-small-business-seo/">South Jersey small business SEO: how to win local searches</a></li>
+          <li><a href="/blog/robots-txt-guide-local-business/">Robots.txt basics: what a local business owner should check</a></li>
+          <li><a href="/blog/search-console-api-branded-data/">Google adds branded and image search data to the Search Console API</a></li>
+        </ul>
+      </div>
+      </aside>
+      <!-- /shared:post-aside -->
+    </div>
+  </div>
+</main>
+
+<!-- shared:footer -->
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="/brand/logo-horizontal-dark.svg" width="337" height="64" alt="Avello Labs">
+        <p>Custom websites for small local businesses, with monthly care, SEO and AEO.</p>
+      </div>
+      <div>
+        <h2>Services</h2>
+        <ul>
+          <li><a href="/seo/">SEO</a></li>
+          <li><a href="/aeo/">AEO</a></li>
+          <li><a href="/website-care/">Website care</a></li>
+          <li><a href="/web-apps/">Web apps</a></li>
+          <li><a href="/web-apps/#custom-software">Custom software</a></li>
+        </ul>
+        <h2 class="foot-sub">Common problems</h2>
+        <ul>
+          <li><a href="/cant-find-us/">Can&#x27;t find us online</a></li>
+          <li><a href="/no-calls/">Website not bringing in calls</a></li>
+          <li><a href="/too-much-admin/">Too much admin by hand</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Free tools</h2>
+        <ul>
+          <li><a href="/check/">Free site check</a></li>
+          <li><a href="/tools/search-preview/">Search preview</a></li>
+          <li><a href="/tools/ai-crawler-check/">AI crawler check</a></li>
+          <li><a href="/tools/schema-generator/">Schema generator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Company</h2>
+        <ul>
+          <li><a href="/#real-work">Our work</a></li>
+          <li><a href="/blog/">Blog</a></li>
+          <li><a href="/#contact">Contact</a></li>
+          <li><a href="/privacy/">Privacy policy</a></li>
+          <li><a href="/terms/">Terms of use</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Contact</h2>
+        <address>
+          <a href="mailto:harris@avellolabs.com">harris@avellolabs.com</a><br>
+          <a href="tel:+18564706300">856-470-6300</a><br>
+          Avello Labs LLC<br>
+          PO Box 141<br>
+          Collingswood, NJ 08108-9998
+        </address>
+      </div>
+    </div>
+    <form class="nl-form" novalidate aria-labelledby="foot-nl-h">
+      <h2 class="nl-title" id="foot-nl-h">Website tips, about once a month</h2>
+      <p class="nl-sub">Practical website and search tips for small businesses. No spam.</p>
+      <div class="hp" aria-hidden="true"><label for="foot-nl-bot">Leave this box unticked</label><input type="checkbox" id="foot-nl-bot" name="botcheck" tabindex="-1" autocomplete="off"></div>
+      <div class="nl-fields">
+        <div class="field"><label for="foot-nl-name">Name <small>(optional)</small></label><input id="foot-nl-name" name="name" autocomplete="name" maxlength="80"></div>
+        <div class="field"><label for="foot-nl-email">Email</label><input id="foot-nl-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="120" required></div>
+        <button class="btn" type="submit">Send me the tips</button>
+      </div>
+      <label class="nl-consent"><input type="checkbox" name="consent" required> <span>Send me the Avello Labs newsletter: practical website and search tips for small businesses, about once a month. Unsubscribe anytime by replying &quot;unsubscribe&quot; or emailing harris@avellolabs.com.</span></label>
+      <p class="form-status" role="status" aria-live="polite"></p>
+      <p class="nl-note">We only use your email for the newsletter. See our <a href="/privacy/#newsletter">privacy policy</a>.</p>
+    </form>
+    <div class="foot-bottom">
+      <span>© <span data-year>2026</span> Avello Labs LLC. All rights reserved.</span>
+      <span><a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/site.js" defer></script>
+<script src="/assets/newsletter.js" data-ticket="https://avello-check.avellolabs.workers.dev/ticket/newsletter" data-alerts="https://avello-alerts.avellolabs.workers.dev/lead" data-web3forms="a6955225-5ff5-4562-ae2d-dfda9193580a" defer></script>
+<link rel="stylesheet" href="/assets/chat.css">
+<script src="/assets/chat.js" data-endpoint="https://avello-chat.avellolabs.workers.dev/chat" data-web3forms="a6955225-5ff5-4562-ae2d-dfda9193580a" data-alerts="https://avello-alerts.avellolabs.workers.dev/lead" defer></script>
+<script src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "c13465b4292f4925a76c38488a1eff2e"}' defer></script>
+<!-- /shared:footer -->
+</body>
+</html>
