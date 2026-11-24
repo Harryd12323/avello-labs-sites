@@ -45,6 +45,18 @@ python3 scripts/site.py keywords                # the search keyword each page o
 python3 scripts/site.py check-keyword "..."     # the pages a new keyword would compete with
 ```
 
+Pictures are free Unsplash photos, saved to our own copy in `assets/blog/<slug>/` as small WebP files with the
+photographer's credit under them (`scripts/blogimage.py`; needs Pillow, `pip install pillow`). The hero is also the
+post's link preview image (`og:image`) and the Article schema's image.
+
+```sh
+python3 scripts/site.py post-image /blog/my-post/ https://unsplash.com/photos/<id> "Alt text" "Photographer" username
+python3 scripts/site.py post-figure /blog/my-post/ https://unsplash.com/photos/<id> "Alt text" "Photographer" username "Heading it goes above"
+```
+
+A post in the text format carries its hero in `Image:`, `Image alt:` and `Image credit: Name | username` lines, and
+`import-post` adds it. Running a command again swaps the picture.
+
 `sync` fills in each post's byline and reading time, its Article schema, the related links beside it and the
 list on `/blog/`. While nothing is published, `/blog/` itself carries noindex and lists the drafts for review;
 after that it lists published posts only. If a published post links to a draft in its text, `sync` prints a

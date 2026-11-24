@@ -32,6 +32,13 @@ Commands (run from the repo root, Python 3 only, nothing to install):
     python3 scripts/site.py import-post post.txt
         Builds a draft post page from that text format (it must pass check-post first), then runs sync.
 
+    python3 scripts/site.py post-image /blog/my-post/ https://unsplash.com/photos/<id> "Alt text" "Photographer" username
+    python3 scripts/site.py post-figure /blog/my-post/ https://unsplash.com/photos/<id> "Alt text" "Photographer" username "A heading"
+        Gives a post its picture from Unsplash: the hero at the top (also its link preview image), or one picture in
+        the text above that section. Saved to assets/blog/<slug>/ as small WebP files, with the photographer's
+        credit (scripts/blogimage.py; needs Pillow). A post written in the text format carries its hero in
+        "Image:", "Image alt:" and "Image credit:" lines instead, and import-post adds it.
+
     python3 scripts/site.py problems
         Checks every problem page text file in scripts/problems/ (format: scripts/problems.py), builds each page,
         then runs sync (which also refreshes the homepage's problem buttons). Exits 1 if a file breaks a rule.
@@ -176,9 +183,12 @@ def social_tags(text, url):
     desc = _meta(own, "property", "og:description") or _meta(own, "name", "description") or HOME_DESCRIPTION
     basics = {"og:type": "website", "og:site_name": "Avello Labs", "og:title": title, "og:description": desc, "og:url": SITE + url}
     tags = [("property", k, v) for k, v in basics.items() if not _meta(own, "property", k)]
-    tags += [("property", "og:image", OG_IMAGE), ("property", "og:image:width", "1200"), ("property", "og:image:height", "630"),
-             ("property", "og:image:alt", OG_IMAGE_ALT), ("name", "twitter:card", "summary_large_image"),
-             ("name", "twitter:title", title), ("name", "twitter:description", desc), ("name", "twitter:image", OG_IMAGE)]
+    # A blog post with a picture (scripts/blogimage.py) shares that picture; every other page shares the logo image.
+    picture = post_image(own)
+    image, alt = (SITE + picture["og"], picture["alt"]) if picture else (OG_IMAGE, OG_IMAGE_ALT)
+    tags += [("property", "og:image", image), ("property", "og:image:width", "1200"), ("property", "og:image:height", "630"),
+             ("property", "og:image:alt", alt), ("name", "twitter:card", "summary_large_image"),
+             ("name", "twitter:title", title), ("name", "twitter:description", desc), ("name", "twitter:image", image)]
     return "\n".join(f'<meta {attr}="{k}" content="{html.escape(v)}">' for attr, k, v in tags)
 
 
@@ -391,6 +401,30 @@ def _strip_blocks(text):
     return re.sub(r"<!-- shared:([\w-]+) -->.*?<!-- /shared:\1 -->", "", text, flags=re.S)
 
 
+def post_image(text):
+    """A post's picture, from its head (see scripts/blogimage.py): {"base", "og", "alt", "name", "user", "id"}, or
+    None if it has none or its files are missing."""
+    base, alt = _meta(text, "name", "blog:image"), _meta(text, "name", "blog:image-alt")
+    credit = _meta(text, "name", "blog:image-credit").split("|")
+    if not re.fullmatch(r"/assets/blog/[a-z0-9-]+/hero", base) or not alt or len(credit) != 3:
+        return None
+    folder = base.rsplit("/", 1)[0]
+    if not (ROOT / folder.strip("/") / "og.jpg").exists():
+        return None
+    return {"base": folder, "og": f"{folder}/og.jpg", "alt": alt, "name": credit[0], "user": credit[1], "id": credit[2]}
+
+
+def post_hero(post):
+    """The picture at the top of a post, with its "Photo by X on Unsplash" credit (empty for a post without one)."""
+    pic = post["image"]
+    if not pic:
+        return "<!-- shared:post-hero --><!-- /shared:post-hero -->"
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import blogimage
+    return ("<!-- shared:post-hero -->\n" + blogimage.figure(pic["base"], blogimage.HERO, pic["alt"], pic["name"], pic["user"])
+            + "\n        <!-- /shared:post-hero -->")
+
+
 def blog_posts():
     """Every post under /blog/, newest first, with the details sync needs. Exits on a post with missing details."""
     posts = []
@@ -420,6 +454,7 @@ def blog_posts():
             "words": words, "minutes": max(1, math.ceil(words / WORDS_PER_MINUTE)),
             "keyword": _meta(text, "name", "blog:keyword"),
             "news": _meta(text, "name", "blog:type") == "news",
+            "image": post_image(text),
             "faq": [tuple(html.unescape(re.sub(r"<[^>]+>", "", x)).strip() for x in pair) for pair in qa],
         })
     return sorted(posts, key=lambda p: (p["published"], p["url"]), reverse=True)
@@ -457,6 +492,8 @@ def blog_head(post, posts):
             "timeRequired": f"PT{post['minutes']}M",
             "isPartOf": {"@type": "Blog", "name": BLOG_NAME, "url": SITE + "/blog/"},
         }
+        if post["image"]:
+            schema["image"] = [SITE + post["image"]["og"], f'{SITE}{post["image"]["base"]}/hero-1600.webp']
         lines.append('<script type="application/ld+json">\n' + json.dumps(schema, indent=2, ensure_ascii=False).replace("</", "<\\/") + "\n</script>")
         if post["faq"]:
             faq = {"@context": "https://schema.org", "@type": "FAQPage",
@@ -731,6 +768,9 @@ def sync():
             if "<!-- shared:post-follow -->" not in text:
                 text = re.sub(r"(\s*)</article>", r"\1<!-- shared:post-follow --><!-- /shared:post-follow -->\1</article>", text, count=1)
             text = replace_block(text, "post-follow", preferred_source("post-follow"), f)
+            if "<!-- shared:post-hero -->" not in text:
+                text = text.replace('<article class="prose">', '<article class="prose">\n        <!-- shared:post-hero --><!-- /shared:post-hero -->', 1)
+            text = replace_block(text, "post-hero", post_hero(post), f)
         f.write_text(text)
         print("synced", url)
     # Links written into a published post's text are the author's, so they're only flagged, never changed.
@@ -886,6 +926,7 @@ def post_page(url, title, headline, desc, lede, article, keyword="", news=False)
   <div class="page-body">
     <div class="wrap page-grid">
       <article class="prose">
+        <!-- shared:post-hero --><!-- /shared:post-hero -->
 {article}
       <!-- shared:post-follow --><!-- /shared:post-follow -->
       </article>
@@ -1015,7 +1056,25 @@ def import_post(path):
                              blogpost.inline(f["Lede"], blogpost.source_of(f)), blogpost.body_html(post_), f["Keyword"].lower(),
                              blogpost.is_news(f)))
     print("created", out)
+    if f.get("Image"):
+        add_picture("hero", url, f["Image"], f.get("Image alt", ""), *blogpost.credit_parts(f.get("Image credit", "")), run_sync=False)
     sync()
+
+
+def add_picture(kind, url, photo, alt, name, user, heading=None, run_sync=True):
+    """Give a post its hero picture, or one picture in its text (scripts/blogimage.py), then sync."""
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import blogimage
+    try:
+        if kind == "hero":
+            blogimage.add_hero(ROOT, url, photo, alt, name, user)
+        else:
+            blogimage.add_figure(ROOT, url, photo, alt, name, user, heading)
+    except blogimage.ImageError as e:
+        sys.exit(f"The picture wasn't added: {e}")
+    print("picture added to", url)
+    if run_sync:
+        sync()
 
 
 def publish(url):
@@ -1045,6 +1104,10 @@ if __name__ == "__main__":
         sys.exit(0 if check_post(sys.argv[2])["ok"] else 1)
     elif len(sys.argv) == 3 and sys.argv[1] == "import-post":
         import_post(sys.argv[2])
+    elif len(sys.argv) == 7 and sys.argv[1] == "post-image":
+        add_picture("hero", *sys.argv[2:])
+    elif len(sys.argv) == 8 and sys.argv[1] == "post-figure":
+        add_picture("figure", *sys.argv[2:])
     elif len(sys.argv) == 3 and sys.argv[1] == "check-keyword":
         blogpost = post_rules()[0]
         print(json.dumps([{"url": u, "keyword": k} for u, k in taken_keywords() if blogpost.too_close(sys.argv[2], k)]))

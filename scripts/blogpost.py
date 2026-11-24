@@ -39,6 +39,13 @@ one passage, under 15 words. Quoted text under 5 words counts as a term ("AI Mod
 A news post's keyword is checked against the pages that own one, but it never owns it itself, so it can't block a
 later regular post (scripts/site.py taken_keywords).
 
+Any post may carry its picture, a free Unsplash photo, in three more header lines (all three or none). import-post
+saves it to our own copy as the post's hero and link preview image, with the credit (scripts/blogimage.py):
+
+    Image: https://unsplash.com/photos/abc123DEF45
+    Image alt: A plumber's van parked outside a brick house
+    Image credit: Photographer Name | username
+
 Used by scripts/site.py (import-post, check-post). Python 3 stdlib only.
 """
 import html
@@ -46,7 +53,8 @@ import math
 import re
 
 HEADERS = ["Title", "Headline", "Description", "Keyword", "Slug", "Service page", "Lede"]
-OPTIONAL = ["Type", "Source"]  # news posts only
+OPTIONAL = ["Type", "Source",                      # news posts only
+            "Image", "Image alt", "Image credit"]  # the post's picture (any post; see below)
 FAQ_HEADING = "Common questions"
 SUFFIX = " | Avello Labs"
 ARROW = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" '
@@ -175,6 +183,12 @@ def parse(text):
         j += 1
     flush()
     return {"fields": fields, "blocks": blocks}
+
+
+def credit_parts(value):
+    """("Photographer Name", "username") from an "Image credit:" line."""
+    parts = [p.strip() for p in (value or "").split("|")]
+    return (parts + ["", ""])[:2]
 
 
 def is_news(fields):
@@ -319,6 +333,9 @@ def check(text, pages=(), anchors=(), taken=()):
             problems.append("The source must be the original story's full https:// address.")
         elif any(host == bad or host.endswith("." + bad) for bad in NOT_SOURCES):
             problems.append(f"The source must be the original story, not {host}.")
+    if any(f.get(k) for k in ("Image", "Image alt", "Image credit")):
+        import blogimage
+        problems += blogimage.problems(f.get("Image", ""), f.get("Image alt", ""), *credit_parts(f.get("Image credit", "")))
     title, headline, desc = f.get("Title", ""), f.get("Headline", ""), f.get("Description", "")
     keyword, slug, service = f.get("Keyword", "").lower(), f.get("Slug", ""), f.get("Service page", "")
     if title and len(title + SUFFIX) > MAX_TITLE:
@@ -398,7 +415,7 @@ def check(text, pages=(), anchors=(), taken=()):
         problems.append(f"The service page {service} doesn't exist.")
 
     body = text.split("\n")
-    prose = "\n".join(line for line in body if not re.match(r"^(Slug|Keyword|Service page|Type|Source):", line))
+    prose = "\n".join(line for line in body if not re.match(r"^(Slug|Keyword|Service page|Type|Source|Image|Image credit):", line))
     if DASHES.search(prose):
         problems.append("Uses an em dash, en dash or a spaced hyphen as punctuation. Use a period or comma.")
     low = prose.lower()

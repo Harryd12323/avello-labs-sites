@@ -131,6 +131,34 @@ class BlogBuild(unittest.TestCase):
         self.assertIn("3 min read", self.read("/blog/test-post/"))  # 461 words at 230 a minute, rounded up
         self.assertEqual(self.schema("/blog/test-post/")["wordCount"], 461)
 
+    def test_a_post_with_a_picture_shows_it_credits_it_and_shares_it(self):
+        self.run_site("post", "/blog/test-post/", "Test post", "A test.")
+        f, folder = self.page("/blog/test-post/"), self.site / "assets" / "blog" / "test-post"
+        folder.mkdir(parents=True, exist_ok=True)
+        for name in ("hero-800.webp", "hero-1600.webp", "og.jpg"):
+            (folder / name).write_bytes(b"x")
+        metas = ('<meta name="blog:image" content="/assets/blog/test-post/hero">\n'
+                 '<meta name="blog:image-alt" content="A plumber&#x27;s van outside a house">\n'
+                 '<meta name="blog:image-credit" content="Ana Diaz|anadiaz|abc123DEF45">\n')
+        f.write_text(f.read_text().replace("<!-- shared:blog-head -->", metas + "<!-- shared:blog-head -->", 1))
+        self.run_site("sync")
+        page = self.read("/blog/test-post/")
+        self.assertIn('<meta property="og:image" content="https://avellolabs.com/assets/blog/test-post/og.jpg">', page)
+        self.assertIn('<meta name="twitter:image" content="https://avellolabs.com/assets/blog/test-post/og.jpg">', page)
+        self.assertEqual(self.schema("/blog/test-post/")["image"][0], "https://avellolabs.com/assets/blog/test-post/og.jpg")
+        hero = re.search(r"<!-- shared:post-hero -->(.*?)<!-- /shared:post-hero -->", page, re.S).group(1)
+        self.assertIn('alt="A plumber&#x27;s van outside a house"', hero)
+        self.assertIn('width="1600" height="900"', hero)
+        self.assertIn('Photo by <a href="https://unsplash.com/@anadiaz?utm_source=avello_labs&amp;utm_medium=referral" rel="noopener">Ana Diaz</a>', hero)
+        self.assertIn('on <a href="https://unsplash.com/?utm_source=avello_labs&amp;utm_medium=referral"', hero)
+        # a post without a picture keeps the logo preview image and gets no figure
+        other = self.read(POSTS[0]) if not (self.site / "assets" / "blog" / POSTS[0].strip("/").split("/")[1]).exists() else ""
+        if other:
+            self.assertIn('<meta property="og:image" content="https://avellolabs.com/assets/og-image.png">', other)
+            self.assertNotIn("<figure", other)
+        # the picture never counts towards the reading time
+        self.assertEqual(self.schema("/blog/test-post/")["wordCount"], 4)  # the draft's own 4 placeholder words
+
     def test_preferred_source_badge_on_posts_and_the_blog_list(self):
         self.run_site("post", "/blog/test-post/", "Test post", "A test.")
         f = self.page("/blog/test-post/")
@@ -243,6 +271,16 @@ class PostFormat(unittest.TestCase):
         self.assertEqual(blocks[1]["mainEntity"][0]["name"], "Can I pay to be recommended by ChatGPT?")
         self.assertIn("ChatGPT decides its own answers", blocks[1]["mainEntity"][0]["acceptedAnswer"]["text"])
         self.assertIn(NOINDEX, page)
+
+    def test_picture_lines_are_checked(self):
+        head = "Lede:"
+        good = ("Image: https://unsplash.com/photos/a-white-van-OL84QWu3Ong\nImage alt: A white van parked on the side of the road\n"
+                "Image credit: Mathias Reding | matreding\n")
+        self.assertEqual(self.problems(sample_post().replace(head, good + head, 1)), [])
+        bad = "Image: https://example.com/van.jpg\nImage alt: Van\nImage credit: Mathias Reding\n"
+        found = " ".join(self.problems(sample_post().replace(head, bad + head, 1)))
+        for words in ("Unsplash photo page", "alt text", "username"):
+            self.assertIn(words, found)
 
     def test_the_chat_call_to_action_opens_the_chat(self):
         text = sample_post().replace("| Run a free site check | /check/", "| Ask the chat | chat")

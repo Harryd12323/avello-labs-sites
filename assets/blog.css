@@ -30,6 +30,14 @@
 .post-card:hover .post-go svg { transform: translateX(3px); }
 .post-empty { color: var(--muted); }
 
+/* Pictures in a post: the hero at the top and any in the text, each with its photo credit */
+.post-figure { margin: 2.25rem 0 0; }
+.post-figure.post-hero-img { margin: 0 0 1.75rem; }
+.post-figure img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-2); }
+.post-figure figcaption { margin-top: .5rem; color: var(--muted); font-size: .8rem; }
+.prose .post-figure figcaption a { color: var(--muted); text-decoration-color: var(--line-bright); }
+.prose .post-figure figcaption a:hover { color: var(--text); }
+
 /* Post body extras */
 .prose code { padding: .1rem .35rem; border: 1px solid var(--line); border-radius: 6px; background: var(--bg-2); color: var(--text);
               font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .88em; overflow-wrap: anywhere; }
