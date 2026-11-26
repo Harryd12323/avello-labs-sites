@@ -344,7 +344,7 @@ class PostFormat(unittest.TestCase):
     def test_check_keyword_names_the_pages_it_would_compete_with(self):
         hits = json.loads(self.run_site("check-keyword", "what is aeo").stdout)
         self.assertEqual([h["url"] for h in hits], ["/aeo/"])
-        self.assertEqual(json.loads(self.run_site("check-keyword", "how to show up on google maps").stdout), [])
+        self.assertEqual(json.loads(self.run_site("check-keyword", "how to write a website privacy policy").stdout), [])
 
     def test_sitemap_dates_come_from_git_in_a_clone(self):
         git = lambda *a, **env: subprocess.run(["git", "-C", str(self.site), *a], capture_output=True, text=True,
@@ -564,6 +564,16 @@ class QuestionPages(unittest.TestCase):
         self.assertIn(self.url, (self.site / "sitemap.xml").read_text())
         self.assertIn(f'href="{self.url}"', self.read("/faq/"))
 
+    def test_a_source_link_shows_under_the_answer_and_must_be_https(self):
+        phones = self.site / "scripts" / "questions" / "does-my-website-need-to-work-on-phones.txt"
+        self.assertEqual(self.run_site("questions").returncode, 0)
+        page = self.read("/questions/does-my-website-need-to-work-on-phones/")
+        self.assertIn('<p class="source-line">Source: <a class="text-link" href="https://developers.google.com/search/docs/crawling-indexing/mobile/mobile-sites-mobile-first-indexing"', page)
+        phones.write_text(phones.read_text().replace("Source: https://", "Source: http://"))
+        r = self.run_site("questions")
+        self.assertEqual(r.returncode, 1)
+        self.assertIn("Source: must be a full https://", r.stdout)
+
     def test_rule_breaking_files_are_refused(self):
         text = self.src.read_text()
         cases = {"Haddon Township": text.replace("Cherry Hill", "Haddon Township"),
@@ -593,6 +603,80 @@ class QuestionPages(unittest.TestCase):
         self.assertEqual(self.run_site("sync").returncode, 0)
         self.assertIn('href="https://g.page/r/example"', self.read("/about/"))
         self.assertIn('"sameAs": ["https://g.page/r/example"]', self.read("/seo/"))
+
+
+
+class PlansAndIndustries(unittest.TestCase):
+    """The monthly plans (settings in site.py), industry pages and the live-never-links-to-drafts rule."""
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp())
+        self.site = self.tmp / "site"
+        shutil.copytree(ROOT, self.site, ignore=LEAVE_OUT)
+        self.script = self.site / "scripts" / "site.py"
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp)
+
+    def run_site(self, *args):
+        return subprocess.run([sys.executable, str(self.script), *args], capture_output=True, text=True)
+
+    def read(self, url):
+        return (self.site / (url.strip("/") or ".") / "index.html").read_text()
+
+    def setting(self, name, value):
+        self.script.write_text(re.sub(rf"^{name} = .*$", f"{name} = {value}", self.script.read_text(), count=1, flags=re.M))
+
+    def test_growth_price_placeholder_and_care_prices_come_from_settings(self):
+        self.setting("GROWTH_PRICE", '""')
+        r = self.run_site("sync")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("GROWTH_PRICE is empty", r.stdout)
+        self.assertIn("Quoted for your business", self.read("/plans/"))
+        self.setting("GROWTH_PRICE", '"$777"')
+        self.setting("CARE_PLANS", '[("Basic", "$11"), ("Pro", "$22"), ("Premium", "$33")]')
+        r = self.run_site("sync")
+        self.assertNotIn("GROWTH_PRICE is empty", r.stdout)
+        for url in ["/", "/plans/", "/industries/dentists/"]:
+            page = self.read(url)
+            self.assertIn("$777<small>/mo</small>", page, url)
+            self.assertNotIn("Quoted for your business", page, url)
+        home = self.read("/")
+        self.assertIn('<span class="care-price">$22<small>/mo</small></span>', home)
+        self.assertIn("Monthly plans from $11", home)  # the plan strip above every footer
+        self.assertIn('data-prices="{&quot;Basic&quot;: 11.0, &quot;Pro&quot;: 22.0', self.read("/tools/website-cost-calculator/"))
+
+    def test_industry_pages_have_their_parts_and_hide_draft_links(self):
+        r = self.run_site("industries")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertNotIn("WARNING", r.stdout)
+        page = self.read("/industries/dentists/")
+        for part in ['class="plan-cards"', 'id="promise-h"', 'class="faq"', 'href="/industries/hvac/"', '"@type": "Service"']:
+            self.assertIn(part, page)
+        drafts = [u for u in re.findall(r'href="(/questions/[^"]+)"', page)]
+        self.assertEqual(drafts, [], "a live industry page links to a draft question page")
+        self.assertIn('href="/industries/dentists/"', self.read("/industries/"))
+        # Publishing a question brings its link back.
+        q = self.site / "scripts" / "questions" / "how-to-get-more-google-reviews.txt"
+        q.write_text(q.read_text().replace("Draft: yes", "Draft: no"))
+        r = self.run_site("questions")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn('href="/questions/how-to-get-more-google-reviews/"', self.read("/industries/dentists/"))
+        self.assertIn("/questions/how-to-get-more-google-reviews/", (self.site / "sitemap.xml").read_text())
+
+    def test_a_live_page_linking_to_a_draft_is_flagged(self):
+        about = self.site / "about" / "index.html"
+        about.write_text(about.read_text().replace("<h2 id=\"company\">", '<p><a href="/questions/seo-vs-aeo/">x</a></p><h2 id="company">', 1))
+        self.run_site("questions")
+        r = self.run_site("sync")
+        self.assertIn("WARNING: /about/ is live but links to /questions/seo-vs-aeo/", r.stdout)
+
+    def test_every_page_carries_local_business_and_service_schema(self):
+        self.assertEqual(self.run_site("sync").returncode, 0)
+        for url in ["/", "/seo/", "/blog/", "/faq/", "/industries/roofers/"]:
+            page = self.read(url)
+            self.assertIn('"@type": "ProfessionalService"', page, url)
+            self.assertIn('"itemOffered": {"@type": "Service"', page, url)
 
 
 if __name__ == "__main__":

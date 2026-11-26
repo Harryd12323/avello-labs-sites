@@ -1,0 +1,35 @@
+URL: /questions/what-are-google-ai-overviews/
+Question: What are Google AI Overviews, and do they affect my business?
+Crumb: Google AI Overviews
+Title: What Are Google AI Overviews? A Local Guide
+Description: AI Overviews are the AI-written summaries Google shows above many results. What they mean for a local business, and how to give yourself a better chance.
+Keyword: what are google ai overviews
+Draft: yes
+TLDR: AI Overviews are short AI-written answers Google shows at the top of some searches, with links to the sources. Google says the same SEO basics apply. There's no special trick to get in.
+Offer: review
+Related: /aeo/ | Getting named in AI answers
+Related: /questions/will-ai-replace-google-search/ | Will AI search replace Google?
+Related: /blog/ads-in-google-ai-answers/ | Ads in Google's AI answers
+Related: /seo/ | How local SEO works
+
+## The short answer
+AI Overviews are the summaries Google writes with AI and shows above the regular results for some searches. They answer the question directly and link to the pages they drew from.
+
+For a local business, they matter because people may read the summary before they ever see the list of businesses. If your site is one of the sources, your name can come up there.
+
+## How to give yourself a better chance
+Google's guidance for site owners says there are no extra requirements to appear in AI Overviews. The usual SEO basics apply.
+- Pages Google can crawl and index, with the main text in the page.
+- Clear answers to the questions customers ask, in their own words.
+- Accurate business details that match your Google Business Profile.
+
+## What we do about it
+On our Growth plan we add a page or post each month aimed at something your customers search for. Each month we also check how you show up on Google and in AI answers. We do that for businesses in Cherry Hill and across South Jersey. See the [monthly plans](/plans/).
+
+## Common questions
+Q: Can I turn off AI Overviews for my site?
+A: Google offers settings such as nosnippet that limit how your content is shown, but they can also limit your regular listing. For most local businesses it's better to be included.
+Q: Do AI Overviews show for every search?
+A: No. Google shows them for some searches and not others, and that changes over time.
+Q: Will AI Overviews mean fewer people visit my website?
+A: Some quick questions may get answered on Google itself. People looking to hire someone nearby still need to pick a business and contact it.

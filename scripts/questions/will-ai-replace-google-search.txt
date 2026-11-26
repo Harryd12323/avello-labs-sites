@@ -1,0 +1,34 @@
+URL: /questions/will-ai-replace-google-search/
+Question: Will AI search replace Google for local businesses?
+Crumb: Will AI replace Google
+Title: Will AI Replace Google for Local Businesses?
+Description: AI tools are changing how people search, but Google is adding AI too. Why a local business should get found in both places, and what that takes.
+Keyword: will ai search replace google
+Draft: yes
+TLDR: Nobody knows for sure. What's clear today is that people use both, and Google itself now answers many searches with AI. The same groundwork helps you show up in either.
+Offer: review
+Related: /aeo/ | Getting named in AI answers
+Related: /questions/seo-vs-aeo/ | SEO vs AEO
+Related: /questions/what-are-google-ai-overviews/ | What are Google AI Overviews?
+Related: /blog/google-ai-mode-home-services-booking/ | Google AI Mode and home services
+
+## The short answer
+Nobody can tell you for sure, and we'd be wary of anyone who claims to. Right now people use both. Some ask ChatGPT for a recommendation. Many still search Google, and Google now shows AI-written summaries, called AI Overviews, above a lot of its results.
+
+So it isn't really one or the other. The question is whether your business shows up in both.
+
+## What stays the same
+AI tools build their answers from what they can find on the web: your website, your Google Business Profile, reviews and other sites that mention you. Those are the same things that help you on Google. Clear facts, matching details everywhere and a good reputation help wherever people look.
+
+## What to do now
+Make sure AI tools can read your site. Some sites block the crawlers AI tools use, by accident. Our free [AI crawler check](/tools/ai-crawler-check/) tells you in a few seconds. Then keep your details right and your pages clear.
+
+Our Growth plan includes a monthly check of how you show up on Google and in AI answers, for businesses in Cherry Hill and across South Jersey. See the [monthly plans](/plans/).
+
+## Common questions
+Q: Should I stop working on Google and focus on AI?
+A: No. Google is still where many people search, and the work overlaps a lot. Good SEO is most of good AEO.
+Q: How do I see what AI says about my business?
+A: Ask a few AI tools the questions your customers would ask, like “best plumber in Cherry Hill”. Try different wording, and check again every so often.
+Q: Can I pay to be recommended by AI?
+A: Some AI tools are starting to show ads, labeled as ads. The regular answers are decided by the tools themselves.

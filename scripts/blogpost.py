@@ -86,7 +86,10 @@ BANNED = ["seamless", "seamlessly", "elevate", "plain english", "leverage", "unl
           "cutting-edge", "world-class", "state-of-the-art", "our team", "the team", "tailored", "harness",
           "empower", "look no further", "rest assured", "in conclusion", "dive in", "deep dive", "unleash",
           "supercharge", "skyrocket", "next level", "next-level", "it's not just", "isn't just", "not just about",
-          "navigate the", "the world of", "embark", "journey", "treasure trove", "testament to"]
+          "navigate the", "the world of", "embark", "journey", "treasure trove", "testament to",
+          # Added with docs/humanizer.md (2026-11-26)
+          "streamline", "revolutionize", "holistic", "synergy", "in the realm of", "when it comes to",
+          "at the end of the day", "take your business to the next level", "whether you're a"]
 BLOCKED_PLACES = ["Haddon Township", "Collingswood", "Haddonfield"]
 STATS = re.compile(r"\d\s*%|\bpercent\b|\bstudies (?:show|found)|\bresearch (?:shows|found)|\bsurveys? (?:show|found)|"
                    r"\baccording to (?:a|one|recent) (?:study|survey|report)|\bstatistic|\bon average\b|"

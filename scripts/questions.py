@@ -16,6 +16,8 @@ Text format (fields first, then sections):
     TLDR: One or two sentences: the whole answer for someone who reads nothing else.
     Offer: review | tool
     Related: /path/ | Link text         (any number)
+    Source: https://... | Link text     (optional: one outside source for a factual claim, like a Google guide; shown
+                                        as a "Source:" link under the short answer)
     ## The short answer                 (must come first: two to four sentences that answer the question directly)
     ## Any other section heading        then paragraphs, "- " bullets, "1. " steps, **bold**, [links](/path/)
     ## Common questions                 then pairs of lines: "Q: ..." and "A: ..." (at least 3 pairs)
@@ -31,6 +33,7 @@ import blogpost
 import problems
 
 FIELDS = ["URL", "Question", "Crumb", "Title", "Description", "Keyword", "Draft", "TLDR", "Offer"]
+OPTIONAL = ["Source"]
 ANSWER = "The short answer"
 FAQ = "Common questions"
 MIN_FAQ = 3
@@ -48,7 +51,7 @@ def parse(text):
     for raw in text.splitlines():
         line = raw.rstrip()
         m = re.match(r"^([A-Z][A-Za-z-]*): ?(.*)$", line)
-        if current is None and m and (m.group(1) in FIELDS or m.group(1) == "Related"):
+        if current is None and m and (m.group(1) in FIELDS + OPTIONAL or m.group(1) == "Related"):
             if m.group(1) == "Related":
                 related.append([x.strip() for x in m.group(2).split("|", 1)])
             else:
@@ -123,7 +126,10 @@ def check(text, pages, anchors, taken):
         bad.append(f"## {FAQ} needs at least {MIN_FAQ} Q:/A: pairs; it has {len(faq_pairs(faq['lines']))}.")
     elif any(not a for _, a in faq_pairs(faq["lines"])):
         bad.append(f"Every Q: in ## {FAQ} needs an A: line.")
-    links = [u for _, u in blogpost.LINK.findall(text)] + [r[0] for r in p["related"]]
+    source = source_url(f)
+    if f.get("Source") and not blogpost.SOURCE.match(source):
+        bad.append("Source: must be a full https:// address, then | and the link text.")
+    links = [u for _, u in blogpost.LINK.findall(text) if not (source and u == source)] + [r[0] for r in p["related"]]
     for link in links:
         target = link.split("#")[0] or "/"
         if not link.startswith("/") or link.startswith("//"):
@@ -133,13 +139,17 @@ def check(text, pages, anchors, taken):
         elif target.split("?")[0] not in pages:
             bad.append(f"There's no page at {link}.")
     prose = "\n".join(line for line in text.splitlines()
-                      if not re.match(r"^(URL|Keyword|Draft|Offer|Related):", line))
+                      if not re.match(r"^(URL|Keyword|Draft|Offer|Related|Source):", line))
     if REGION.lower() not in prose.lower():
         bad.append(f"Mention {REGION} somewhere in the page text.")
     if not any(t.lower() in prose.lower() for t in LOCAL_TOWNS):
         bad.append(f"Mention at least one nearby place: {', '.join(LOCAL_TOWNS)}.")
     bad += problems.copy_rules(prose)
     return list(dict.fromkeys(bad))
+
+
+def source_url(fields):
+    return fields.get("Source", "").split("|")[0].strip()
 
 
 def plain(text):
@@ -174,7 +184,12 @@ def page_html(text, site, brand, phone="", tel=""):
     t, d = html.escape(f["Title"] + SUFFIX), html.escape(f["Description"])
     robots = '\n<meta name="robots" content="noindex, follow">' if is_draft(f) else ""
     i8 = " " * 8
+    src = source_url(f)
+    src_label = (f.get("Source", "").split("|", 1) + [""])[1].strip() or "Source"
     answer = p["sections"][0]
+    answer_html = problems.section_html(answer["lines"], i8)
+    source_html = (f'\n{i8}<p class="source-line">Source: <a class="text-link" href="{html.escape(src)}" target="_blank" rel="noopener">'
+                   f'{html.escape(src_label)}</a></p>') if src else ""
     body = [s for s in p["sections"][1:] if s["heading"] != FAQ]
     faq = next(s for s in p["sections"] if s["heading"] == FAQ)
     sections = "\n\n".join(f'{i8}<h2>{blogpost.inline(s["heading"])}</h2>\n{problems.section_html(s["lines"], i8)}' for s in body)
@@ -224,7 +239,7 @@ def page_html(text, site, brand, phone="", tel=""):
         </div>
 
         <h2 id="answer">{html.escape(ANSWER)}</h2>
-{problems.section_html(answer["lines"], i8)}
+{answer_html}{source_html}
 
 {sections}
 

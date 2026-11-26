@@ -1,0 +1,36 @@
+URL: /questions/how-long-does-seo-take/
+Question: How long does SEO take to work?
+Crumb: How long SEO takes
+Title: How Long Does SEO Take to Work?
+Description: Small fixes can help within weeks. Real ranking gains usually take a few months of steady work. Here's what affects the timing for a local business.
+Keyword: how long does seo take to work
+Draft: yes
+TLDR: Small fixes, like correcting your business details, can help within weeks. Moving up for the searches that bring calls usually takes a few months of steady work.
+Offer: review
+Related: /seo/ | How local SEO works
+Related: /questions/is-seo-worth-it-for-a-small-business/ | Is SEO worth it for a small business?
+Related: /plans/ | Monthly plans
+Related: /blog/local-seo-checklist-small-businesses/ | Local SEO checklist
+
+## The short answer
+It depends on where you're starting and how many other businesses near you do the same thing. Quick fixes, like getting your hours, phone number and categories right, can help within a few weeks.
+
+Moving up for the searches that actually bring in calls takes longer. For most local businesses that means a few months of steady work, not a single big push.
+
+## What speeds it up or slows it down
+- **Where you start.** A site with broken pages or a half-filled Google Business Profile has easy wins waiting.
+- **Your competition.** A plumber in Cherry Hill is up against more names than a specialist with few rivals nearby.
+- **How steady the work is.** Google keeps checking. A site that gets better every month gives it more reasons to show you.
+
+## Why it's a monthly job
+Google says local results depend mainly on relevance, distance and prominence. You can't move your shop closer to every searcher, but relevance and prominence grow with time: useful pages, reviews, accurate details everywhere.
+
+That's why our Growth plan works month by month. Each month we keep your Google Business Profile fresh, add a page or post aimed at a real search, and check how you show up on Google and in AI answers. For businesses across South Jersey, that slow and steady approach is what tends to hold up. See the [monthly plans](/plans/).
+
+## Common questions
+Q: Can anyone get me ranked faster?
+A: Nobody can promise a ranking, because Google decides. Be careful with anyone who says they can. Honest work on the basics is the reliable route.
+Q: Will I see anything in the first month?
+A: Often you'll see small signs, like your business details showing correctly or a page getting indexed. Bigger changes in calls usually take longer.
+Q: Do I have to keep doing SEO forever?
+A: The basics stay in place once they're set up. But competitors keep improving and Google keeps changing, so steady upkeep stops you slipping back.

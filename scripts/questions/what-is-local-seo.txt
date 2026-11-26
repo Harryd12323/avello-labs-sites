@@ -1,0 +1,36 @@
+URL: /questions/what-is-local-seo/
+Question: What is local SEO?
+Crumb: What is local SEO
+Title: What Is Local SEO? A Plain Guide for Owners
+Description: Local SEO is the work that helps nearby customers find your business on Google, in the map results and the regular results. What it covers and what it isn't.
+Keyword: local seo explained
+Draft: yes
+TLDR: Local SEO is the work that helps people near you find your business when they search. It covers your Google Business Profile, your website and your reputation online.
+Offer: review
+Related: /seo/ | Why SEO matters for local businesses
+Related: /blog/local-seo-checklist-small-businesses/ | Local SEO checklist
+Related: /questions/how-long-does-seo-take/ | How long does SEO take to work?
+Related: /questions/seo-vs-aeo/ | SEO vs AEO
+
+## The short answer
+Local SEO is how you show up when someone nearby searches for what you do. Think “roofer near me” or “dentist in Cherry Hill”. It's the same idea as regular SEO, with a focus on location.
+
+There are two places to show up. The map results, driven mostly by your Google Business Profile. And the regular results below, driven by your website.
+
+## What it covers
+- **Your Google Business Profile:** the right category, accurate hours, real photos and reviews.
+- **Your website:** a clear page for each service, and for the areas you serve, that works well on a phone.
+- **Matching details everywhere.** Your name, address and phone should be the same on your site, your profile and directories.
+
+Google says local results are based mainly on relevance, distance and prominence. Distance you can't change. The other two are where the work goes.
+
+## Who it's for
+Any business that serves people in a certain area. That's most trades and practices in South Jersey: HVAC, plumbers, dentists, law firms, med spas. If customers find you by searching, local SEO matters to you. Our Growth plan does this work every month. See the [monthly plans](/plans/).
+
+## Common questions
+Q: Is local SEO different from regular SEO?
+A: It uses the same foundations. Local SEO adds the parts that matter for nearby searches, like your Google Business Profile, reviews and location pages.
+Q: Can I do local SEO myself?
+A: Yes, the basics are something you can do yourself. The hard part is keeping it up every month while running your business.
+Q: Does local SEO cost money?
+A: Your Google Business Profile is free. The cost is the time to do the work well, yours or someone else's.

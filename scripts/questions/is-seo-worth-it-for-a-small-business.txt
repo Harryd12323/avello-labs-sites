@@ -1,0 +1,37 @@
+URL: /questions/is-seo-worth-it-for-a-small-business/
+Question: Is SEO worth it for a small business?
+Crumb: Is SEO worth it?
+Title: Is SEO Worth It for a Small Business?
+Description: If people search for what you do nearby, SEO is usually worth it. When it pays off, when it might not, and how to run the numbers for your own business.
+Keyword: is seo worth it
+Draft: yes
+TLDR: Usually, yes, if people search for what you do in your area. Search brings you people who want what you sell right now, and the work keeps paying off after it's done.
+Offer: review
+Related: /seo/ | Why SEO matters for local businesses
+Related: /plans/ | Our monthly plans
+Related: /tools/website-cost-calculator/ | What's your website costing you?
+Related: /questions/how-long-does-seo-take/ | How long does SEO take?
+
+## The short answer
+If people search for what you do near you, SEO is usually worth it. Someone who finds you through search is looking for exactly what you offer, right now. Showing up at that moment puts you in front of them when they're ready to call.
+
+Ads work too, but they stop the day you stop paying. The work that helps you get found keeps doing its job.
+
+## When it pays off
+- People search for your service with a town name, like “plumber Cherry Hill”
+- One new customer is worth a good amount to you
+- You plan to be in business for years, not months
+
+## When it might not
+If you need customers this week, SEO alone is too slow. It builds over months. And if hardly anyone searches for what you do, your time may be better spent on referrals or word of mouth.
+
+## Run your own numbers
+Our [cost calculator](/tools/website-cost-calculator/) uses your numbers, not ours. Put in what a customer is worth to you and see how many extra customers a month a plan needs to bring in to pay for itself. If you run a business in South Jersey, try it with the value of a typical job.
+
+## Common questions
+Q: How long does SEO take to work?
+A: Simple fixes can help within weeks. Meaningful ranking improvements usually take a few months of steady work. More in [how long SEO takes](/questions/how-long-does-seo-take/).
+Q: Can anyone promise me the top spot on Google?
+A: No, and be wary of anyone who does. Google decides rankings, and they depend partly on things nobody controls, like how close a searcher is to you.
+Q: Should I do SEO or ads?
+A: Ads can bring quick, targeted visits, but they stop when the spending stops. SEO builds visibility that lasts. Plenty of businesses use both.

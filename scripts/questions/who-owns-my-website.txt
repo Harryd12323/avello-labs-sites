@@ -1,0 +1,35 @@
+URL: /questions/who-owns-my-website/
+Question: Who owns my website if someone else builds it?
+Crumb: Who owns my website?
+Title: Who Owns My Website If Someone Else Builds It?
+Description: It depends on your agreement, so get it in writing. Which accounts should be in your name, what to ask before you hire, and how to avoid getting locked out.
+Keyword: who owns my website
+Draft: yes
+TLDR: It depends on what you agree, so get it in writing. Either way, keep your domain, hosting and website accounts in your own name, and add anyone helping you as a separate user.
+Offer: review
+Related: /questions/build-my-own-website-or-hire-someone/ | Build it or hire someone?
+Related: /blog/choose-web-designer-small-business/ | How to choose a web designer
+Related: /faq/ | Common questions
+
+## The short answer
+Who owns the site depends on the agreement you make with whoever builds it. So ask, and get the answer in writing before any work starts.
+
+Whatever you agree, we recommend that you always own your domain, hosting and website accounts in your own name. Add anyone helping you as a separate user. That way you're never locked out.
+
+## What should be in your name
+- Your domain name
+- Your hosting account
+- Your Google Business Profile
+- Google Search Console and any analytics
+- The words and photos on the site, which are your business's
+
+## Questions to ask before you hire
+Ask who holds the domain, what happens to the site if you stop paying for care, and whether you can move it somewhere else later. A good answer is a plain one. If you're in Cherry Hill or elsewhere in South Jersey and aren't sure who holds your domain, ask us on your free review.
+
+## Common questions
+Q: My old web designer has my domain. What do I do?
+A: Find out where the domain is registered and in whose name. Then contact that company about moving it into your name. It's much easier when you can show you're the business owner.
+Q: Can I move my website later?
+A: It depends on how it was built. Ask before you hire, so you know what moving would involve.
+Q: Who will I work with at Avello Labs?
+A: Harris, who runs Avello Labs. You talk to him from the first call to the changes you ask for after launch.

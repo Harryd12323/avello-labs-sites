@@ -1,0 +1,38 @@
+URL: /questions/does-my-website-need-to-work-on-phones/
+Question: Does my website need to work well on phones?
+Crumb: Websites on phones
+Title: Does My Website Need to Work Well on Phones?
+Description: Yes. Many local searches happen on phones, and Google mainly looks at the phone version of your site. What working on phones means and how to check yours.
+Keyword: does my website need to work on phones
+Draft: yes
+TLDR: Yes. Plenty of local searches happen on phones, and Google says it uses the mobile version of a site's content for indexing and ranking. A slow or awkward page loses people before they call.
+Offer: review
+Related: /check/ | Free site check
+Related: /website-care/ | What website care covers
+Related: /blog/website-getting-traffic-but-no-calls/ | Website getting traffic but no calls
+Related: /plans/ | Our plans
+
+Source: https://developers.google.com/search/docs/crawling-indexing/mobile/mobile-sites-mobile-first-indexing | Google Search Central: mobile-first indexing
+
+## The short answer
+Yes. Plenty of local searches happen on phones, often by someone who wants to call right now. Google says it uses the mobile version of a site's content for indexing and ranking. So the phone version is the one that counts.
+
+A slow or awkward page loses people before they call.
+
+## What working on phones means
+- Text you can read without zooming
+- A phone number you can tap to call
+- Buttons big enough for a thumb
+- Pages that load fast, even on a weak signal
+- A contact form that's quick to fill in
+
+## How to check yours
+Open your site on your own phone, then try to call yourself from it. Then run our [free site check](/check/). Google also measures how real visitors experience loading and layout with a set of metrics called Core Web Vitals. Picture someone in a Cherry Hill parking lot, or out on a South Jersey job site, trying to reach you. Could they?
+
+## Common questions
+Q: My site looks fine on my computer. Is that enough?
+A: No. Check it on a phone too, because that's the version Google mainly looks at, and it's what plenty of your customers see first.
+Q: Can an old site be fixed for phones, or does it need rebuilding?
+A: Sometimes it can be fixed. Our guide on [whether to fix your site or start over](/blog/new-website-or-fix-mine/) walks through how to decide.
+Q: Do your sites work on phones?
+A: Yes. We build fast sites that work on phones, and on a care plan we keep checking speed, especially on phones.

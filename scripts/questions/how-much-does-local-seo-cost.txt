@@ -1,0 +1,37 @@
+URL: /questions/how-much-does-local-seo-cost/
+Question: How much does local SEO cost for a small business?
+Crumb: Local SEO cost
+Title: How Much Does Local SEO Cost?
+Description: What local SEO costs depends on your market and where you're starting from. What you're paying for, why it's monthly, and how to tell if a price is fair.
+Keyword: how much does local seo cost
+Draft: yes
+TLDR: There's no single price. It depends on how crowded your market is and how much work your site and Google listing need, so an honest quote comes after someone looks. Expect steady monthly work, not a one-time fee.
+Offer: review
+Related: /plans/ | Our monthly plans
+Related: /seo/ | How local SEO works
+Related: /questions/what-is-local-seo/ | What is local SEO?
+Related: /blog/local-seo-checklist-small-businesses/ | Local SEO checklist
+
+## The short answer
+There's no set price for local SEO. It depends on how many businesses you're up against and how much work your website and Google Business Profile need before they can compete.
+
+That's why we quote local SEO after we've looked at where you stand. If you want it done every month, our Growth plan puts site care and steady SEO work together. The details are on [our plans page](/plans/).
+
+## What you're paying for
+- Getting the basics right: your business details, page titles and Google Business Profile
+- Pages that match what people search for, like one page for each service you offer
+- Keeping it up as Google changes and other businesses improve their own sites
+
+## Why it's monthly work
+Simple fixes, like correcting your business details, can help within weeks. Real ranking gains usually take a few months of steady work. A roofer in Cherry Hill trying to show up across South Jersey has more ground to cover than a shop with two rivals down the road.
+
+## How to tell if a price is fair
+Ask what gets done each month, in plain words. Ask for a report that shows it. And be careful with anyone who promises you the top spot. Nobody controls Google's rankings, so that promise can't be kept honestly.
+
+## Common questions
+Q: Can I do some local SEO myself?
+A: Yes. Claiming your Google Business Profile, keeping your hours right and asking happy customers for reviews are good places to start. Our [local SEO checklist](/blog/local-seo-checklist-small-businesses/) walks through it.
+Q: How long before I see results?
+A: Simple fixes can help within weeks. Bigger ranking changes usually take a few months. More in [how long SEO takes](/questions/how-long-does-seo-take/).
+Q: How do I get a price for my business?
+A: Book a free 20-minute review. We look at your website, your Google Business Profile and what AI tools say about you, then walk you through the 3 fixes we'd make first.

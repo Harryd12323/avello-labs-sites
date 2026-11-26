@@ -1,0 +1,44 @@
+URL: /industries/dentists/
+Industry: Dentists
+Crumb: Dentists
+Title: Dental Website Design and SEO in South Jersey
+Description: Websites, monthly care and local SEO for dental practices in South Jersey and Philadelphia. Help new patients find you, trust you and book a visit.
+Keyword: dental practice websites and local seo
+Headline: Fill your chairs with *new patients from nearby*
+Lede: When someone moves to town or chips a tooth, they search for a dentist near them. We help your practice show up, look trustworthy and make booking easy.
+Order: 2
+Related: /seo/ | How local SEO works
+Related: /website-care/ | What monthly website care covers
+Related: /blog/google-business-profile-matters/ | Why your Google Business Profile matters
+Related: /questions/how-to-get-more-google-reviews/ | How to get more Google reviews
+Related: /plans/ | Monthly plans
+
+## What gets in the way
+- **Every service is crammed onto one page.** Someone searching for implants, Invisalign or an emergency dentist in Cherry Hill doesn't find a page that answers them.
+- **Patients can't tell if you take their insurance.** So they call someone who says it on the website.
+- **Emergency visitors can't find the phone number fast.** Someone with a toothache at 7 in the morning won't scroll.
+- **Your reviews sit on Google, but your site says nothing about who you are.** People want to see the dentist and the office before they book.
+- **The site was built years ago and nobody touches it.** Old hours and a missing hygienist's name tell patients nobody's minding it.
+
+## What we do about it
+We build a page for each service you want more of, written in the words patients use. That gives Google a clear match when someone nearby searches for it.
+
+We put your phone number and booking link where a thumb can reach them on every page. If you offer emergency visits, we make that obvious.
+
+We add the things patients check before they book: the insurance plans you take, your dentists and staff, and photos of the office. Real photos, not stock.
+
+Then we keep it current every month, so a new hire or new hours show up right away.
+
+## A note on forms and patient details
+A website contact form is fine for “please call me back”. It isn't the place for medical history or insurance numbers. We keep your forms short and send people to your practice software for anything clinical. If you're not sure what's right for your office, check with your own advisers first.
+
+## A month on the Growth plan
+We post to your Google Business Profile and add the photos you send. We write one page or post a month, maybe about a service or a question patients ask at the chair. We check how your practice shows up on Google and in AI answers in South Jersey, and fix what we find. Then we send you a short report.
+
+## Common questions
+Q: We already get referrals. Do we still need this?
+A: Referrals often look you up before they call. A clear, current site and Google profile make that check go your way.
+Q: Can you show which insurance we accept?
+A: Yes. We add it to the site and keep it up to date when your list changes. You tell us, we change it.
+Q: Do you write the service pages?
+A: We draft them in plain words and you check every one before it goes live. Nothing about treatments goes up without your OK.

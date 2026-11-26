@@ -1,0 +1,37 @@
+URL: /questions/monthly-website-care-or-pay-as-you-go/
+Question: Should I pay monthly for website care or just fix things when they break?
+Crumb: Monthly care or pay as you go
+Title: Monthly Website Care or Pay When It Breaks?
+Description: Websites tend to break quietly, so you often find out from a customer. When fixing things as they break is fine, and when monthly care makes more sense.
+Keyword: pay monthly for website care or fix when broken
+Draft: yes
+TLDR: If your site matters for bringing in customers, monthly care usually makes more sense. Problems get caught early, when they're cheap to fix, instead of when a customer tells you.
+Offer: review
+Related: /website-care/ | What website care covers
+Related: /plans/ | Compare our care plans
+Related: /questions/website-maintenance-cost-per-month/ | What website maintenance costs
+Related: /blog/how-often-should-i-update-my-website/ | How often to update your website
+
+## The short answer
+Websites tend to break quietly. A form stops sending, a page goes missing, a security certificate runs out. If you only fix things when they break, you usually find out when a customer mentions it. Or when they don't call at all.
+
+Monthly care means someone is watching. Most problems are cheap to fix early and expensive to discover late.
+
+## When pay as you go is fine
+If your site is simple, rarely changes and doesn't bring in much business, fixing things as they come up can be enough. Just check it yourself every so often, including sending yourself a test message through the contact form.
+
+## What a month of care looks like
+- We check the site is up, fast and secure
+- We apply updates and confirm nothing broke
+- We send a test message through every form
+- We update anything that changed, like hours, services or photos
+
+Say you run a contracting business in Cherry Hill and switch to winter hours. On a Pro or Premium plan, you tell us and we update it. Nobody in South Jersey shows up to a locked door because your site still says you're open.
+
+## Common questions
+Q: What does monthly care cost?
+A: Our Basic, Pro and Premium prices are on [our plans page](/plans/).
+Q: Can I try you out before signing up for anything?
+A: Yes. Start with the free 20-minute review. The 3 fixes we walk you through are yours to keep, whether or not you work with us.
+Q: What happens if my site goes down?
+A: With monitoring in place, you find out quickly instead of from a customer. The cause can be tracked down and fixed, and recent backups mean the site can be restored if needed.

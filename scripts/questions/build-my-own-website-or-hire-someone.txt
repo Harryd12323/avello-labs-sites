@@ -1,0 +1,39 @@
+URL: /questions/build-my-own-website-or-hire-someone/
+Question: Should I build my own website or hire someone?
+Crumb: Build it or hire someone?
+Title: Build My Own Website or Hire Someone?
+Description: Building your own site can work if you have the time and a simple business. When doing it yourself makes sense, when hiring helps, and what to ask first.
+Keyword: build my own website or hire someone
+Draft: yes
+TLDR: Build it yourself if you have time, a simple business and you're happy to keep it up. Hire someone if your time is better spent running the business, or you need the site to bring in calls.
+Offer: review
+Related: /blog/wix-vs-squarespace-vs-custom-website/ | Wix vs Squarespace vs custom
+Related: /blog/choose-web-designer-small-business/ | How to choose a web designer
+Related: /questions/who-owns-my-website/ | Who owns my website?
+Related: /plans/ | Our plans
+
+## The short answer
+Both can work. Website builders have made it possible to put up a decent site on your own. The real question is whether you have the time to build it well and keep it up afterward.
+
+If you'd rather spend those hours running your business, or you need the site to bring in calls, hiring someone usually makes more sense.
+
+## Doing it yourself
+It's a good fit if your business is simple, you like this kind of thing and you'll actually keep it current. Our guide on [Wix, Squarespace and custom sites](/blog/wix-vs-squarespace-vs-custom-website/) compares the options.
+
+## Hiring someone
+Ask what happens after launch. Who fixes things, who makes changes, and who checks the site still works? A site that's built and then left alone tends to go stale. That's why we build sites and then look after them every month on a [care plan](/plans/).
+
+## Questions to ask before you hire
+- Will the domain and accounts be in my name?
+- Can I see sites you've built?
+- What happens after launch, and what does it cost each month?
+
+If you're in Cherry Hill or anywhere in South Jersey and want to start on your own, that's fine. You can switch later.
+
+## Common questions
+Q: Can I build it myself now and switch later?
+A: Yes. Keep your domain in your own name from the start and it's much easier to move later.
+Q: How do I pick a web designer?
+A: Look at their past work, ask who you'll actually talk to and ask what happens after launch. Our guide on [choosing a web designer](/blog/choose-web-designer-small-business/) goes through it.
+Q: How long does it take if I hire you?
+A: A new site can be live in about a week once we have your content.

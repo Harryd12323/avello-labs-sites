@@ -1,0 +1,43 @@
+URL: /industries/hvac/
+Industry: HVAC companies
+Crumb: HVAC
+Title: Websites and Local SEO for HVAC Companies
+Description: Websites and monthly care for HVAC companies in South Jersey. Get found when someone's heat goes out at night, and make it easy for them to call you first.
+Keyword: hvac company marketing
+Headline: Be the HVAC company people *call when the heat goes out*
+Lede: When a furnace quits on a January night, people grab their phone and search. We help make sure your name is there, and that calling you takes one tap.
+Order: 3
+Related: /questions/how-long-to-show-up-on-google-maps/ | How long it takes to show up on Google Maps
+Related: /questions/how-to-get-more-google-reviews/ | How to get more Google reviews
+Related: /blog/google-ai-mode-home-services-booking/ | Google AI Mode and booking pages for home services
+Related: /seo/ | How local SEO works
+Related: /tools/website-cost-calculator/ | What's your website costing you?
+
+## What gets in the way
+- **Emergency searches happen on phones, at bad hours.** Someone with no heat at 11pm won't scroll. If your number is hard to find or the site is slow on a phone, they call the next name.
+- **Demand swings with the weather.** You're slammed in the first cold snap and the first heat wave, then quiet. Your site should pull in tune-ups and maintenance plans in the slow months, too.
+- **You cover a lot of towns.** You might work from Cherry Hill to Philadelphia, but one page that says “serving South Jersey” doesn't tell Google much about any one town.
+- **Your address may be hidden.** Google lets service-area businesses hide their address on their Business Profile. That's fine, but then your service areas and your website have to do more of the work.
+- **Quote requests go nowhere.** A form that quietly stops sending, or lands in a spam folder, costs you installs you never knew about.
+
+## What we do about it
+We build your site around the call. Your phone number sits at the top of every page, and tapping it dials you. Pages load fast on a phone, even on a weak signal.
+
+You get a page for each service people search for, like furnace repair, AC installation and heat pumps. You also get pages for the main towns you cover, written for real customers, not stuffed with town names. Google says local results are based mainly on relevance, distance and prominence. Clear service and area pages help with relevance, the part you can most directly change.
+
+Quote and service request forms come straight to you, and we test them every month so you know they work. We keep your Google Business Profile in step with your site: hours, services, service areas and seasonal updates.
+
+## Planning around the seasons
+Before the first cold snap, we make sure your heating pages and emergency details are front and center. Before summer, it's AC. In the quieter months, we put tune-ups and maintenance plans up top, so the site keeps bringing in work when the phone is slower.
+
+On the Growth plan, the one new page or post each month can follow the same calendar. A fall post on getting a furnace checked before winter. A spring page on AC tune-ups. Each one gives people one more way to find you.
+
+## Common questions
+Q: Do I need a separate page for every town I serve?
+A: Not every one. Start with the towns you most want work from and write each page so it's useful to someone there. A page that only swaps the town name helps nobody.
+Q: Should I show my address if I work out of my house?
+A: You don't have to. Google lets service-area businesses hide their address and list the areas they serve instead. We set your site up to match whatever your profile shows.
+Q: Can my site take service requests at night?
+A: Yes. A request form works around the clock, and it can come to your email or phone. If you offer emergency service, we make that clear and make the number easy to tap.
+Q: How does the monthly plan help an HVAC company?
+A: Care keeps the site online, fast and your forms working, which matters most on your busiest days. Growth adds steady work on getting found, like seasonal pages and keeping your Google Business Profile fresh.

@@ -1,0 +1,37 @@
+URL: /questions/ai-says-wrong-things-about-my-business/
+Question: What do I do if AI tools say the wrong thing about my business?
+Crumb: Wrong AI answers
+Title: AI Says the Wrong Thing About My Business: Fixes
+Description: If ChatGPT or Google's AI gets your hours, services or prices wrong, the fix usually starts with your own details online. Where to look and what to change.
+Keyword: ai tools say wrong things about my business
+Draft: yes
+TLDR: Fix the source. AI tools repeat what they find online, so correct your website, your Google Business Profile and any old listings. Then use the tool's feedback button.
+Offer: review
+Related: /aeo/ | Getting named in AI answers
+Related: /blog/ai-shopping-product-data-errors/ | When AI shopping cards get your details wrong
+Related: /tools/ai-crawler-check/ | AI crawler check
+Related: /questions/what-are-google-ai-overviews/ | What are Google AI Overviews?
+
+## The short answer
+AI tools build answers from what they can find and trust online. When they get something wrong, there's usually an old or mismatched detail somewhere. Find it and fix it at the source.
+
+You can't edit an AI's answer directly. But you can change what it reads.
+
+## Where to look
+1. **Your website.** Old hours, a service you dropped, last year's prices in a forgotten page.
+2. **Your Google Business Profile.** Check hours, holiday hours, services and your business description.
+3. **Directories and social profiles.** Yelp, Facebook, industry directories. An old listing with an old phone number can stick around for years.
+4. **Your robots.txt.** If AI crawlers are blocked, tools may rely on older or other sources. Our [AI crawler check](/tools/ai-crawler-check/) shows you.
+
+## After you fix it
+Most AI tools have a thumbs down or feedback button. Use it and say what's wrong. Then give it time. Answers take time to change, and they vary between tools and questions.
+
+Keeping your details matching everywhere is part of our monthly plans. Each month on the Growth plan we check what Google and AI tools say about you. We do that for businesses in Cherry Hill and across South Jersey. See the [monthly plans](/plans/).
+
+## Common questions
+Q: Can I contact ChatGPT or Google to correct it?
+A: You can send feedback through the tool itself. Fixing your own details online is what tends to make the difference over time.
+Q: How do I find out what AI says about me?
+A: Ask the questions your customers would ask, in a few different tools. Try your business name, and searches like “best dentist in Cherry Hill”.
+Q: Does structured data help?
+A: It can. Schema markup labels your business name, hours and services in code, so machines don't have to guess. Search engines already use it.

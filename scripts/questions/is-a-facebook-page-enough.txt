@@ -1,0 +1,32 @@
+URL: /questions/is-a-facebook-page-enough/
+Question: Is a Facebook page enough for my business?
+Crumb: Is Facebook enough?
+Title: Is a Facebook Page Enough for My Business?
+Description: A Facebook page is good for staying in touch, but you don't control it and not everyone uses it. Why a website and Google listing still matter.
+Keyword: is a facebook page enough for my business
+Draft: yes
+TLDR: Usually not on its own. Facebook is good for staying in touch with people who already know you. A website and a Google Business Profile are how new customers find you when they search.
+Offer: review
+Related: /questions/do-i-need-a-website-for-my-business/ | Do I need a website?
+Related: /questions/website-or-google-business-profile/ | Website or Google Business Profile?
+Related: /aeo/ | Getting named in AI answers
+
+## The short answer
+A Facebook page is a good start, but it usually isn't enough on its own. It's great for staying in touch with people who already follow you. It's less good at helping strangers find you when they search for what you do.
+
+You also don't control it. Facebook decides how your page looks and who sees your posts, and not every customer has an account.
+
+## What to have alongside it
+- A Google Business Profile, which is free and puts you on Google Maps
+- A website of your own, with a page for each service and an easy way to call
+
+## Keep your details matching
+Your name, phone number, hours and address should match everywhere: your website, your Google Business Profile, Facebook and directories. When they don't match, Google and AI tools have a harder time trusting your information. If you moved from one South Jersey town to another, or changed your hours in Cherry Hill, update all of them.
+
+## Common questions
+Q: Should I keep my Facebook page?
+A: Yes, if you use it. Link it from your website and keep the details the same on both.
+Q: What's the cheapest way to start?
+A: Claim your free Google Business Profile and keep it up to date. Then add a simple website when you can.
+Q: Can my website show my Facebook posts?
+A: It can link to them. A website works best with its own pages, though, because that's what Google reads and ranks.

@@ -537,3 +537,51 @@ h3.also { margin-top: 3rem; color: var(--muted); font-size: .8rem; font-weight: 
 @media (min-width: 40rem) {
   .pref-source { flex-direction: row; align-items: center; justify-content: space-between; gap: 1.5rem; }
 }
+
+/* Monthly plans (shared:plans-summary), promise, plan strip, industry pages, cost calculator (2026-11-26) */
+.plan-cards { display: grid; gap: 1rem; margin-top: 1.25rem; }
+@media (min-width: 40rem) { .plan-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.plan-card { display: flex; flex-direction: column; gap: .6rem; padding: 1.4rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); min-width: 0; }
+.plan-card.plan-featured { border-color: color-mix(in srgb, var(--blue) 55%, var(--line)); background: linear-gradient(160deg, color-mix(in srgb, var(--blue-2) 18%, var(--panel)), var(--panel)); }
+.plan-card .eyebrow { margin: 0; }
+.plan-card h3 { margin: 0; font-size: 1.15rem; line-height: 1.3; }
+.plan-price { margin: 0; font-size: 1.6rem; font-weight: 700; letter-spacing: -.02em; }
+.plan-price span { font-size: .9rem; font-weight: 500; color: var(--muted); letter-spacing: 0; }
+.plan-price small { font-size: .9rem; font-weight: 500; color: var(--muted); }
+.plan-price .quoted { font-size: 1.05rem; font-weight: 600; color: var(--text); }
+.plan-card ul { margin: 0; padding-left: 1.1rem; display: grid; gap: .4rem; font-size: .95rem; }
+.plan-why { margin: 0; color: var(--muted); font-size: .92rem; }
+.plan-card .btn { margin-top: auto; align-self: flex-start; }
+.care-h { margin-top: 2rem; }
+.promise { margin-top: 2.5rem; padding: 1.4rem 1.5rem; border: 1px solid var(--line-bright); border-left: 2px solid var(--cyan); border-radius: 12px; }
+.promise h2 { margin-top: 0; }
+.promise ul { margin-top: .75rem; padding-left: 1.1rem; display: grid; gap: .4rem; }
+.hero-actions { margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: .75rem; }
+.hero-ctas .btn-ghost { background: transparent; }
+.steps-list { padding-left: 1.25rem; display: grid; gap: .6rem; }
+.plan-strip { border-top: 1px solid var(--line); background: color-mix(in srgb, var(--blue-2) 10%, var(--bg)); padding-block: 2.25rem; }
+.plan-strip .wrap { display: grid; gap: 1rem; align-items: center; }
+.plan-strip h2 { margin: 0; font-size: clamp(1.25rem, 3vw, 1.6rem); }
+.plan-strip p { margin: .35rem 0 0; color: var(--muted); }
+.plan-strip-actions { display: flex; flex-wrap: wrap; gap: .6rem; }
+.plan-strip-more { margin: 0; }
+@media (min-width: 60rem) { .plan-strip .wrap { grid-template-columns: 1fr auto; } .plan-strip-more { grid-column: 1 / -1; } }
+.industry-grid { list-style: none; padding: 0; margin: 0; display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr)); }
+.industry-card { padding: 1.25rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); }
+.industry-card h3 { margin: 0; font-size: 1.1rem; }
+.industry-card h3 a { color: var(--text); text-decoration: none; }
+.industry-card h3 a:hover { color: var(--blue); }
+.industry-card p { margin: .5rem 0 0; color: var(--muted); font-size: .95rem; }
+.industry-hub-more { margin-top: 3rem; max-width: 46rem; }
+.calc { padding: 1.4rem; border: 1px solid var(--line-bright); border-radius: var(--radius); background: var(--panel); display: grid; gap: 1.25rem; }
+.calc-fields { display: grid; gap: 1rem; }
+@media (min-width: 40rem) { .calc-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.calc .field + .field { margin-top: 0; }
+.calc .field small { display: block; margin-top: .35rem; color: var(--muted); font-size: .82rem; }
+.calc-results { display: grid; gap: .75rem; }
+.calc-row { padding: .9rem 1rem; border-radius: 10px; background: color-mix(in srgb, var(--blue-2) 12%, var(--panel)); display: grid; gap: .15rem; }
+.calc-row span { color: var(--muted); font-size: .9rem; }
+.calc-row b { font-size: 1.35rem; font-variant-numeric: tabular-nums; }
+.calc-row small { color: var(--muted); font-size: .85rem; }
+.calc-empty, .calc-note { margin: 0; color: var(--muted); font-size: .92rem; }
+.source-line { margin-top: .5rem; color: var(--muted); font-size: .9rem; }

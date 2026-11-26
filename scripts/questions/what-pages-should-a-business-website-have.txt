@@ -1,0 +1,37 @@
+URL: /questions/what-pages-should-a-business-website-have/
+Question: What pages should a small business website have?
+Crumb: Pages a website needs
+Title: What Pages Should a Small Business Website Have?
+Description: A home page, a page for each service, an about page and a contact page are the core. What else helps people find you, trust you and call, and what can wait.
+Keyword: what pages should a small business website have
+Draft: yes
+TLDR: Start with a home page, a page for each main service, an about page and a contact page. Add pages for the areas you serve and a page that answers common questions when you can.
+Offer: review
+Related: /seo/ | How local SEO works
+Related: /aeo/ | Getting named in AI answers
+Related: /blog/local-seo-checklist-small-businesses/ | Local SEO checklist
+Related: /plans/ | Our plans
+
+## The short answer
+A small business site needs four kinds of page to start:
+
+- **Home:** what you do and where, in the first few lines
+- **A page for each main service:** what it is, who it's for and how to book
+- **About:** who you are, so people know who they're dealing with
+- **Contact:** phone, email, address or service area, and hours
+
+Once those are in place, add a page for each area you serve and a page that answers the questions customers ask.
+
+## Why a page for each service matters
+Google says local results are based mainly on relevance, distance and prominence. A clear page for each service helps Google see how well you match a search. If you're a plumber in Cherry Hill, a page about water heater repair can show up for that search. A single page that lists ten services usually can't.
+
+## Pages that can wait
+A blog is nice but not needed on day one. Start with the pages above. On our Growth plan, we add one new page or post a month, aimed at something your South Jersey customers actually search for.
+
+## Common questions
+Q: How many pages does a small business site need?
+A: It depends on how many services and areas you cover. Our websites start at 5 to 7 pages, which covers the basics for a lot of local businesses.
+Q: Should I put prices on my website?
+A: If you can share them, it helps. People and AI tools both look for what things cost.
+Q: Do I need a page for every town I serve?
+A: Only for the places you really work in, and only if each page says something useful about that area. Copy-and-paste town pages don't help anyone.

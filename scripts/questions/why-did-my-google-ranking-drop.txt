@@ -1,0 +1,35 @@
+URL: /questions/why-did-my-google-ranking-drop/
+Question: Why did my business drop in Google rankings?
+Crumb: Ranking drops
+Title: Why Did My Business Drop in Google Rankings?
+Description: A drop in Google rankings usually comes down to a Google update, a problem on your site, a competitor, or a faulty tracking tool. How to tell which one.
+Keyword: why did my google ranking drop
+Draft: yes
+TLDR: Usually it's a Google update, a problem on your own site, a competitor doing more, or a tracking tool that's wrong. Check Google Search Console before changing anything.
+Offer: review
+Related: /blog/nov-18-rank-tracker-drop-core-update/ | Check the tool before blaming the update
+Related: /blog/google-december-2026-core-update/ | Google's December core update
+Related: /check/ | Free site check
+Related: /website-care/ | Website care
+
+## The short answer
+Most drops come from one of four places. Google changed how it ranks pages, something broke on your site, a competitor got better, or the tool you use to track rankings is reporting something wrong.
+
+Don't rush to rewrite your site. Look first, then fix the real cause.
+
+## How to work out which one it is
+1. **Check Google Search Console.** It shows clicks and impressions from Google itself, plus any errors or manual actions. If Search Console looks normal, the drop may only be in your tracking tool.
+2. **Check the date.** Google announces core updates. Google says a drop after a core update doesn't mean something is wrong with your site, and that the best response is to keep improving the content.
+3. **Check your site.** A broken page, a missing title, a contact form that stopped working or a robots.txt change can all hurt.
+4. **Check your Google Business Profile.** A changed category, wrong hours or a suspended profile hits map results fast.
+
+## Catching it before it costs you
+Most of these show up as small warnings before they turn into lost calls. On our monthly care plans we watch your site, check Search Console and fix what breaks, for businesses in Cherry Hill and across South Jersey. See the [monthly plans](/plans/).
+
+## Common questions
+Q: Was my site penalized?
+A: Probably not. Real penalties, which Google calls manual actions, are listed in Search Console. If nothing is listed there, look at the other causes first.
+Q: Should I change everything right away?
+A: No. Big changes in a panic can make things worse. Find the cause, fix that, and give Google time to notice.
+Q: Do rankings move around on their own?
+A: Yes, a bit. Results vary by location, device and day. Watch the trend over a few weeks, not a single check.

@@ -1,0 +1,39 @@
+URL: /questions/website-maintenance-cost-per-month/
+Question: How much does website maintenance cost per month?
+Crumb: Website maintenance cost
+Title: How Much Does Website Maintenance Cost a Month?
+Description: Monthly website maintenance prices vary because what's included varies. What a care plan should cover, what ours include, and what skipping it can cost.
+Keyword: website maintenance cost per month
+Draft: yes
+TLDR: It depends on what's included, so compare what you get each month, not just the price. Our care plan prices are on our plans page, and every plan covers hosting, monitoring and backups.
+Offer: review
+Related: /plans/ | Compare our care plans
+Related: /website-care/ | What website care covers
+Related: /blog/website-maintenance-checklist-small-business/ | Website maintenance checklist
+Related: /questions/monthly-website-care-or-pay-as-you-go/ | Monthly care or pay when it breaks?
+
+## The short answer
+Website maintenance prices are all over the place because what's included is all over the place. Some plans only cover hosting. Others include changes you ask for, security checks and help with search. So look at what you get each month before you look at the number.
+
+We have three care plans, Basic, Pro and Premium. The prices are on [our plans page](/plans/).
+
+## What a care plan should cover
+- Hosting, plus someone watching that the site stays up
+- Backups that can actually be put back if something goes wrong
+- Updates, and a check afterward that nothing broke
+- A test message through your contact form, so you know messages reach you
+- Changes when your hours, services or photos change
+
+## What's on our plans
+Every plan includes hosting, uptime and security certificate monitoring, and backups. Pro adds SEO and AI search upkeep, 1 hour of edits a month and a monthly report. Premium gives you 3 hours of edits and puts your requests first.
+
+## What skipping it can cost
+A broken form or old hours costs you customers you never hear about. If you run a business in Cherry Hill or anywhere in South Jersey, the first sign can be a customer saying “I tried to email you.” Repairing a hacked or broken site after the fact usually takes far more time and money than keeping it healthy.
+
+## Common questions
+Q: Does a brand new website need maintenance?
+A: Yes. New sites still need updates, monitoring and backups, and the first few months are when you'll most want to adjust your content based on what customers ask.
+Q: My site is on Wix or Squarespace. Do I still need this?
+A: Those platforms handle hosting, security and software updates, which is a real help. They don't keep your content current, check that your forms reach you or watch how you show up in search.
+Q: What's in the monthly report?
+A: What we checked, what we changed and how your site is doing. It comes with the Pro and Premium plans.

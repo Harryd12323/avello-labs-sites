@@ -1,0 +1,35 @@
+URL: /questions/seo-vs-aeo/
+Question: What's the difference between SEO and AEO?
+Crumb: SEO vs AEO
+Title: SEO vs AEO: What's the Difference?
+Description: SEO helps you rank in search results. AEO helps AI tools understand and mention your business. How they overlap, and why a local business needs both.
+Keyword: difference between seo and aeo
+Draft: yes
+TLDR: SEO is about ranking in search results. AEO is about being understood and named by tools that write answers, like ChatGPT and Google's AI Overviews. The groundwork is mostly the same.
+Offer: review
+Related: /seo/ | Why SEO matters for local businesses
+Related: /aeo/ | What AEO means for you
+Related: /questions/what-is-local-seo/ | What is local SEO?
+Related: /questions/will-ai-replace-google-search/ | Will AI search replace Google?
+
+## The short answer
+SEO, search engine optimization, helps your pages show up in a list of search results. AEO, answer engine optimization, helps AI tools understand your business well enough to name it in an answer.
+
+They overlap a lot. AI answers often draw on the same pages that do well in normal search. So we treat them as one ongoing job.
+
+## Where they differ
+- **SEO** cares about where you rank: your titles, your pages, your Google Business Profile and reviews.
+- **AEO** adds a focus on how your information reads when it's pulled out and summarized somewhere else. Plain answers to real questions, structured data and details that match everywhere.
+
+## What it means for you
+You don't need two separate projects. A fast site with clear pages, accurate details and a good reputation helps in both places. That's true whether you're in Cherry Hill or anywhere else in South Jersey.
+
+Our Growth plan covers both each month. We keep your Google Business Profile fresh and add a page or post aimed at a real search. We also check how you show up on Google and in AI answers. See the [monthly plans](/plans/).
+
+## Common questions
+Q: Is AEO replacing SEO?
+A: No. AEO builds on SEO. Without the SEO basics, AI tools have less to go on.
+Q: Is AEO the same as GEO?
+A: Pretty much. GEO, generative engine optimization, is another name for the same idea: helping AI tools find and use your information.
+Q: Can anyone promise AI will mention my business?
+A: No. AI tools decide their own answers, and those answers change. What you can do is make your business easy to find and easy to trust.

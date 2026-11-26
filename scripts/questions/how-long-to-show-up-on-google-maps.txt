@@ -1,0 +1,34 @@
+URL: /questions/how-long-to-show-up-on-google-maps/
+Question: How long does it take to show up on Google Maps?
+Crumb: Showing up on Google Maps
+Title: How Long Until My Business Shows on Google Maps?
+Description: Your business can appear on Google Maps once its Business Profile is verified. Showing up for nearby searches takes longer. Here's what to expect.
+Keyword: how long to show up on google maps
+Draft: yes
+TLDR: Your business can appear on Google Maps once you create and verify a Google Business Profile. Showing up when people nearby search for what you do takes longer, and depends on how complete and trusted your profile is.
+Offer: review
+Related: /blog/google-business-profile-matters/ | Why your Google Business Profile matters
+Related: /questions/how-often-to-post-on-google-business-profile/ | How often should I post on my profile?
+Related: /seo/ | How local SEO works
+
+## The short answer
+Getting on the map and getting found on the map are two different things. Your business appears on Google Maps once you've created a Google Business Profile and Google has verified it. Google's Business Profile help says new profiles and edits are reviewed, and it can take some time before they show.
+
+Showing up when someone in Cherry Hill searches “dentist near me” is the harder part. That depends on how well your profile matches the search, how close you are, and how well known your business is.
+
+## What helps you show up sooner
+- Pick the right main category. It tells Google what you are.
+- Fill in everything: hours, service area, phone, website and real photos.
+- Keep your name, address and phone the same on your website and in directories.
+- Ask happy customers for reviews, and reply to them.
+
+## Keeping it up
+A profile isn't set and forget. Hours change, photos get old, and Google keeps adding features. On our Growth plan we keep your profile fresh every month, so you stay visible to people across South Jersey. See the [monthly plans](/plans/).
+
+## Common questions
+Q: Do I need a storefront to be on Google Maps?
+A: No. Service businesses that travel to customers can set a service area and hide their address, as Google's guidelines allow.
+Q: Why can't I find my business on the map?
+A: It may not be verified yet, it may be hidden by a policy issue, or it may just not rank for that search yet. Search your exact business name first.
+Q: Does my website affect my Maps listing?
+A: Yes. Google says prominence is partly based on information from across the web, and a clear website linked from your profile helps Google understand what you do.

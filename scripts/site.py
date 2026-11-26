@@ -47,6 +47,13 @@ Commands (run from the repo root, Python 3 only, nothing to install):
         Checks every question page text file in scripts/questions/ (format: scripts/questions.py), builds each page
         under /questions/, then runs sync (which lists the published ones on /faq/). Exits 1 if a file breaks a rule.
 
+    python3 scripts/site.py industries
+        Checks every industry page text file in scripts/industries/ (format: scripts/industries.py), builds each page
+        under /industries/, then runs sync. Exits 1 if a file breaks a rule.
+
+    python3 scripts/site.py check-questions | check-industries
+        Only checks the text files against the rules, without building or syncing anything.
+
     python3 scripts/site.py keywords
         Prints, as JSON, the target keyword each page owns, so new posts don't compete with existing pages.
 
@@ -112,6 +119,7 @@ GUIDE_ENDPOINT = ALERTS_ENDPOINT.rsplit("/", 1)[0] + "/guide"
 VIDEO_FRAME = "https://www.youtube-nocookie.com"
 PROBLEMS_DIR = ROOT / "scripts" / "problems"
 QUESTIONS_DIR = ROOT / "scripts" / "questions"
+INDUSTRIES_DIR = ROOT / "scripts" / "industries"
 # The homepage welcome video: its YouTube ID (empty shows nothing), the day it went up, a 1280x720 thumbnail at
 # /assets/videos/welcome.jpg, and its transcript (paragraphs) in scripts/videos/welcome-transcript.txt.
 WELCOME_VIDEO = "ftNlVSYWDOI"
@@ -136,6 +144,12 @@ WORDS_PER_MINUTE = 230
 # is hidden, and the chat assistant doesn't see it either.
 PRICE_FROM = "$2,500"
 
+# Monthly plans, the main offer on every page (shared:care-table, shared:plans-summary and the footer's plan strip).
+# Care plan prices as they should read. GROWTH_PRICE is the Growth plan's monthly price, like "$499": while it's
+# empty, the Growth plan shows "Quoted for your business" instead of a price, and sync prints a reminder.
+CARE_PLANS = [("Basic", "$99"), ("Pro", "$149"), ("Premium", "$249")]
+GROWTH_PRICE = "$449"
+
 # The search a page is written to rank for. Blog posts carry theirs in <meta name="blog:keyword">; these are the
 # other pages'. A new post's keyword must not compete with any of them (check-post).
 PAGE_KEYWORDS = {
@@ -149,10 +163,15 @@ PAGE_KEYWORDS = {
     "/tools/search-preview/": "google search preview tool",
     "/tools/ai-crawler-check/": "ai crawler check robots.txt",
     "/tools/schema-generator/": "local business schema generator",
+    "/faq/": "website seo and care plan questions",
+    "/about/": "about avello labs",
+    "/plans/": "monthly website care and seo plans",
+    "/industries/": "websites and seo for local businesses by industry",
+    "/tools/website-cost-calculator/": "how much is my website costing me",
 }
 
 # Pages whose text the chat assistant answers from.
-KNOWLEDGE_PAGES = ["/", "/seo/", "/aeo/", "/website-care/", "/web-apps/", "/tools/", "/faq/", "/about/"]
+KNOWLEDGE_PAGES = ["/", "/seo/", "/aeo/", "/website-care/", "/web-apps/", "/tools/", "/faq/", "/about/", "/plans/", "/industries/"]
 
 
 def origin(url):
@@ -169,7 +188,7 @@ CSP = (f"default-src 'self'; script-src {SCRIPT_SRC}; style-src 'self' https://f
        "form-action https://api.web3forms.com; base-uri 'self'; object-src 'none'")
 
 NAV = [("/seo/", "SEO"), ("/aeo/", "AEO"), ("/website-care/", "Website care"), ("/web-apps/", "Web apps"),
-       ("/#real-work", "Our work"), ("/tools/", "Free tools")]
+       ("/plans/", "Plans"), ("/tools/", "Free tools")]
 
 # Pages that count as part of a nav item, besides the ones under its own path.
 NAV_ALSO = {"/tools/": ["/check/"]}
@@ -301,6 +320,164 @@ def question_list():
         <!-- /shared:question-list -->"""
 
 
+# The care plan table: (row, why it matters, Basic, Pro, Premium). True means included, None means not included,
+# text is shown as written.
+CARE_ROWS = [
+    ("Hosting", "Your site loads fast on secure hosting, so people don't give up before they call", True, True, True),
+    ("Uptime and SSL monitoring", "We hear about it if your site goes down or its security certificate is about to run out, and we fix it fast", True, True, True),
+    ("Backups", "Copies of your site we can put back if something goes wrong. A bad day doesn't mean starting over", True, True, True),
+    ("SEO and AI search upkeep", "Your titles, business details and structured data kept current, so Google and AI tools show the right details", None, True, True),
+    ("Monthly edits", "New hours, services or photos, done for you. No logging in and figuring it out", None, "1 hour", "3 hours"),
+    ("Monthly report", "What we checked, what we changed and how the site is doing, so you can see what you're paying for", None, True, True),
+    ("Faster support", "Your requests go first, for when a change can't wait", None, None, True),
+]
+# What the Growth plan includes each month (a draft for Harris to confirm, 2026-11-26).
+GROWTH_ITEMS = [
+    "Everything in the Pro care plan",
+    "Your Google Business Profile kept fresh: a post each month, your new photos added, details checked",
+    "One new page or post a month, aimed at something your customers search for",
+    "A monthly look at how you show up on Google and in AI answers, and fixes for what's holding you back",
+]
+
+
+def care_from():
+    return CARE_PLANS[0][1] if CARE_PLANS else ""
+
+
+def growth_price_html():
+    if GROWTH_PRICE:
+        return f'{html.escape(GROWTH_PRICE)}<small>/mo</small>'
+    return '<span class="quoted">Quoted for your business</span>'
+
+
+def care_table():
+    def cell(v):
+        if v is True:
+            return '<td><span class="yes" aria-hidden="true">✓</span><span class="sr">Included</span></td>'
+        if v is None:
+            return '<td><span class="no" aria-hidden="true">–</span><span class="sr">Not included</span></td>'
+        return f"<td>{html.escape(v)}</td>"
+    heads = "".join(f'<th scope="col">{n}<span class="care-price">{html.escape(pr)}<small>/mo</small></span></th>' for n, pr in CARE_PLANS)
+    rows = "\n".join(f'            <tr><th scope="row">{html.escape(r)}<small>{html.escape(why)}</small></th>{"".join(cell(v) for v in vals)}</tr>'
+                     for r, why, *vals in CARE_ROWS)
+    return ("<!-- shared:care-table -->\n"
+            '        <div class="care-scroll">\n'
+            '          <table class="care-table">\n'
+            "            <thead>\n"
+            f'              <tr><th scope="col"><span class="sr">What\'s included</span></th>{heads}</tr>\n'
+            "            </thead>\n"
+            "            <tbody>\n"
+            f"{rows}\n"
+            "            </tbody>\n"
+            "          </table>\n"
+            "        </div>\n"
+            "        <!-- /shared:care-table -->")
+
+
+def plans_summary():
+    """The two monthly plans side by side: what you get each month and why it's worth it."""
+    growth = "\n".join(f"              <li>{html.escape(i)}</li>" for i in GROWTH_ITEMS)
+    return f"""<!-- shared:plans-summary -->
+        <div class="plan-cards">
+          <section class="plan-card" aria-labelledby="pc-care">
+            <p class="eyebrow">Website care</p>
+            <h3 id="pc-care">We look after your site, so you don't have to</h3>
+            <p class="plan-price"><span>From</span> {html.escape(care_from())}<small>/mo</small></p>
+            <ul>
+              <li>We keep it online, backed up and up to date, and test your contact form so messages reach you</li>
+              <li>On Pro and Premium, we make your changes and send you a short report each month</li>
+            </ul>
+            <p class="plan-why">A broken form or old hours costs you customers you never hear about. Care catches that early.</p>
+            <a class="btn btn-ghost" href="/plans/#care">Compare care plans {ARROW}</a>
+          </section>
+          <section class="plan-card plan-featured" aria-labelledby="pc-growth">
+            <p class="eyebrow">Growth</p>
+            <h3 id="pc-growth">Care, plus steady work to get you found</h3>
+            <p class="plan-price">{growth_price_html()}</p>
+            <ul>
+{growth}
+            </ul>
+            <p class="plan-why">Ads stop the day you stop paying. Work that helps people find you keeps doing its job.</p>
+            <a class="btn" href="/plans/#growth">See the Growth plan {ARROW}</a>
+          </section>
+        </div>
+        <!-- /shared:plans-summary -->"""
+
+
+def promise():
+    return """<!-- shared:promise -->
+        <section class="promise" aria-labelledby="promise-h">
+          <h2 id="promise-h">Our promise</h2>
+          <p>We won't promise you the top of Google. Nobody honestly can. Here's what we do promise.</p>
+          <ul>
+            <li>You hear back from us within 1 business day.</li>
+            <li>You see your new site on a preview link, and we change what you want changed before it goes live.</li>
+            <li>The 3 fixes from your free review are yours to keep, whether or not you work with us.</li>
+            <li>You talk to Harris, the person doing the work.</li>
+            <li>Month to month, no contract, cancel anytime.</li>
+          </ul>
+        </section>
+        <!-- /shared:promise -->"""
+
+
+def industry_files():
+    return sorted(INDUSTRIES_DIR.glob("*.txt")) if INDUSTRIES_DIR.is_dir() else []
+
+
+def industry_fields():
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import industries
+    found = [industries.parse(f.read_text())["fields"] for f in industry_files()]
+    return sorted((f for f in found if f.get("URL")), key=lambda f: int(f["Order"]) if f.get("Order", "").isdigit() else 99)
+
+
+def built_industries():
+    return [f for f in industry_fields() if (ROOT / f["URL"].strip("/") / "index.html").exists()]
+
+
+def industry_links(current):
+    items = "\n".join(f'            <li><a href="{html.escape(f["URL"])}">{html.escape(f["Industry"])}</a></li>'
+                      for f in built_industries() if f["URL"] != current)
+    return f"<!-- shared:industry-links -->\n          <ul>\n{items}\n          </ul>\n          <!-- /shared:industry-links -->"
+
+
+def industry_list():
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import blogpost
+    cards = "\n".join(
+        f'          <li class="industry-card">\n'
+        f'            <h3><a href="{html.escape(f["URL"])}">{html.escape(f["Industry"])}</a></h3>\n'
+        f'            <p>{blogpost.inline(f["Lede"])}</p>\n'
+        f'          </li>' for f in built_industries())
+    return f'<!-- shared:industry-list -->\n        <ul class="industry-grid">\n{cards}\n        </ul>\n        <!-- /shared:industry-list -->'
+
+
+def plan_prices():
+    """The care plan prices for the cost calculator's script, and as a line people can read."""
+    data = {n: float(re.sub(r"[^\d.]", "", pr)) for n, pr in CARE_PLANS if re.sub(r"[^\d.]", "", pr)}
+    text = ", ".join(f"{n} {pr}" for n, pr in CARE_PLANS)
+    return (f'<!-- shared:plan-prices --><p class="calc-note" id="plan-prices" data-prices="{html.escape(json.dumps(data))}">'
+            f'Our care plans: {html.escape(text)} a month. <a class="text-link" href="/plans/">What each one includes</a>.</p><!-- /shared:plan-prices -->')
+
+
+def plan_strip():
+    return f"""<section class="plan-strip" aria-labelledby="plan-strip-h">
+  <div class="wrap">
+    <div>
+      <h2 id="plan-strip-h">Monthly plans from {html.escape(care_from())}</h2>
+      <p>We build your site, then look after it every month so it keeps bringing in calls.</p>
+    </div>
+    <div class="plan-strip-actions">
+      <a class="btn" href="/plans/">See the plans</a>
+      <a class="btn btn-ghost" href="/#contact">Free 20-minute review</a>
+      <a class="btn btn-ghost" href="/check/">Free site check</a>
+    </div>
+    <p class="plan-strip-more"><a class="text-link" href="/tools/website-cost-calculator/">What's your website costing you? Try the calculator</a></p>
+  </div>
+</section>
+"""
+
+
 def business_schema():
     """The business and the website, described for search engines on every page. The homepage adds the full details
     (services, area served) under the same @id."""
@@ -311,6 +488,13 @@ def business_schema():
         org["telephone"] = phone_tel()
     if profiles():
         org["sameAs"] = [u for u, _ in profiles()]
+    # ProfessionalService is a LocalBusiness type. Every page also lists the services, each a schema.org Service.
+    org["areaServed"] = [{"@type": "Place", "name": "South Jersey"}, {"@type": "City", "name": "Philadelphia, PA"}]
+    services = [("Website design", "/"), ("Monthly website care", "/plans/#care"), ("Growth plan: website care and local SEO", "/plans/#growth"),
+                ("Local SEO", "/seo/"), ("Answer engine optimization (AEO)", "/aeo/"), ("Custom web apps", "/web-apps/")]
+    org["hasOfferCatalog"] = {"@type": "OfferCatalog", "name": "Services", "itemListElement": [
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": n, "url": f"{SITE}{u}", "provider": {"@id": f"{SITE}/#organization"}}}
+        for n, u in services]}
     site = {"@type": "WebSite", "@id": f"{SITE}/#website", "url": f"{SITE}/", "name": "Avello Labs", "publisher": {"@id": f"{SITE}/#organization"}}
     return f'<script type="application/ld+json">{json.dumps({"@context": "https://schema.org", "@graph": [org, site]}, ensure_ascii=False)}</script>'
 
@@ -344,12 +528,12 @@ def shared_header(current):
 def shared_footer(blog=False):
     blog_link = '\n          <li><a href="/blog/">Blog</a></li>' if blog else ""
     return f"""<!-- shared:footer -->
-<footer class="site">
+{plan_strip()}<footer class="site">
   <div class="wrap">
     <div class="foot-grid">
       <div class="foot-brand">
         <img src="/brand/logo-horizontal-dark.svg" width="337" height="64" alt="Avello Labs">
-        <p>Custom websites for small local businesses, with monthly care, SEO and AEO.</p>
+        <p>Websites that help local businesses get found and get calls, looked after every month so you don't have to.</p>
       </div>
       <div>
         <h2>Services</h2>
@@ -372,12 +556,15 @@ def shared_footer(blog=False):
           <li><a href="/tools/search-preview/">Search preview</a></li>
           <li><a href="/tools/ai-crawler-check/">AI crawler check</a></li>
           <li><a href="/tools/schema-generator/">Schema generator</a></li>
+          <li><a href="/tools/website-cost-calculator/">Website cost calculator</a></li>
         </ul>
       </div>
       <div>
         <h2>Company</h2>
         <ul>
           <li><a href="/about/">About us</a></li>
+          <li><a href="/plans/">Monthly plans</a></li>
+          <li><a href="/industries/">Who we help</a></li>
           <li><a href="/#real-work">Our work</a></li>
           <li><a href="/faq/">FAQ</a></li>{blog_link}
           <li><a href="/#contact">Contact</a></li>
@@ -613,6 +800,17 @@ def post_aside(post, posts):
 {items}
         </ul>
       </div>"""
+    built = built_industries()
+    who = ""
+    if built:
+        links = "\n".join(f'          <li><a href="{html.escape(f["URL"])}">{html.escape(f["Industry"])}</a></li>' for f in built)
+        who = f"""
+      <div class="aside-card">
+        <h2>Who we help</h2>
+        <ul>
+{links}
+        </ul>
+      </div>"""
     return f"""<!-- shared:post-aside -->
       <aside class="aside" aria-label="Related">
       <div class="aside-card">
@@ -628,7 +826,12 @@ def post_aside(post, posts):
           <li><a href="/tools/schema-generator/">Business schema generator</a></li>
           <li><a href="/tools/">See all free tools</a></li>
         </ul>
-      </div>{more}
+      </div>
+      <div class="aside-card">
+        <h2>Monthly plans</h2>
+        <p>We build your site, then look after it every month, from {html.escape(care_from())} a month.</p>
+        <a class="btn btn-ghost" href="/plans/">See the plans</a>
+      </div>{more}{who}
       </aside>
       <!-- /shared:post-aside -->"""
 
@@ -838,6 +1041,14 @@ def sync():
             inner = f'<a class="btn" href="tel:{phone_tel()}">Call {html.escape(PHONE)}</a>' if PHONE else ""
             text = re.sub(r"<!-- shared:call-btn -->.*?<!-- /shared:call-btn -->",
                           lambda _: f"<!-- shared:call-btn -->{inner}<!-- /shared:call-btn -->", text, flags=re.S)
+        for name, fn in [("care-table", care_table), ("plans-summary", plans_summary), ("promise", promise),
+                         ("industry-list", industry_list), ("plan-prices", plan_prices)]:
+            if f"<!-- shared:{name} -->" in text:
+                text = replace_block(text, name, fn(), f)
+        if "<!-- shared:industry-links -->" in text:
+            text = replace_block(text, "industry-links", industry_links(url), f)
+        text = re.sub(r"<!-- shared:care-from -->.*?<!-- /shared:care-from -->",
+                      lambda _: f"<!-- shared:care-from -->{html.escape(care_from())}<!-- /shared:care-from -->", text, flags=re.S)
         if "<!-- shared:faq-schema -->" in text:
             text = replace_block(text, "faq-schema", faq_schema(text), f)
         if "<!-- shared:profiles -->" in text:
@@ -881,11 +1092,21 @@ def sync():
     def lastmod(url, f):
         return by_url[url]["modified"] if url in by_url else (committed(f) or date.fromtimestamp(f.stat().st_mtime).isoformat())
 
+    hidden = {url for url, f in found if url != "/404.html" and own_noindex(f)} | {u for u, p in by_url.items() if p["draft"]}
+    for url, f in found:
+        if url in hidden or url == "/404.html" or (url in by_url and by_url[url]["draft"]):
+            continue
+        own = _strip_blocks(f.read_text())
+        for h in sorted(hidden):
+            if f'href="{h}"' in own:
+                print(f"WARNING: {url} is live but links to {h}, which is hidden from search (draft or noindex).")
     rows = "".join(f"  <url><loc>{SITE}{url}</loc><lastmod>{lastmod(url, f)}</lastmod></url>\n"
                    for url, f in found if listed(url, f))
     (ROOT / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n'
                                       '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + rows + "</urlset>\n")
     print(f"sitemap.xml: {rows.count('<url>')} pages")
+    if not GROWTH_PRICE:
+        print("REMINDER: GROWTH_PRICE is empty in scripts/site.py, so the Growth plan shows \"Quoted for your business\".")
     knowledge()
 
 
@@ -1095,11 +1316,62 @@ def build_problems():
         sys.exit(1)
 
 
+def known_pages():
+    """Every page path that exists or will be built from a text file (for link checks)."""
+    return ({url for url, _ in pages()} | {f.get("URL") for f in question_fields()} | {f.get("URL") for f in industry_fields()})
+
+
+def check_files(kind):
+    """Checks every question or industry text file without building anything. Exits 1 if any breaks a rule."""
+    sys.path.insert(0, str(ROOT / "scripts"))
+    mod = __import__(kind)
+    files = question_files() if kind == "questions" else industry_files()
+    anchors = set(re.findall(r'\bid="([^"]+)"', (ROOT / "index.html").read_text()))
+    found, taken, failed = known_pages(), taken_keywords(), False
+    for f in files:
+        bad = mod.check(f.read_text(), found, anchors, taken)
+        print(f"{f.relative_to(ROOT)}: " + ("ok" if not bad else "isn't ready:\n  " + "\n  ".join(bad)))
+        failed = failed or bool(bad)
+    return not failed
+
+
+def draft_questions():
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import questions
+    return {f["URL"] for f in question_fields() if f.get("URL") and questions.is_draft(f)}
+
+
+def build_industries(run_sync=True):
+    """Checks and builds every industry page from scripts/industries/, then runs sync. Links to draft question
+    pages are left out until those pages are published (`site.py questions` rebuilds these pages too)."""
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import industries
+    hide = draft_questions()
+    anchors = set(re.findall(r'\bid="([^"]+)"', (ROOT / "index.html").read_text()))
+    found, failed = known_pages(), False
+    for f in industry_files():
+        text = f.read_text()
+        bad = industries.check(text, found, anchors, taken_keywords())
+        if bad:
+            failed = True
+            print(f"{f.relative_to(ROOT)} isn't ready:\n  " + "\n  ".join(bad))
+            continue
+        out = ROOT / industries.parse(text)["fields"]["URL"].strip("/") / "index.html"
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(industries.page_html(text, SITE, "Avello Labs", hide))
+        print("built", industries.parse(text)["fields"]["URL"])
+    if run_sync:
+        sync()
+    if failed and run_sync:
+        sys.exit(1)
+    return not failed
+
+
 def build_questions():
     """Checks and builds every question page from scripts/questions/, then runs sync."""
     sys.path.insert(0, str(ROOT / "scripts"))
     import questions
-    found = {url for url, _ in pages()} | {f.get("URL") for f in question_fields()}
+    found = known_pages()
     anchors = set(re.findall(r'\bid="([^"]+)"', (ROOT / "index.html").read_text()))
     failed = False
     for f in question_files():
@@ -1114,6 +1386,8 @@ def build_questions():
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(questions.page_html(text, SITE, "Avello Labs", PHONE, phone_tel() if PHONE else ""))
         print("built", fields["URL"], "(draft: noindex, not in the sitemap or on /faq/)" if questions.is_draft(fields) else "")
+    if industry_files():
+        failed = not build_industries(run_sync=False) or failed
     sync()
     if failed:
         sys.exit(1)
@@ -1129,7 +1403,7 @@ def guide_titles():
 def taken_keywords():
     """[(url, keyword)] for every page that owns a target keyword: the main pages and every regular blog post. News
     posts own none (owner, 2026-11-02), so they never block a later regular post."""
-    out = list(PAGE_KEYWORDS.items()) + [(f["URL"], f["Keyword"].lower()) for f in problem_fields() + question_fields()
+    out = list(PAGE_KEYWORDS.items()) + [(f["URL"], f["Keyword"].lower()) for f in problem_fields() + question_fields() + industry_fields()
                                          if f.get("Keyword") and f.get("URL")]
     for p in blog_posts():
         if not p["news"]:
@@ -1232,6 +1506,10 @@ if __name__ == "__main__":
         build_problems()
     elif len(sys.argv) == 2 and sys.argv[1] == "questions":
         build_questions()
+    elif len(sys.argv) == 2 and sys.argv[1] == "industries":
+        build_industries()
+    elif len(sys.argv) == 2 and sys.argv[1] in ("check-questions", "check-industries"):
+        sys.exit(0 if check_files(sys.argv[1].split("-", 1)[1]) else 1)
     elif len(sys.argv) == 2 and sys.argv[1] == "keywords":
         print(json.dumps([{"url": u, "keyword": k} for u, k in taken_keywords()], indent=2))
     else:
