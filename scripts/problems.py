@@ -146,6 +146,13 @@ def check(text, pages, anchors, taken, guides):
         elif target.split("?")[0] not in pages and not target.startswith("/resources/"):
             problems.append(f"There's no page at {link}.")
     prose = "\n".join(line for line in text.splitlines() if not re.match(r"^(URL|Order|Keyword|Video|Video-date|Resource|Offer|Related|Also):", line))
+    problems += copy_rules(prose)
+    return list(dict.fromkeys(problems))
+
+
+def copy_rules(prose):
+    """The site's copy rules (dashes, quotes, banned words, blocked places, statistics, promises) for page text."""
+    problems = []
     if blogpost.DASHES.search(prose):
         problems.append("Uses an em dash, en dash or a spaced hyphen as punctuation. Use a period or comma.")
     if '"' in prose:
@@ -162,7 +169,7 @@ def check(text, pages, anchors, taken, guides):
     for m in blogpost.PROMISE.finditer(prose):
         if not blogpost.NEGATED.search(prose[:m.start()].split("\n")[-1]):
             problems.append(f'Sounds like a promise ("{m.group(0)}").')
-    return list(dict.fromkeys(problems))
+    return problems
 
 
 ARROW = blogpost.ARROW

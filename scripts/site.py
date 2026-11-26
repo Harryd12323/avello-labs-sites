@@ -43,6 +43,10 @@ Commands (run from the repo root, Python 3 only, nothing to install):
         Checks every problem page text file in scripts/problems/ (format: scripts/problems.py), builds each page,
         then runs sync (which also refreshes the homepage's problem buttons). Exits 1 if a file breaks a rule.
 
+    python3 scripts/site.py questions
+        Checks every question page text file in scripts/questions/ (format: scripts/questions.py), builds each page
+        under /questions/, then runs sync (which lists the published ones on /faq/). Exits 1 if a file breaks a rule.
+
     python3 scripts/site.py keywords
         Prints, as JSON, the target keyword each page owns, so new posts don't compete with existing pages.
 
@@ -69,6 +73,10 @@ EMAIL = "harris@avellolabs.com"
 # The business phone number as it should be shown, like "(856) 555-0123". Empty hides every phone spot: the
 # header's tap-to-call button, the footer, the homepage contact section and the structured data. Run sync after.
 PHONE = "856-470-6300"
+# Public profiles: the Google Business Profile's share link (in the profile: Share > Copy link) and the LinkedIn
+# page. Empty leaves them out. When set, they're linked on /about/ and listed as sameAs in the structured data.
+GBP_URL = ""
+LINKEDIN_URL = ""
 
 # Preview mode: every page carries noindex. Set to False and run `sync` to go live.
 NOINDEX = False
@@ -103,6 +111,7 @@ GUIDE_ENDPOINT = ALERTS_ENDPOINT.rsplit("/", 1)[0] + "/guide"
 # Problem page videos play from YouTube's no-cookie player, loaded only when someone presses play.
 VIDEO_FRAME = "https://www.youtube-nocookie.com"
 PROBLEMS_DIR = ROOT / "scripts" / "problems"
+QUESTIONS_DIR = ROOT / "scripts" / "questions"
 # The homepage welcome video: its YouTube ID (empty shows nothing), the day it went up, a 1280x720 thumbnail at
 # /assets/videos/welcome.jpg, and its transcript (paragraphs) in scripts/videos/welcome-transcript.txt.
 WELCOME_VIDEO = "ftNlVSYWDOI"
@@ -143,7 +152,7 @@ PAGE_KEYWORDS = {
 }
 
 # Pages whose text the chat assistant answers from.
-KNOWLEDGE_PAGES = ["/", "/seo/", "/aeo/", "/website-care/", "/web-apps/", "/tools/"]
+KNOWLEDGE_PAGES = ["/", "/seo/", "/aeo/", "/website-care/", "/web-apps/", "/tools/", "/faq/", "/about/"]
 
 
 def origin(url):
@@ -228,6 +237,70 @@ def phone_link(cls):
     return f'<a class="{cls}" href="tel:{phone_tel()}">{PHONE_ICON}<span>{html.escape(PHONE)}</span></a>'
 
 
+def profiles():
+    """[(url, label)] of the public profiles that are set."""
+    return [(u, label) for u, label in [(GBP_URL, "Google Business Profile"), (LINKEDIN_URL, "LinkedIn")] if u]
+
+
+def profile_links():
+    """The "Find us elsewhere" list on /about/, from GBP_URL and LINKEDIN_URL. Empty leaves only a reminder."""
+    if not profiles():
+        return ("<!-- shared:profiles --><!-- PROFILES: set GBP_URL (and LINKEDIN_URL) in scripts/site.py and run sync "
+                "to link the Google Business Profile here --><!-- /shared:profiles -->")
+    items = "\n".join(f'          <li><a class="text-link" href="{html.escape(u)}" target="_blank" rel="noopener">{label}</a> '
+                      f'<span class="sr">(opens in a new tab)</span></li>' for u, label in profiles())
+    return f"""<!-- shared:profiles -->
+        <h2 id="elsewhere">Find us elsewhere</h2>
+        <p>Check us out for yourself:</p>
+        <ul>
+{items}
+        </ul>
+        <!-- /shared:profiles -->"""
+
+
+def faq_schema(text):
+    """FAQPage structured data built from the questions in the page's own <div class="faq">, so the two always match."""
+    # The price is a shared block inside the answer text: keep its value, drop the other shared blocks.
+    own = _strip_blocks(re.sub(r"<!-- shared:price -->(.*?)<!-- /shared:price -->", r"\1", text, flags=re.S))
+    blocks = re.findall(r'<div class="faq">(.*?)\n\s*</div>', own, re.S)
+    pairs = [p for b in blocks for p in re.findall(r"<details>\s*<summary>(.*?)</summary>(.*?)</details>", b, re.S)]
+
+    def plain(s):
+        return " ".join(html.unescape(re.sub(r"<[^>]+>", " ", s)).split())
+
+    data = {"@context": "https://schema.org", "@type": "FAQPage",
+            "mainEntity": [{"@type": "Question", "name": plain(q), "acceptedAnswer": {"@type": "Answer", "text": plain(a)}}
+                           for q, a in pairs]}
+    return f'<!-- shared:faq-schema -->\n<script type="application/ld+json">{json.dumps(data, ensure_ascii=False)}</script>\n<!-- /shared:faq-schema -->'
+
+
+def question_files():
+    return sorted(QUESTIONS_DIR.glob("*.txt")) if QUESTIONS_DIR.is_dir() else []
+
+
+def question_fields():
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import questions
+    return [questions.parse(f.read_text())["fields"] for f in question_files()]
+
+
+def question_list():
+    """The published question pages, listed on /faq/ (drafts left out)."""
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import questions
+    live = sorted((f for f in question_fields() if not questions.is_draft(f) and (ROOT / f["URL"].strip("/") / "index.html").exists()),
+                  key=lambda f: f["Question"].lower())
+    if not live:
+        return "<!-- shared:question-list --><!-- Published question pages (site.py questions) are listed here. --><!-- /shared:question-list -->"
+    items = "\n".join(f'          <li><a href="{html.escape(f["URL"])}">{html.escape(f["Question"])}</a></li>' for f in live)
+    return f"""<!-- shared:question-list -->
+        <h2 id="more-answers">More answers</h2>
+        <ul class="question-list">
+{items}
+        </ul>
+        <!-- /shared:question-list -->"""
+
+
 def business_schema():
     """The business and the website, described for search engines on every page. The homepage adds the full details
     (services, area served) under the same @id."""
@@ -236,6 +309,8 @@ def business_schema():
            "address": {"@type": "PostalAddress", "addressLocality": "Collingswood", "addressRegion": "NJ", "postalCode": "08108", "addressCountry": "US"}}
     if PHONE:
         org["telephone"] = phone_tel()
+    if profiles():
+        org["sameAs"] = [u for u, _ in profiles()]
     site = {"@type": "WebSite", "@id": f"{SITE}/#website", "url": f"{SITE}/", "name": "Avello Labs", "publisher": {"@id": f"{SITE}/#organization"}}
     return f'<script type="application/ld+json">{json.dumps({"@context": "https://schema.org", "@graph": [org, site]}, ensure_ascii=False)}</script>'
 
@@ -302,7 +377,9 @@ def shared_footer(blog=False):
       <div>
         <h2>Company</h2>
         <ul>
-          <li><a href="/#real-work">Our work</a></li>{blog_link}
+          <li><a href="/about/">About us</a></li>
+          <li><a href="/#real-work">Our work</a></li>
+          <li><a href="/faq/">FAQ</a></li>{blog_link}
           <li><a href="/#contact">Contact</a></li>
           <li><a href="/privacy/">Privacy policy</a></li>
           <li><a href="/terms/">Terms of use</a></li>
@@ -757,6 +834,16 @@ def sync():
             text = replace_block(text, "welcome-video", welcome_video(), f)
         if "<!-- shared:problem-buttons -->" in text:
             text = replace_block(text, "problem-buttons", problem_buttons(), f)
+        if "<!-- shared:call-btn -->" in text:
+            inner = f'<a class="btn" href="tel:{phone_tel()}">Call {html.escape(PHONE)}</a>' if PHONE else ""
+            text = re.sub(r"<!-- shared:call-btn -->.*?<!-- /shared:call-btn -->",
+                          lambda _: f"<!-- shared:call-btn -->{inner}<!-- /shared:call-btn -->", text, flags=re.S)
+        if "<!-- shared:faq-schema -->" in text:
+            text = replace_block(text, "faq-schema", faq_schema(text), f)
+        if "<!-- shared:profiles -->" in text:
+            text = replace_block(text, "profiles", profile_links(), f)
+        if "<!-- shared:question-list -->" in text:
+            text = replace_block(text, "question-list", question_list(), f)
         if url == "/blog/":
             text = replace_block(text, "blog-head", blog_head(None, posts), f)
             text = replace_block(text, "blog-list", blog_list(posts), f)
@@ -782,15 +869,20 @@ def sync():
         (ROOT / "blog" / "feed.xml").write_text(blog_feed(posts))
         print(f"blog/feed.xml: {len(live)} published, {len(posts) - len(live)} left out as drafts")
 
-    # Drafts, and /blog/ while nothing is published, carry noindex, so they stay out of the sitemap too.
-    def listed(url):
-        return url != "/404.html" and not (url in by_url and by_url[url]["draft"]) and not (url == "/blog/" and not live)
+    # Drafts, and /blog/ while nothing is published, carry noindex, so they stay out of the sitemap too. So does any
+    # other page that sets its own noindex (a draft question page, for one).
+    def own_noindex(f):
+        return re.search(r'<meta name="robots" content="[^"]*noindex', _strip_blocks(f.read_text())) is not None
+
+    def listed(url, f):
+        return (url != "/404.html" and not (url in by_url and by_url[url]["draft"]) and not (url == "/blog/" and not live)
+                and not own_noindex(f))
 
     def lastmod(url, f):
         return by_url[url]["modified"] if url in by_url else (committed(f) or date.fromtimestamp(f.stat().st_mtime).isoformat())
 
     rows = "".join(f"  <url><loc>{SITE}{url}</loc><lastmod>{lastmod(url, f)}</lastmod></url>\n"
-                   for url, f in found if listed(url))
+                   for url, f in found if listed(url, f))
     (ROOT / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n'
                                       '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + rows + "</urlset>\n")
     print(f"sitemap.xml: {rows.count('<url>')} pages")
@@ -1003,6 +1095,30 @@ def build_problems():
         sys.exit(1)
 
 
+def build_questions():
+    """Checks and builds every question page from scripts/questions/, then runs sync."""
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import questions
+    found = {url for url, _ in pages()} | {f.get("URL") for f in question_fields()}
+    anchors = set(re.findall(r'\bid="([^"]+)"', (ROOT / "index.html").read_text()))
+    failed = False
+    for f in question_files():
+        text = f.read_text()
+        bad = questions.check(text, found, anchors, taken_keywords())
+        if bad:
+            failed = True
+            print(f"{f.relative_to(ROOT)} isn't ready:\n  " + "\n  ".join(bad))
+            continue
+        fields = questions.parse(text)["fields"]
+        out = ROOT / fields["URL"].strip("/") / "index.html"
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(questions.page_html(text, SITE, "Avello Labs", PHONE, phone_tel() if PHONE else ""))
+        print("built", fields["URL"], "(draft: noindex, not in the sitemap or on /faq/)" if questions.is_draft(fields) else "")
+    sync()
+    if failed:
+        sys.exit(1)
+
+
 def guide_titles():
     """{key: title} of the free guides, read from the quiz script so there's one list."""
     js = (ROOT / "assets" / "quiz.js").read_text()
@@ -1013,7 +1129,8 @@ def guide_titles():
 def taken_keywords():
     """[(url, keyword)] for every page that owns a target keyword: the main pages and every regular blog post. News
     posts own none (owner, 2026-11-02), so they never block a later regular post."""
-    out = list(PAGE_KEYWORDS.items()) + [(f["URL"], f["Keyword"].lower()) for f in problem_fields() if f.get("Keyword")]
+    out = list(PAGE_KEYWORDS.items()) + [(f["URL"], f["Keyword"].lower()) for f in problem_fields() + question_fields()
+                                         if f.get("Keyword") and f.get("URL")]
     for p in blog_posts():
         if not p["news"]:
             out.append((p["url"], p["keyword"] or p["headline"].lower()))
@@ -1113,6 +1230,8 @@ if __name__ == "__main__":
         print(json.dumps([{"url": u, "keyword": k} for u, k in taken_keywords() if blogpost.too_close(sys.argv[2], k)]))
     elif len(sys.argv) == 2 and sys.argv[1] == "problems":
         build_problems()
+    elif len(sys.argv) == 2 and sys.argv[1] == "questions":
+        build_questions()
     elif len(sys.argv) == 2 and sys.argv[1] == "keywords":
         print(json.dumps([{"url": u, "keyword": k} for u, k in taken_keywords()], indent=2))
     else:

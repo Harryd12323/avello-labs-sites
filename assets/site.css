@@ -319,6 +319,12 @@ form.contact-form::before { content: ""; position: absolute; left: 1.5rem; right
 .cta-band p { margin: .75rem auto 0; max-width: 34rem; color: #d3daf0; }
 .cta-band .btn { margin-top: 1.5rem; }
 .cta-band .btn:hover { box-shadow: 0 0 0 1px color-mix(in srgb, var(--cyan) 50%, transparent), 0 10px 30px -10px rgb(0 0 0 / .6); }
+.prose .price-amount { display: inline; font-size: inherit; font-weight: inherit; letter-spacing: 0; color: inherit; }
+.cta-actions { display: flex; flex-wrap: wrap; gap: 0 .75rem; justify-content: center; }
+.summary.tldr p:not(.eyebrow) { margin-top: .6rem; font-size: 1.075rem; color: var(--text); }
+.about-who { display: grid; gap: 1.25rem; align-items: start; margin-top: 1rem; }
+.about-who .who-photo { width: min(10rem, 45vw); }
+@media (min-width: 640px) { .about-who { grid-template-columns: auto 1fr; } }
 .updated { margin-top: 2.5rem; color: var(--muted); font-size: .9rem; }
 
 /* Footer */

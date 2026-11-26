@@ -1,0 +1,40 @@
+URL: /questions/website-or-google-business-profile/
+Question: Do I need a website if I have a Google Business Profile?
+Crumb: Website or Business Profile
+Title: Do I Need a Website With a Business Profile?
+Description: A Google Business Profile gets you on the map. A website gives customers a reason to call you. What each does, and why a local business needs both.
+Keyword: need a website if i have a google business profile
+Draft: yes
+TLDR: Usually, yes. Your Google Business Profile gets you onto Google Maps. Your website gives people the detail they need to pick you, and gives Google and AI tools more to go on.
+Offer: review
+Related: /blog/google-business-profile-matters/ | Why your Google Business Profile matters
+Related: /seo/ | How local SEO works
+Related: /aeo/ | Getting named in AI answers
+
+## The short answer
+A Google Business Profile is free, and it powers your listing in Google Maps and the map results, so it's worth having either way. But it's a short summary with a fixed layout.
+
+A website is where you explain every service, show your work, answer the questions customers ask and make it easy to call. Google says local results are based mainly on relevance, distance and prominence, and a clear page for each service helps Google see how well you match a search.
+
+## What a profile does well
+- Gets you onto Google Maps and into the map results
+- Shows your hours, phone number, reviews and directions in one place
+- Costs nothing to set up and update
+
+## What a website adds
+- **A page for each service**, so you can match more of what people search for
+- **Room to explain**: photos of your work, how you price, what happens when someone calls
+- **A place AI tools can read.** Tools like ChatGPT build answers from pages they can find on the web, so clear facts on your own site help them describe you correctly. More on that in our [AEO guide](/aeo/).
+
+## An example from Cherry Hill
+Say you run a plumbing business in Cherry Hill. Someone in South Jersey searches for “water heater replacement”. Your profile might show up on the map with your reviews. If they tap through and land on a page about water heater replacement, with what you do and how to book, they have a reason to call you rather than the next name on the list.
+
+## Common questions
+Q: Is a Google Business Profile free?
+A: Yes. It's free to set up, and it should be claimed, verified and kept up to date.
+Q: Can my Google Business Profile link to my website?
+A: Yes. You can add your website address to your profile, so people can tap straight through to it.
+Q: Do AI tools look at my website?
+A: AI tools generally build answers from pages they can read on the web, including your website and listings like your Google Business Profile. Clear details that match on both help.
+Q: How quickly can I get a website?
+A: A new site can be live in about a week once we have your content.

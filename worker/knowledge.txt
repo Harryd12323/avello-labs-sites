@@ -169,6 +169,7 @@ Who you'll work with
 ## Hi, I'm Harris.
 I run Avello Labs. When you get in touch, you talk to me, from the first call to the changes you ask for after launch.
 I come from finance, so I look at a website the way I'd look at any investment: is it bringing in calls?
+More about us and how we work
 
 Contact
 
@@ -488,3 +489,108 @@ Fill in a short form and copy the LocalBusiness code that tells search engines w
 ## Why these tools
 Small business websites can lose customers to a handful of fixable things: a missing description, a page Google can't read, or a setting that quietly blocks AI search. These tools find those problems in a few seconds, and each one explains what to change.
 They're rule-based checks, with no AI involved, and nothing you enter in them is stored. When you want a hand with the fixes, ask for a free 20-minute review.
+
+=== https://avellolabs.com/faq/ (Common Questions About Websites, SEO and Care | Avello Labs) ===
+Home / FAQ
+
+# Common questions, straight answers
+What a website costs, how long it takes, what monthly care covers and how working with us goes. If your question isn't here, ask us.
+
+In short
+- Websites start at $2,500 for 5 to 7 pages.
+- A new site can be live in about a week once we have your content.
+- Care plans are $99, $149 or $249 a month, so you don't have to look after the site yourself.
+- You talk to Harris, from the first call to the changes you ask for after launch.
+
+## Prices and timing
+
+How much does a website cost?
+Websites start at $2,500 for 5 to 7 pages, with Google SEO and AI search basics built in. Local SEO, AEO and custom tools are quoted per project, once we know what you need.
+How much are the monthly care plans?
+Basic is $99 a month, Pro is $149 and Premium is $249. Every plan includes hosting, uptime and security certificate monitoring, and backups. Pro adds SEO and AI search upkeep, 1 hour of edits a month and a monthly report. Premium gives you 3 hours of edits and puts your requests first. Compare the plans.
+How long does it take to build a website?
+Your new site can be live in about a week once we have your content, so the sooner you can send your logo, photos and details, the sooner you can go live.
+What do you need from me to get started?
+On a kickoff call we talk through your business, your customers and what the site needs to do. You send your logo, photos and anything you already have. We build the site and send you a preview link, you tell us what to change, and we change it.
+
+## Working with us
+
+Who will I actually work with?
+Harris, who runs Avello Labs. When you get in touch, you talk to him, from the first call to the changes you ask for after launch. More about us.
+What happens on the free 20-minute review?
+It's a phone call about your business. We look at your website, your Google Business Profile and what AI tools say about you, then walk you through the 3 fixes we'd make first. There's no obligation, and the fixes are yours to keep whether or not you work with us.
+Where are you based, and who do you work with?
+We're based in South Jersey and work with local businesses in Cherry Hill, across South Jersey and in Philadelphia. Most of the work happens by phone, email and preview links, so you don't need to come to an office.
+Can you fix my current website instead of building a new one?
+Sometimes fixing what you have is the better call. The free review is a good way to find out, because we start from your current site. Our guide on whether to fix your site or start over walks through how to decide.
+Who should own my domain and website accounts?
+You should. We recommend that you always own your domain, hosting and website accounts in your own name, and add anyone helping you as a separate user, so you're never locked out.
+
+## Monthly care
+
+Does a brand new website need ongoing care?
+Yes. New sites still need updates, monitoring and backups, and the first few months are when you'll most want to adjust your content based on what customers ask.
+What happens if my site goes down?
+With monitoring in place, you find out quickly instead of from a customer. The cause can be tracked down and fixed, and recent backups mean the site can be restored if needed.
+Can I ask for changes after the site is live?
+Yes. On the Pro and Premium care plans, changes like new hours, services or photos are included: 1 hour a month on Pro and 3 hours on Premium. You tell us what's changed and we update it, so customers see what's true today.
+
+## Google and AI search
+
+Can you guarantee I'll be number one on Google?
+No, and you should be wary of anyone who does. Google decides rankings, and they depend partly on things nobody controls, like how close a searcher is to you. What we can do is honest, consistent work on the things known to help.
+How long does SEO take to work?
+It depends on your market and where you're starting from. Simple fixes, like correcting your business details, can help within weeks. Meaningful ranking improvements usually take a few months of steady work. How local SEO works.
+What is AEO?
+AEO stands for answer engine optimization. It's how you help AI tools like ChatGPT and Google's AI Overviews understand your business, so they can name you when someone asks for a recommendation. Good AEO is mostly good SEO, plus making your information clear and easy for machines to read. What AEO means for you.
+How do I see what's holding my site back?
+Run the free site check. Enter your website's address and in a few seconds you get a score out of 100 and simple fixes for the basics that matter. Free, no sign-up.
+
+## Custom tools
+
+Do you build custom tools and apps?
+Yes. We build simple web apps and custom software that take a task you do by hand, on paper or in spreadsheets, and turn it into a tool that does it for you. For example, we built a Windows app that turns a sales company's GPS data into weekly tech logs. Custom tools are quoted per project. What a custom tool could save you.
+
+## Still have a question?
+Call us, or book a free 20-minute review and we'll walk you through the 3 fixes we'd make first. No obligation.
+Call 856-470-6300 Get my free review
+
+=== https://avellolabs.com/about/ (About Avello Labs: Who You'll Work With | Avello Labs) ===
+Home / About
+
+# A local web business you can actually call
+Avello Labs is a small web business in South Jersey. We build fast websites for local businesses, look after them every month, and help them get found on Google and in AI answers.
+
+In short
+- Avello Labs LLC, based in South Jersey.
+- Run by Harris. You talk to him from the first call to the changes after launch.
+- Websites, monthly care, local SEO, AEO and custom tools for local businesses.
+- Prices are on the site, and we reply within 1 business day.
+
+## Who you'll work with
+
+Hi, I'm Harris. I run Avello Labs. When you get in touch, you talk to me, from the first call to the changes you ask for after launch. There's no hand-off to someone you've never met.
+I come from finance, so I look at a website the way I'd look at any investment: is it bringing in calls? That's the question behind everything we build.
+
+## The company
+- Name: Avello Labs LLC
+- Based in: South Jersey, New Jersey. Our mailing address is at the bottom of every page.
+- Who we work with: local businesses in Cherry Hill, across South Jersey and in Philadelphia.
+- What we do: websites, monthly website care, local SEO, AEO and custom tools.
+- Contact: harris@avellolabs.com, or call the number at the top of the page.
+
+## How we work
+- Prices up front. Websites start at $2,500, and care plans are $99, $149 or $249 a month. See the plans.
+- A quick reply. We email you within 1 business day to pick a time to talk.
+- Your accounts stay yours. We recommend you own your domain, hosting and website accounts in your own name, so you're never locked out.
+- No promises we can't keep. Nobody can guarantee a top spot on Google or a mention in an AI answer, so we don't. We do honest, steady work on the things known to help.
+
+## Businesses we've worked with
+- Emerald Express: an earlier client site for a door-to-door vehicle transport company, with free quotes online.
+- Goldbridge Systems: an earlier client site for an ATM placement business serving hospitality and retail.
+- Margie Cedrone Artisan Jeweler: an online store where our SEO and AEO work is underway now.
+- A sales company's weekly tech logs: a Windows app we built that turns their GPS exports into the weekly tech log workbook, so nobody types it up by hand. How it works.
+
+## Want to talk it through?
+Call us, or book a free 20-minute review and we'll walk you through the 3 fixes we'd make first. No obligation.
+Call 856-470-6300 Get my free review

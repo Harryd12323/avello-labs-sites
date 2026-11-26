@@ -519,5 +519,81 @@ class PriceLine(unittest.TestCase):
         self.assertTrue("Websites starting at $1,500" in (self.site / "worker" / "knowledge.txt").read_text())
 
 
+class QuestionPages(unittest.TestCase):
+    """Question pages (site.py questions), the /faq/ page's schema and the profile links."""
+    EXAMPLE = "website-or-google-business-profile.txt"
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp())
+        self.site = self.tmp / "site"
+        shutil.copytree(ROOT, self.site, ignore=LEAVE_OUT)
+        self.src = self.site / "scripts" / "questions" / self.EXAMPLE
+        self.url = re.search(r"^URL: (.*)$", self.src.read_text(), re.M).group(1)
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp)
+
+    def run_site(self, *args):
+        return subprocess.run([sys.executable, str(self.site / "scripts" / "site.py"), *args], capture_output=True, text=True)
+
+    def read(self, url):
+        return (self.site / url.strip("/") / "index.html").read_text()
+
+    def set_field(self, name, value):
+        self.src.write_text(re.sub(rf"^{name}: .*$", f"{name}: {value}", self.src.read_text(), count=1, flags=re.M))
+
+    def test_a_draft_stays_out_of_the_sitemap_and_off_the_faq(self):
+        self.set_field("Draft", "yes")
+        r = self.run_site("questions")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn('<meta name="robots" content="noindex, follow">', self.read(self.url))
+        self.assertNotIn(self.url, (self.site / "sitemap.xml").read_text())
+        self.assertNotIn(self.url, self.read("/faq/"))
+
+    def test_a_published_page_has_its_parts_and_is_listed(self):
+        self.set_field("Draft", "no")
+        r = self.run_site("questions")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        page = self.read(self.url)
+        self.assertNotIn("noindex", page.split("<body")[0])
+        for part in ['class="summary tldr"', 'id="answer"', 'class="faq"', 'href="tel:', 'href="/#contact"', "South Jersey"]:
+            self.assertIn(part, page)
+        graph = json.loads(re.search(r'<script type="application/ld\+json">\n(.*?)\n</script>', page, re.S).group(1))["@graph"]
+        faq = next(n for n in graph if "FAQPage" in n["@type"])
+        self.assertEqual(len(faq["mainEntity"]), page.count("<summary>") + 1)  # the main question plus the FAQ
+        self.assertIn(self.url, (self.site / "sitemap.xml").read_text())
+        self.assertIn(f'href="{self.url}"', self.read("/faq/"))
+
+    def test_rule_breaking_files_are_refused(self):
+        text = self.src.read_text()
+        cases = {"Haddon Township": text.replace("Cherry Hill", "Haddon Township"),
+                 "Mention South Jersey": text.replace("South Jersey", "the area"),
+                 "## The short answer": text.replace("## The short answer", "## Answer"),
+                 "Q:/A: pairs": text.split("Q: Do AI tools")[0],
+                 "em dash": text.replace("Usually, yes.", "Usually \u2014 yes.")}
+        for expect, bad in cases.items():
+            self.src.write_text(bad)
+            r = self.run_site("questions")
+            self.assertEqual(r.returncode, 1, expect)
+            self.assertIn(expect, r.stdout, expect)
+
+    def test_faq_schema_matches_the_questions_on_the_page(self):
+        self.assertEqual(self.run_site("sync").returncode, 0)
+        page = self.read("/faq/")
+        block = re.search(r"<!-- shared:faq-schema -->\n<script[^>]*>(.*?)</script>", page, re.S).group(1)
+        names = [q["name"] for q in json.loads(block)["mainEntity"]]
+        self.assertEqual(names, [re.sub(r"<[^>]+>", "", s).replace("&#x27;", "'") for s in re.findall(r"<summary>(.*?)</summary>", page)])
+        self.assertNotIn("start at  for", block)  # the shared price is kept in the answer text
+
+    def test_profiles_show_only_when_set(self):
+        self.assertEqual(self.run_site("sync").returncode, 0)
+        self.assertNotIn("Find us elsewhere", self.read("/about/"))
+        script = self.site / "scripts" / "site.py"
+        script.write_text(script.read_text().replace('GBP_URL = ""', 'GBP_URL = "https://g.page/r/example"', 1))
+        self.assertEqual(self.run_site("sync").returncode, 0)
+        self.assertIn('href="https://g.page/r/example"', self.read("/about/"))
+        self.assertIn('"sameAs": ["https://g.page/r/example"]', self.read("/seo/"))
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
