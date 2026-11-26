@@ -6,7 +6,15 @@
     <description>Practical website, search and AI answer tips for small local businesses.</description>
     <language>en-us</language>
     <atom:link href="https://avellolabs.com/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Wed, 25 Nov 2026 12:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 26 Nov 2026 12:00:00 +0000</lastBuildDate>
+    <item>
+      <title>AI shopping agents often fall for fake deals, and what that means for your site</title>
+      <link>https://avellolabs.com/blog/ai-shopping-agents-fake-deals/</link>
+      <guid isPermaLink="true">https://avellolabs.com/blog/ai-shopping-agents-fake-deals/</guid>
+      <pubDate>Thu, 26 Nov 2026 12:00:00 +0000</pubDate>
+      <category>News</category>
+      <description>A new test found AI shopping agents often buy fake deals. Here is what AI shopping agents mean for a local business website, and what to do.</description>
+    </item>
     <item>
       <title>Wix vs Squarespace vs custom website: which fits a local business?</title>
       <link>https://avellolabs.com/blog/wix-vs-squarespace-vs-custom-website/</link>
