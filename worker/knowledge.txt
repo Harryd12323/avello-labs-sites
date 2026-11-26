@@ -61,7 +61,7 @@ A fast site that makes it easy for people nearby to find you, trust you and call
 ### Monthly plans From $99 a month
 You don't have to keep an eye on your site for breakages, security problems or old information. We do. Growth adds steady work on getting you found. See what you get each month
 
-Websites starting at $2,500
+Websites from $1,200
 5 to 7 pages, live in about a week once we have your content, with Google and AI search basics built in so both can read your site from launch day. Get a price for your site
 
 ### Monthly plans
@@ -95,7 +95,7 @@ Ads stop the day you stop paying. Work that helps people find you keeps doing it
 | Monthly edits New hours, services or photos, done for you. No logging in and figuring it out | Not included | 1 hour | 3 hours
 | Monthly report What we checked, what we changed and how the site is doing, so you can see what you're paying for | Not included | Included | Included
 | Faster support Your requests go first, for when a change can't wait | Not included | Not included | Included
-Local SEO, AEO and custom tools on their own are quoted per project. More about the plans.
+Local SEO and AEO are included in the Growth plan, or quoted per project as a one-off. Custom tools are quoted per project. More about the plans.
 
 ### Also from us
 
@@ -527,17 +527,17 @@ Home / FAQ
 What a website costs, how long it takes, what monthly care covers and how working with us goes. If your question isn't here, ask us.
 
 In short
-- Websites start at $2,500 for 5 to 7 pages.
+- Websites cost from $1,200 for 5 to 7 pages.
 - A new site can be live in about a week once we have your content.
-- Care plans are $99, $149 or $249 a month, so you don't have to look after the site yourself.
+- Care plans are $99, $149 or $249 a month, so you don't have to look after the site yourself. The Growth plan, which adds monthly local SEO, is $449 a month.
 - You talk to Harris, from the first call to the changes you ask for after launch.
 
 ## Prices and timing
 
 How much does a website cost?
-Websites start at $2,500 for 5 to 7 pages, with Google SEO and AI search basics built in. Local SEO, AEO and custom tools are quoted per project, once we know what you need.
-How much are the monthly care plans?
-Basic is $99 a month, Pro is $149 and Premium is $249. Every plan includes hosting, uptime and security certificate monitoring, and backups. Pro adds SEO and AI search upkeep, 1 hour of edits a month and a monthly report. Premium gives you 3 hours of edits and puts your requests first. Compare the plans.
+Websites cost from $1,200 for 5 to 7 pages, with Google SEO and AI search basics built in. Local SEO and AEO are included in the Growth plan, or quoted per project as a one-off. Custom tools are quoted per project, once we know what you need.
+How much are the monthly plans?
+Care plans are Basic at $99 a month, Pro at $149 and Premium at $249. Every plan includes hosting, uptime and security certificate monitoring, and backups. Pro adds SEO and AI search upkeep, 1 hour of edits a month and a monthly report. Premium gives you 3 hours of edits and puts your requests first. The Growth plan is $449 a month: everything in Pro, plus monthly work on how people find you on Google and in AI answers. Compare the plans.
 How long does it take to build a website?
 Your new site can be live in about a week once we have your content, so the sooner you can send your logo, photos and details, the sooner you can go live.
 What do you need from me to get started?
@@ -612,7 +612,7 @@ I come from finance, so I look at a website the way I'd look at any investment: 
 - Contact: harris@avellolabs.com, or call the number at the top of the page.
 
 ## How we work
-- Prices up front. Websites start at $2,500, and care plans are $99, $149 or $249 a month. See the plans.
+- Prices up front. Websites cost from $1,200. Care plans are $99, $149 or $249 a month, and the Growth plan is $449 a month. See the plans.
 - A quick reply. We email you within 1 business day to pick a time to talk.
 - Your accounts stay yours. We recommend you own your domain, hosting and website accounts in your own name, so you're never locked out.
 - No promises we can't keep. Nobody can guarantee a top spot on Google or a mention in an AI answer, so we don't. We do honest, steady work on the things known to help.
@@ -636,7 +636,7 @@ Get my free review Free site check
 
 In short
 - Care plans start at $99 a month. We keep your site running, backed up and secure.
-- The Growth plan adds steady work on how people find you on Google and in AI answers.
+- The Growth plan, at $449 a month, adds steady work on how people find you on Google and in AI answers.
 - You talk to Harris, and you get a plain report of what we did.
 
 ## Why a monthly plan

@@ -585,3 +585,4 @@ h3.also { margin-top: 3rem; color: var(--muted); font-size: .8rem; font-weight: 
 .calc-row small { color: var(--muted); font-size: .85rem; }
 .calc-empty, .calc-note { margin: 0; color: var(--muted); font-size: .92rem; }
 .source-line { margin-top: .5rem; color: var(--muted); font-size: .9rem; }
+.price-card p:not(.price) .price-amount { display: inline; font-size: inherit; font-weight: 600; letter-spacing: 0; color: var(--text); }

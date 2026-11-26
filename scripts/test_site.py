@@ -510,13 +510,13 @@ class PriceLine(unittest.TestCase):
             self.assertTrue(tags, url)
             self.assertTrue(all(t.endswith(" hidden>") for t in tags), url)
             self.assertFalse("$___" in page, url)
-        self.assertFalse("Websites starting at" in (self.site / "worker" / "knowledge.txt").read_text())
+        self.assertFalse("Websites from" in (self.site / "worker" / "knowledge.txt").read_text())
 
     def test_set_price_shows_it_everywhere(self):
         for url, page in self.sync_with_price("$1,500").items():
             self.assertFalse(re.search(r"data-price[^>]*hidden", page), url)
             self.assertTrue('<span class="price-amount">$1,500</span>' in page, url)
-        self.assertTrue("Websites starting at $1,500" in (self.site / "worker" / "knowledge.txt").read_text())
+        self.assertTrue("Websites from $1,500" in (self.site / "worker" / "knowledge.txt").read_text())
 
 
 class QuestionPages(unittest.TestCase):
@@ -670,6 +670,43 @@ class PlansAndIndustries(unittest.TestCase):
         self.run_site("questions")
         r = self.run_site("sync")
         self.assertIn("WARNING: /about/ is live but links to /questions/seo-vs-aeo/", r.stdout)
+
+    def test_every_hand_written_price_follows_the_settings(self):
+        self.setting("PRICE_FROM", '"$1,111"')
+        self.setting("GROWTH_PRICE", '"$555"')
+        self.setting("CARE_PLANS", '[("Basic", "$11"), ("Pro", "$22"), ("Premium", "$33")]')
+        r = self.run_site("questions")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        old = re.compile(r"\$(?:2,500|1,200|99|149|249|449)\b")
+        for f in sorted(self.site.rglob("*.html")):
+            rel = f.relative_to(self.site)
+            if rel.parts[0] in ("demo", "node_modules", "concepts", "docs", "scripts", "business-cards", "brand"):
+                continue
+            self.assertIsNone(old.search(f.read_text()), f"{rel} still shows an old price: {old.search(f.read_text())}")
+        faq = self.read("/faq/")
+        for s in ["Websites cost from <!-- shared:price --><span class=\"price-amount\">$1,111</span>", "Basic at <!-- shared:care-basic -->$11",
+                  "The Growth plan is <!-- shared:growth-price -->$555"]:
+            self.assertIn(s, faq)
+        schema = json.loads(re.search(r'<!-- shared:faq-schema -->\n<script[^>]*>(.*?)</script>', faq, re.S).group(1))
+        answers = " ".join(q["acceptedAnswer"]["text"] for q in schema["mainEntity"])
+        self.assertIn("from $1,111 for 5 to 7 pages", answers)
+        self.assertIn("The Growth plan is $555 a month", answers)
+        for url in ["/about/", "/website-care/", "/blog/how-much-does-a-small-business-website-cost/", "/seo/", "/aeo/"]:
+            self.assertIn("$555", self.read(url), url)
+        self.assertIn("Our plans: Basic $11, Pro $22, Premium $33 a month. Growth: $555 a month.", self.read("/tools/website-cost-calculator/"))
+
+    def test_homepage_schema_lists_every_plan_from_the_settings(self):
+        self.setting("PRICE_FROM", '"$1,111"')
+        self.setting("GROWTH_PRICE", '"$555"')
+        self.assertEqual(self.run_site("sync").returncode, 0)
+        home = self.read("/")
+        block = re.search(r"<!-- shared:home-schema -->\n<script[^>]*>\n(.*?)\n</script>", home, re.S).group(1)
+        offers = json.loads(block)["hasOfferCatalog"]["itemListElement"]
+        by_name = {(o.get("name") or o["itemOffered"]["name"]): o for o in offers}
+        self.assertEqual(by_name["Website builds"]["priceSpecification"]["minPrice"], 1111)
+        self.assertEqual(by_name["Growth plan"]["price"], "555")
+        self.assertEqual(by_name["Website care: Pro"]["priceSpecification"]["unitText"], "month")
+        self.assertIn("Included in the Growth plan, or quoted per project as a one-off", by_name["SEO"]["itemOffered"]["description"])
 
     def test_every_page_carries_local_business_and_service_schema(self):
         self.assertEqual(self.run_site("sync").returncode, 0)

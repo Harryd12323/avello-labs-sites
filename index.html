@@ -31,6 +31,8 @@
 <meta property="og:title" content="Avello Labs | Fast Websites and Monthly Website Care">
 <meta property="og:description" content="Custom websites for local businesses, with Google SEO, AI search optimization and monthly care built in. Live in about a week once we have your content.">
 <meta property="og:url" content="https://avellolabs.com/">
+<!-- Built by sync from the prices in scripts/site.py (home_schema). -->
+<!-- shared:home-schema -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -71,7 +73,7 @@
         },
         "priceSpecification": {
           "@type": "PriceSpecification",
-          "minPrice": 2500,
+          "minPrice": 1200,
           "priceCurrency": "USD"
         }
       },
@@ -81,7 +83,7 @@
           "@type": "Service",
           "name": "SEO",
           "url": "https://avellolabs.com/seo/",
-          "description": "Local search engine optimization for small businesses. Quoted per project."
+          "description": "Local search engine optimization for small businesses. Included in the Growth plan, or quoted per project as a one-off."
         }
       },
       {
@@ -90,7 +92,7 @@
           "@type": "Service",
           "name": "AEO",
           "url": "https://avellolabs.com/aeo/",
-          "description": "Answer engine optimization, so AI tools like ChatGPT and Google's AI answers can find and recommend a business. Quoted per project."
+          "description": "Answer engine optimization, so AI tools like ChatGPT and Google's AI answers can find and recommend a business. Included in the Growth plan, or quoted per project as a one-off."
         }
       },
       {
@@ -99,12 +101,18 @@
           "@type": "Service",
           "name": "Website care",
           "url": "https://avellolabs.com/website-care/",
-          "description": "Ongoing website updates, monitoring, backups and fixes."
+          "description": "Ongoing website updates, monitoring, backups and fixes. Month to month, no contract."
         }
       },
       {
         "@type": "Offer",
         "name": "Website care: Basic",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Website care: Basic plan",
+          "url": "https://avellolabs.com/plans/#care",
+          "description": "Hosting, uptime and SSL monitoring, and backups."
+        },
         "price": "99",
         "priceCurrency": "USD",
         "priceSpecification": {
@@ -113,17 +121,17 @@
           "priceCurrency": "USD",
           "unitCode": "MON",
           "unitText": "month"
-        },
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Website care: Basic plan",
-          "url": "https://avellolabs.com/#pricing",
-          "description": "Hosting, uptime and SSL monitoring, and backups."
         }
       },
       {
         "@type": "Offer",
         "name": "Website care: Pro",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Website care: Pro plan",
+          "url": "https://avellolabs.com/plans/#care",
+          "description": "Everything in Basic, plus SEO and AI search upkeep, 1 hour of edits a month and a monthly report."
+        },
         "price": "149",
         "priceCurrency": "USD",
         "priceSpecification": {
@@ -132,17 +140,17 @@
           "priceCurrency": "USD",
           "unitCode": "MON",
           "unitText": "month"
-        },
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Website care: Pro plan",
-          "url": "https://avellolabs.com/#pricing",
-          "description": "Everything in Basic, plus SEO and AI-search upkeep, 1 hour of edits a month and a monthly report."
         }
       },
       {
         "@type": "Offer",
         "name": "Website care: Premium",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Website care: Premium plan",
+          "url": "https://avellolabs.com/plans/#care",
+          "description": "Everything in Pro, with 3 hours of edits a month and faster support."
+        },
         "price": "249",
         "priceCurrency": "USD",
         "priceSpecification": {
@@ -151,12 +159,25 @@
           "priceCurrency": "USD",
           "unitCode": "MON",
           "unitText": "month"
-        },
+        }
+      },
+      {
+        "@type": "Offer",
+        "name": "Growth plan",
         "itemOffered": {
           "@type": "Service",
-          "name": "Website care: Premium plan",
-          "url": "https://avellolabs.com/#pricing",
-          "description": "Everything in Pro, with 3 hours of edits a month and faster support."
+          "name": "Growth plan: website care and local SEO",
+          "url": "https://avellolabs.com/plans/#growth",
+          "description": "Everything in the Pro care plan, plus monthly Google Business Profile upkeep, one new page or post a month, and a monthly check of how the business shows up on Google and in AI answers."
+        },
+        "price": "449",
+        "priceCurrency": "USD",
+        "priceSpecification": {
+          "@type": "UnitPriceSpecification",
+          "price": 449,
+          "priceCurrency": "USD",
+          "unitCode": "MON",
+          "unitText": "month"
         }
       },
       {
@@ -170,9 +191,11 @@
       }
     ]
   },
-  "sameAs": []
+  "sameAs": [],
+  "telephone": "+18564706300"
 }
 </script>
+<!-- /shared:home-schema -->
 <!-- shared:problem -->
 <link rel="stylesheet" href="/assets/problem.css">
 <script src="/assets/problem.js" data-endpoint="https://avello-alerts.avellolabs.workers.dev/guide" data-sitekey="0x4AAAAAAF_2AgkJbluDNPxk" defer></script>
@@ -332,7 +355,7 @@
       </div>
       <div class="price-band" data-price>
         <div>
-          <p class="price"><span>Websites starting at</span> <!-- shared:price --><span class="price-amount">$2,500</span><!-- /shared:price --></p>
+          <p class="price"><span>Websites from</span> <!-- shared:price --><span class="price-amount">$1,200</span><!-- /shared:price --></p>
           <p class="price-note">5 to 7 pages, live in about a week once we have your content, with Google and AI search basics built in so both can read your site from launch day.</p>
         </div>
         <a class="btn" href="#contact">Get a price for your site <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
@@ -387,7 +410,7 @@
           </table>
         </div>
         <!-- /shared:care-table -->
-        <p class="price-note">Local SEO, AEO and custom tools on their own are quoted per project. <a class="text-link" href="/plans/">More about the plans</a>.</p>
+        <p class="price-note">Local SEO and AEO are included in the Growth plan, or quoted per project as a one-off. Custom tools are quoted per project. <a class="text-link" href="/plans/">More about the plans</a>.</p>
       </div>
       <h3 class="also">Also from us</h3>
       <div class="cards support">

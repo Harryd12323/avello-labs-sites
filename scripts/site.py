@@ -139,10 +139,10 @@ BLOG_AUTHOR_PERSON = "Harris"
 BLOG_DESCRIPTION = "Practical website, search and AI answer tips for small local businesses."
 WORDS_PER_MINUTE = 230
 
-# Starting price, shown wherever a page has <!-- shared:price --> markers (the home page and the service
-# pages). Write it the way it should read, like "$1,500". While it's empty, every element marked data-price
+# Website build price ("Websites from ..."), shown wherever a page has <!-- shared:price --> markers, and in the
+# homepage schema. Write it the way it should read, like "$1,500". While it's empty, every element marked data-price
 # is hidden, and the chat assistant doesn't see it either.
-PRICE_FROM = "$2,500"
+PRICE_FROM = "$1,200"
 
 # Monthly plans, the main offer on every page (shared:care-table, shared:plans-summary and the footer's plan strip).
 # Care plan prices as they should read. GROWTH_PRICE is the Growth plan's monthly price, like "$499": while it's
@@ -280,7 +280,7 @@ def profile_links():
 def faq_schema(text):
     """FAQPage structured data built from the questions in the page's own <div class="faq">, so the two always match."""
     # The price is a shared block inside the answer text: keep its value, drop the other shared blocks.
-    own = _strip_blocks(re.sub(r"<!-- shared:price -->(.*?)<!-- /shared:price -->", r"\1", text, flags=re.S))
+    own = _strip_blocks(unwrap_prices(text))
     blocks = re.findall(r'<div class="faq">(.*?)\n\s*</div>', own, re.S)
     pairs = [p for b in blocks for p in re.findall(r"<details>\s*<summary>(.*?)</summary>(.*?)</details>", b, re.S)]
 
@@ -452,12 +452,97 @@ def industry_list():
     return f'<!-- shared:industry-list -->\n        <ul class="industry-grid">\n{cards}\n        </ul>\n        <!-- /shared:industry-list -->'
 
 
+# Prices written into page text: <!-- shared:care-basic -->$99<!-- /shared:care-basic --> and so on. Sync fills each one
+# from the settings above, so a hand-written sentence never goes stale. shared:price (the build price, styled) and
+# shared:care-from (the cheapest care plan) work the same way.
+def price_values():
+    vals = {"care-from": care_from(), "growth-price": GROWTH_PRICE or "quoted for your business"}
+    for n, pr in CARE_PLANS:
+        vals[f"care-{n.lower()}"] = pr
+    return vals
+
+
+def price_block():
+    """Matches only the price blocks (care-from, care-basic, growth-price...), never other shared blocks like care-table."""
+    names = "|".join(re.escape(n) for n in sorted(price_values(), key=len, reverse=True))
+    return re.compile(rf"<!-- shared:({names}) -->(.*?)<!-- /shared:\1 -->", re.S)
+
+
+def fill_prices(text):
+    vals = price_values()
+    return price_block().sub(lambda m: f"<!-- shared:{m.group(1)} -->{html.escape(vals[m.group(1)])}<!-- /shared:{m.group(1)} -->", text)
+
+
+def unwrap_prices(text):
+    """The page text with every price block replaced by its value (for schema built from the page's own words)."""
+    text = re.sub(r"<!-- shared:price -->(.*?)<!-- /shared:price -->", r"\1", text, flags=re.S)
+    return price_block().sub(lambda m: m.group(2), text)
+
+
+def amount(price):
+    """'$1,200' -> 1200 (int when whole), for schema. None when there's no number."""
+    digits = re.sub(r"[^\d.]", "", price or "")
+    if not digits:
+        return None
+    n = float(digits)
+    return int(n) if n.is_integer() else n
+
+
+CARE_DESCRIPTIONS = {
+    "Basic": "Hosting, uptime and SSL monitoring, and backups.",
+    "Pro": "Everything in Basic, plus SEO and AI search upkeep, 1 hour of edits a month and a monthly report.",
+    "Premium": "Everything in Pro, with 3 hours of edits a month and faster support.",
+}
+
+
+def home_schema():
+    """The homepage's full business description, with every price taken from the settings above."""
+    def monthly(name, price, service, desc, url):
+        offer = {"@type": "Offer", "name": name, "itemOffered": {"@type": "Service", "name": service, "url": url, "description": desc}}
+        if amount(price) is not None:
+            offer.update({"price": str(amount(price)), "priceCurrency": "USD",
+                          "priceSpecification": {"@type": "UnitPriceSpecification", "price": amount(price), "priceCurrency": "USD",
+                                                 "unitCode": "MON", "unitText": "month"}})
+        return offer
+    build = {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Website builds", "url": f"{SITE}/#how",
+             "description": "Custom 5 to 7 page websites for local businesses that can be live in about a week once we have your "
+                            "content, with SEO and AI search basics built in."}}
+    if amount(PRICE_FROM) is not None:
+        build["priceSpecification"] = {"@type": "PriceSpecification", "minPrice": amount(PRICE_FROM), "priceCurrency": "USD"}
+    items = [build,
+             {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "SEO", "url": f"{SITE}/seo/",
+              "description": "Local search engine optimization for small businesses. Included in the Growth plan, or quoted per project as a one-off."}},
+             {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "AEO", "url": f"{SITE}/aeo/",
+              "description": "Answer engine optimization, so AI tools like ChatGPT and Google's AI answers can find and recommend a "
+                             "business. Included in the Growth plan, or quoted per project as a one-off."}},
+             {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Website care", "url": f"{SITE}/website-care/",
+              "description": "Ongoing website updates, monitoring, backups and fixes. Month to month, no contract."}}]
+    items += [monthly(f"Website care: {n}", pr, f"Website care: {n} plan", CARE_DESCRIPTIONS.get(n, ""), f"{SITE}/plans/#care")
+              for n, pr in CARE_PLANS]
+    items.append(monthly("Growth plan", GROWTH_PRICE, "Growth plan: website care and local SEO",
+                         "Everything in the Pro care plan, plus monthly Google Business Profile upkeep, one new page or post a "
+                         "month, and a monthly check of how the business shows up on Google and in AI answers.", f"{SITE}/plans/#growth"))
+    items.append({"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Custom web apps", "url": f"{SITE}/web-apps/",
+                  "description": "Simple custom tools like customer portals, status trackers and intake forms. Quoted per project."}})
+    org = {"@context": "https://schema.org", "@type": "ProfessionalService", "@id": f"{SITE}/#organization", "name": "Avello Labs LLC",
+           "url": f"{SITE}/", "logo": f"{SITE}/brand/icon.svg", "email": EMAIL,
+           "address": {"@type": "PostalAddress", "addressLocality": "Collingswood", "addressRegion": "NJ", "postalCode": "08108", "addressCountry": "US"},
+           "areaServed": [{"@type": "Place", "name": "South Jersey"}, {"@type": "City", "name": "Philadelphia, PA"}],
+           "hasOfferCatalog": {"@type": "OfferCatalog", "name": "Services", "itemListElement": items},
+           "sameAs": [u for u, _ in profiles()]}
+    if PHONE:
+        org["telephone"] = phone_tel()
+    return f'<!-- shared:home-schema -->\n<script type="application/ld+json">\n{json.dumps(org, indent=2, ensure_ascii=False)}\n</script>\n<!-- /shared:home-schema -->'
+
+
 def plan_prices():
     """The care plan prices for the cost calculator's script, and as a line people can read."""
     data = {n: float(re.sub(r"[^\d.]", "", pr)) for n, pr in CARE_PLANS if re.sub(r"[^\d.]", "", pr)}
-    text = ", ".join(f"{n} {pr}" for n, pr in CARE_PLANS)
+    text = ", ".join(f"{n} {pr}" for n, pr in CARE_PLANS) + " a month"
+    if GROWTH_PRICE:
+        text += f". Growth: {GROWTH_PRICE}"
     return (f'<!-- shared:plan-prices --><p class="calc-note" id="plan-prices" data-prices="{html.escape(json.dumps(data))}">'
-            f'Our care plans: {html.escape(text)} a month. <a class="text-link" href="/plans/">What each one includes</a>.</p><!-- /shared:plan-prices -->')
+            f'Our plans: {html.escape(text)} a month. <a class="text-link" href="/plans/">What each one includes</a>.</p><!-- /shared:plan-prices -->')
 
 
 def plan_strip():
@@ -1047,8 +1132,9 @@ def sync():
                 text = replace_block(text, name, fn(), f)
         if "<!-- shared:industry-links -->" in text:
             text = replace_block(text, "industry-links", industry_links(url), f)
-        text = re.sub(r"<!-- shared:care-from -->.*?<!-- /shared:care-from -->",
-                      lambda _: f"<!-- shared:care-from -->{html.escape(care_from())}<!-- /shared:care-from -->", text, flags=re.S)
+        text = fill_prices(text)
+        if "<!-- shared:home-schema -->" in text:
+            text = replace_block(text, "home-schema", home_schema(), f)
         if "<!-- shared:faq-schema -->" in text:
             text = replace_block(text, "faq-schema", faq_schema(text), f)
         if "<!-- shared:profiles -->" in text:
